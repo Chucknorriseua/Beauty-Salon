@@ -67,7 +67,6 @@
 		BC644BC12C7754EC00B57117 /* MainButtonSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */; };
 		BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */; };
 		BC644BC72C78854800B57117 /* ShedulMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */; };
-		BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */; };
 		BC7723BB2CBE64200001650A /* TabBarButtonBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */; };
 		BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D521B2CC6B112009036E2 /* ImageCache.swift */; };
 		BC971F582C9C2E100046A625 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC971F572C9C2E100046A625 /* SettingsButton.swift */; };
@@ -181,7 +180,6 @@
 		BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonSignIn.swift; sourceTree = "<group>"; };
 		BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterSelectedCompany.swift; sourceTree = "<group>"; };
 		BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulMasterHeader.swift; sourceTree = "<group>"; };
-		BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonBack.swift; sourceTree = "<group>"; };
 		BC7D521B2CC6B112009036E2 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		BC971F572C9C2E100046A625 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
@@ -461,7 +459,6 @@
 		BCBC58102C6F43B400FB3E77 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */,
 				BCBC58112C6F43B400FB3E77 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -805,7 +802,6 @@
 			files = (
 				BCBC58122C6F43B400FB3E77 /* Preview Assets.xcassets in Resources */,
 				BCBC580F2C6F43B400FB3E77 /* Assets.xcassets in Resources */,
-				BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
