@@ -29,11 +29,11 @@ struct User_MasterDetailse: View {
                             .frame(width: geo.size.width * 1, height: geo.size.height * 0.5)
                             .clipShape(.rect(cornerRadius: 0))
                     } else {
-                        Image("ab3")
+                        Image(systemName: "photo.fill")
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width * 1, height: geo.size.height * 0.5)
+                            .frame(width: geo.size.width * 0.98, height: geo.size.height * 0.5)
                             .clipShape(.rect(cornerRadius: 0))
+                            .foregroundStyle(Color.white.opacity(0.6))
                         
                     }
                     LazyVStack {
@@ -51,7 +51,11 @@ struct User_MasterDetailse: View {
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: geo.size.width * 0.32,
                                                        height: geo.size.height * 0.18)
-                                                .clipShape(.rect(cornerRadius: 42))
+                                                .clipShape(Circle())
+                                                .overlay(content: {
+                                                    Circle()
+                                                        .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                                })
                                                 .clipped()
                                                 .onTapGesture {
                                                     withAnimation(.easeInOut(duration: 0.5)) {
@@ -69,12 +73,13 @@ struct User_MasterDetailse: View {
                                         }
                                 }
                                 
-                            }.padding(.leading, 6)
-                                .padding(.trailing, 6)
-                                .scrollTargetLayout()
+                            }.scrollTargetLayout()
                             
                         }.scrollIndicators(.hidden)
-                        
+                            .padding(.leading, 4)
+                            .padding(.trailing, 4)
+                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.2)
+                            .background(.regularMaterial.opacity(0.8), in: .rect(topLeadingRadius: 16, topTrailingRadius: 16))
                         
                         VStack(alignment: .leading) {
                             Text(masterModel?.description ?? "")
@@ -83,8 +88,10 @@ struct User_MasterDetailse: View {
                                 .font(.system(size: 22, weight: .regular))
                                 .padding(.leading, 6)
                                 .padding(.trailing, 6)
-                            
-                        }.multilineTextAlignment(.leading)
+                            Spacer()
+                        }.truncationMode(.middle)
+                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.3)
+                            .background(.regularMaterial.opacity(0.8), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
                     }
                 }
                 Spacer()

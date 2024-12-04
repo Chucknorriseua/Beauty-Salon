@@ -55,9 +55,11 @@ struct UserSelectedComapnyController: View {
                                         Task {
                                             clientViewModel.adminProfile.adminID = company.adminID
                                             await clientViewModel.fetchCurrent_AdminSalon(adminId: company.adminID)
-                                            
-                                            coordinator.push(page: .User_SheduleAdmin)
-                                            isLoader = false
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                                
+                                                coordinator.push(page: .User_SheduleAdmin)
+                                                isLoader = false
+                                            }
                                         }
                                     } label: {
                                         CompanyAllCell(companyModel: company)

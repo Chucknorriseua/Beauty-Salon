@@ -52,35 +52,37 @@ struct MasterSelectedCompany: View {
                 LazyVStack {
                     
                     ForEach(searchCompanyNearby, id:\.self) { company in
-                        CompanyAllCell(companyModel: company).onTapGesture {
+                        Button {
                             withAnimation(.easeInOut(duration: 0.4)) {
                                 selectedAdmin = company.adminID
                                 isTitle = "Do you want to enter \(company.companyName) salon?".uppercased()
                             }
+                        } label: {
+                            CompanyAllCell(companyModel: company)
                         }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
-                                if !newValue { selectedAdmin = nil }
-                            }), message: isMessageNT, title: isTitle) {
-                                
-                                Task { await enterToSalon(company: company)}
-                                
-                            } onCancel: {
-                                selectedAdmin = nil
-                                isTitle = ""
-                                isMessageNT = ""
-                            }.id(company)
-                            .padding(.bottom, 30)
-                            .padding(.top, 30)
-                            .scrollTransition(.interactive) { content, phase in
+                            if !newValue { selectedAdmin = nil }
+                        }), message: isMessageNT, title: isTitle) {
+                            
+                            Task { await enterToSalon(company: company)}
+                            
+                        } onCancel: {
+                            selectedAdmin = nil
+                            isTitle = ""
+                            isMessageNT = ""
+                        }.id(company)
+                            .padding(.bottom, 46)
+                    
+                            .scrollTransition(.animated) { content, phase in
                                 withAnimation(.snappy(duration: 1)) {
                                     
                                     content
                                         .opacity(phase.isIdentity ? 1 : 0)
-                                        .offset(y: phase.isIdentity ? 0 : -80)
+                                        .offset(y: phase.isIdentity ? 0 : 80)
                                 }
                             }
                     }
                 }.scrollTargetLayout()
-                    .padding(.bottom, 40)
+                
             }.scrollIndicators(.hidden)
     
         }

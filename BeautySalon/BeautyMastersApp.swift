@@ -13,6 +13,7 @@ import GoogleSignIn
 
 @main
 struct BeautyMastersApp: App {
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     

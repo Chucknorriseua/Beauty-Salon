@@ -1,5 +1,5 @@
 //
-//  AdminListNews.swift
+//  AdminListMasterDelete.swift
 //  BeautyMasters
 //
 //  Created by Евгений Полтавец on 21/08/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AdminListNews: View {
+struct AdminListMasterDelete: View {
     
     
     @ObservedObject var adminViewModel: AdminViewModel
@@ -25,19 +25,22 @@ struct AdminListNews: View {
                         deleteMaster(indexOffset: indexSet)
                     })
                     
-                } header: {
-                    Text("Delete master from Salon")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(Color.yellow.opacity(0.9))
-                        .padding()
                 }
             }.listStyle(.plain)
+                .padding(.top, 10)
                 .background(Color.init(hex: "#3e5b47").opacity(0.9))
-
-        }.toolbar(content: {
+               
+        }
+        .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
-                TabBarButtonBack {
-                    dismiss()
+                HStack {
+                    TabBarButtonBack {
+                        dismiss()
+                    }
+                    Text("Remove master")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(Color.yellow.opacity(0.9))
+                        .padding()
                 }
             }
         }).navigationBarBackButtonHidden(true)

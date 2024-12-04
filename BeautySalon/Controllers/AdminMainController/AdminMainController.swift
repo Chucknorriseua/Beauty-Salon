@@ -78,7 +78,7 @@ struct AdminMainController: View {
                 .tint(.yellow)
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink(destination: AdminListNews(adminViewModel: admimViewModel)) {
+                        NavigationLink(destination: AdminListMasterDelete(adminViewModel: admimViewModel)) {
                             
                             Image(systemName: "list.bullet.circle.fill")
                                 .font(.system(size: 28))

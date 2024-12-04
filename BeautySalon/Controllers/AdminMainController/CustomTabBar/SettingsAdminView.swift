@@ -16,6 +16,7 @@ struct SettingsAdminView: View {
     @StateObject  var adminViewModel: AdminViewModel
     @StateObject private var keyBoard = KeyboardResponder()
     @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var googleSignInViewModel: GoogleSignInViewModel
     
     
     @State private var isPressAlarm: Bool = false
@@ -38,23 +39,29 @@ struct SettingsAdminView: View {
                             
                             HStack(alignment: .center, spacing: 10) {
                                 PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                                    
-                                    if let image = adminViewModel.adminProfile.image,
-                                       let url = URL(string: image) {
+                                    VStack {
                                         
-                                        WebImage(url: url)
-                                            .resizable()
-                                            .indicator(.activity)
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
-                                            .clipShape(Circle())
-                                    } else {
-                                        Image("ab3")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
-                                            .clipShape(Circle())
-                                    }
+                                        if let image = adminViewModel.adminProfile.image,
+                                           let url = URL(string: image) {
+                                            
+                                            WebImage(url: url)
+                                                .resizable()
+                                                .indicator(.activity)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
+                                                .clipShape(Circle())
+                                        } else {
+                                            Image("ab3")
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
+                                                .clipShape(Circle())
+                                        }
+                                    }.overlay(content: {
+                                        Circle()
+                                            .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                    })
+                                    
                                 }
                                 
                                 VStack(spacing: 10) {
@@ -209,9 +216,8 @@ struct SettingsAdminView: View {
     
     private func signOutProfile() async {
         Task {
-            
             await authViewModel.signOut()
-            try await GoogleSignInViewModel.shared.logOut()
+            try await googleSignInViewModel.logOut()
             coordinator.popToRoot()
         }
     }

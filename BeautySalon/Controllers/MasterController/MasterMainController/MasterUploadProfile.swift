@@ -41,6 +41,10 @@ struct MasterUploadProfile: View {
                                         .frame(width: geo.size.width * 0.3,
                                                height: geo.size.height * 0.2)
                                         .clipShape(Circle())
+                                        .overlay(content: {
+                                            Circle()
+                                                .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                        })
                                         .onTapGesture {
                                             withAnimation(.easeInOut(duration: 0.5)) {
                                                 
@@ -60,7 +64,7 @@ struct MasterUploadProfile: View {
                     }.scrollIndicators(.hidden)
                     
                     SettingsButton(text: $masterViewModel.masterModel.name, title: "Name", width: geo.size.width * 1)
-                    SettingsButton(text: $masterViewModel.masterModel.phone, title: "phone", width: geo.size.width * 1)
+                    SettingsButton(text: $masterViewModel.masterModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
                         .keyboardType(.numberPad)
                         .textContentType(.telephoneNumber)
                         .onChange(of: masterViewModel.masterModel.phone) { _, new in

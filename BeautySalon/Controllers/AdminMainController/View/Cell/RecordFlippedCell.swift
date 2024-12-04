@@ -51,7 +51,7 @@ struct RecordFlippedCell: View {
                             }
                         
                         }.font(.system(size: 19, weight: .medium))
-                          
+                            .foregroundStyle(Color(hex: "F3E3CE"))
                         Spacer()
                     } else {
                         VStack(spacing: 20) {
@@ -86,6 +86,7 @@ struct RecordFlippedCell: View {
                                 }
                             }
                         }.rotation3DEffect(Angle(degrees: 180), axis: (x: 0.0, y: 1.0, z: 0.0))
+                            .foregroundStyle(Color(hex: "F3E3CE"))
                     }
                    
                 }

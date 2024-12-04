@@ -34,22 +34,26 @@ struct SettingsMaster: View {
                         HStack {
                             
                             PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                                
-                                if let image = masterViewModel.masterModel.image, let url = URL(string: image) {
-                                    
-                                    WebImage(url: url)
-                                        .resizable()
-                                        .indicator(.activity)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
-                                        .clipShape(Circle())
-                                } else {
-                                    Image("ab3")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
-                                        .clipShape(Circle())
-                                }
+                                VStack {
+                                    if let image = masterViewModel.masterModel.image, let url = URL(string: image) {
+                                        
+                                        WebImage(url: url)
+                                            .resizable()
+                                            .indicator(.activity)
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
+                                            .clipShape(Circle())
+                                    } else {
+                                        Image("ab3")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
+                                            .clipShape(Circle())
+                                    }
+                                }.overlay(content: {
+                                    Circle()
+                                        .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                })
                             }.padding(.leading, 6)
                             
                             VStack(alignment: .leading, spacing: 14) {

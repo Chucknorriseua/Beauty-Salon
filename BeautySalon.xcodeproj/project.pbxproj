@@ -55,7 +55,7 @@
 		BC644B882C75025900B57117 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B872C75025900B57117 /* MainCoordinator.swift */; };
 		BC644B992C7612DB00B57117 /* CellUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B982C7612DB00B57117 /* CellUser.swift */; };
 		BC644B9B2C7620B500B57117 /* AddNewMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B9A2C7620B500B57117 /* AddNewMaster.swift */; };
-		BC644B9D2C7620CC00B57117 /* AdminListNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B9C2C7620CC00B57117 /* AdminListNews.swift */; };
+		BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B9C2C7620CC00B57117 /* AdminListMasterDelete.swift */; };
 		BC644BA62C7629CB00B57117 /* MasterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BA52C7629CB00B57117 /* MasterTabBar.swift */; };
 		BC644BAA2C762CEF00B57117 /* CompanyAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BA92C762CEF00B57117 /* CompanyAllCell.swift */; };
 		BC644BAC2C7665E900B57117 /* TaskForSelectionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BAB2C7665E900B57117 /* TaskForSelectionDate.swift */; };
@@ -67,6 +67,7 @@
 		BC644BC12C7754EC00B57117 /* MainButtonSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */; };
 		BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */; };
 		BC644BC72C78854800B57117 /* ShedulMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */; };
+		BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */; };
 		BC7723BB2CBE64200001650A /* TabBarButtonBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */; };
 		BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D521B2CC6B112009036E2 /* ImageCache.swift */; };
 		BC971F582C9C2E100046A625 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC971F572C9C2E100046A625 /* SettingsButton.swift */; };
@@ -168,7 +169,7 @@
 		BC644B872C75025900B57117 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		BC644B982C7612DB00B57117 /* CellUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellUser.swift; sourceTree = "<group>"; };
 		BC644B9A2C7620B500B57117 /* AddNewMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMaster.swift; sourceTree = "<group>"; };
-		BC644B9C2C7620CC00B57117 /* AdminListNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminListNews.swift; sourceTree = "<group>"; };
+		BC644B9C2C7620CC00B57117 /* AdminListMasterDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminListMasterDelete.swift; sourceTree = "<group>"; };
 		BC644BA52C7629CB00B57117 /* MasterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterTabBar.swift; sourceTree = "<group>"; };
 		BC644BA92C762CEF00B57117 /* CompanyAllCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyAllCell.swift; sourceTree = "<group>"; };
 		BC644BAB2C7665E900B57117 /* TaskForSelectionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskForSelectionDate.swift; sourceTree = "<group>"; };
@@ -180,6 +181,7 @@
 		BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonSignIn.swift; sourceTree = "<group>"; };
 		BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterSelectedCompany.swift; sourceTree = "<group>"; };
 		BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulMasterHeader.swift; sourceTree = "<group>"; };
+		BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonBack.swift; sourceTree = "<group>"; };
 		BC7D521B2CC6B112009036E2 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		BC971F572C9C2E100046A625 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 		BCBC58102C6F43B400FB3E77 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */,
 				BCBC58112C6F43B400FB3E77 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -570,7 +573,7 @@
 				BCBC58AA2C73996B00FB3E77 /* AdminMainController.swift */,
 				BCBC58622C70D8E000FB3E77 /* AdminAddForMasterShedule.swift */,
 				BC644B9A2C7620B500B57117 /* AddNewMaster.swift */,
-				BC644B9C2C7620CC00B57117 /* AdminListNews.swift */,
+				BC644B9C2C7620CC00B57117 /* AdminListMasterDelete.swift */,
 				BC644BAD2C7665F300B57117 /* Calendar */,
 				BCBC58862C733EDD00FB3E77 /* View */,
 				BCBC588B2C7340BD00FB3E77 /* CustomTabBar */,
@@ -802,6 +805,7 @@
 			files = (
 				BCBC58122C6F43B400FB3E77 /* Preview Assets.xcassets in Resources */,
 				BCBC580F2C6F43B400FB3E77 /* Assets.xcassets in Resources */,
+				BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -863,7 +867,7 @@
 				BCD990392C96FFE500E91229 /* KeyboardResponder.swift in Sources */,
 				BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */,
 				BCF178B62C7B792100135D81 /* Admin_DataBase.swift in Sources */,
-				BC644B9D2C7620CC00B57117 /* AdminListNews.swift in Sources */,
+				BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */,
 				BC15CE872CC7958B003AE944 /* RecordFlippedCell.swift in Sources */,
 				BC4659F12CDC26D200E9ACD2 /* CustomAlertOk.swift in Sources */,
 				BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */,

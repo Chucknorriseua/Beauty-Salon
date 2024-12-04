@@ -34,30 +34,20 @@ struct CompanyAllCell: View {
                     }
                     
                     
-                    ZStack(alignment: .center) {
+                    VStack {
                         
-                        VStack(alignment: .center, spacing: 2) {
-                            //                    Name
-                            Text(companyModel?.companyName ?? "no found company")
-                                .font(.system(size: 24, weight: .heavy))
-                                .lineLimit(4)
-                            
-                            VStack(spacing: 6) {
-                                //                     Description
+                        Group {
+                            VStack(spacing: 8) {
+                                
+                                Text(companyModel?.companyName ?? "no found company")
+                                    .font(.system(size: 24, weight: .heavy))
+                                    .lineLimit(2)
                                 Text(companyModel?.description ?? "no description")
                                     .fontWeight(.medium)
                                     .lineLimit(10)
-                            }.frame(width: geo.size.width * 0.95, height: geo.size.height * 0.20)
-                                .multilineTextAlignment(.leading)
-                            VStack {
                                 Text(companyModel?.adress ?? "no adress")
                                     .font(.system(size: 18, weight: .heavy))
                                     .lineLimit(2)
-                                Spacer()
-                            }.frame(width: geo.size.width * 0.95, height: geo.size.height * 0.04)
-                            
-                            //                Email and phone
-                            VStack(alignment: .center, spacing: 5) {
                                 HStack {
                                     Image(systemName: "phone.circle.fill")
                                         .font(.system(size: 22))
@@ -73,18 +63,19 @@ struct CompanyAllCell: View {
                                         .font(.system(size: 20))
                                     Text(" \(companyModel?.email ?? "no email")")
                                 }
-                            }
-                        }.multilineTextAlignment(.center)
-                        
+                            }.truncationMode(.middle)
+                            
+                        }
                     }
-                    .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.52)
-                    .background(.ultraThinMaterial.opacity(0.7), in: .rect(bottomTrailingRadius: 42))
-                    
+                    .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.58)
+                    .background(.regularMaterial.opacity(0.7), in: .rect(bottomTrailingRadius: 42))
+
                 }
                 
             }.foregroundStyle(Color(hex: "F3E3CE"))
                 .padding(.leading, 10)
         }.frame(height: 360)
+            .padding(.bottom, 30)
 
     }
 }

@@ -32,7 +32,11 @@ struct CellListMasterDelete: View {
                     .font(.system(size: 26, weight: .bold))
                     .foregroundStyle(Color.yellow.opacity(0.9))
                 Spacer()
-            }.padding(.leading, 10)
+                Image(systemName: "chevron.left")
+                    .font(.title)
+                    .padding(.trailing, 6)
+                    .foregroundStyle(Color(hex: "F3E3CE"))
+            }.padding(.leading, 6)
         }
     }
 }

@@ -36,6 +36,11 @@ struct SettingsPhotoView: View {
                                        .frame(width: geo.size.width * 0.3,
                                               height: geo.size.height * 0.5)
                                        .clipShape(Circle())
+                                       .overlay(content: {
+                                           Circle()
+                                               .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                       })
+
                                        .clipped()
                                        .onTapGesture {
                                            withAnimation(.easeInOut(duration: 0.5)) {
@@ -49,7 +54,7 @@ struct SettingsPhotoView: View {
                                 .scrollTransition(.interactive, axis: .horizontal) { content, phase in
                                     content
                                         .opacity(phase.isIdentity ? 1 : 0)
-                                        .offset(y: phase.isIdentity ? 0 : -50)
+                                        .offset(y: phase.isIdentity ? 0 : 50)
                                 }
                         }
                     }.padding(.top, 15)

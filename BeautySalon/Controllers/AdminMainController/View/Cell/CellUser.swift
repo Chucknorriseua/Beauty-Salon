@@ -37,11 +37,11 @@ struct CellUser: View {
                     }
                     
                 }.padding(.leading)
-                    .foregroundStyle(Color.white.opacity(0.92))
+                    .foregroundStyle(Color(hex: "F3E3CE"))
                     .lineLimit(2)
                 
                 Spacer()
-                Image("ab3")
+                Image(systemName: "person.crop.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometry.size.width * 0.25,

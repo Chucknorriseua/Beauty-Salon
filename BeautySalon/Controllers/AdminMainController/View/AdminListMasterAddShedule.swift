@@ -24,7 +24,7 @@ struct AdminListMasterAddShedule: View {
                     .padding(.trailing, 30)
             }.background(Color.red, in: .rect(bottomLeadingRadius: 44, bottomTrailingRadius: 44))
             
-            Text("Send the recording to the master: \(selecetedRecord?.nameCurrent ?? "")")
+            Text("Send record: \(selecetedRecord?.nameCurrent ?? "")")
                 .fontWeight(.bold)
                 .foregroundStyle(Color.yellow.opacity(0.8))
             Group {
