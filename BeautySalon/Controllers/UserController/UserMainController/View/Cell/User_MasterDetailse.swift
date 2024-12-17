@@ -21,21 +21,9 @@ struct User_MasterDetailse: View {
             
             VStack {
                 VStack(alignment: .center, spacing: 10) {
-                    if let image = masterModel?.image, let url = URL(string: image) {
-                        
-                        WebImage(url: url)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width * 1, height: geo.size.height * 0.5)
-                            .clipShape(.rect(cornerRadius: 0))
-                    } else {
-                        Image(systemName: "photo.fill")
-                            .resizable()
-                            .frame(width: geo.size.width * 0.98, height: geo.size.height * 0.5)
-                            .clipShape(.rect(cornerRadius: 0))
-                            .foregroundStyle(Color.white.opacity(0.6))
-                        
-                    }
+                    VStack {}
+                        .createImageView(model: masterModel?.image ?? "", width: geo.size.width * 1,
+                                         height: geo.size.height * 0.5)
                     LazyVStack {
                         ScrollView(.horizontal) {
                             LazyHStack {
@@ -58,7 +46,7 @@ struct User_MasterDetailse: View {
                                                 })
                                                 .clipped()
                                                 .onTapGesture {
-                                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                                    withAnimation(.snappy(duration: 0.5)) {
                                                         selectedImage = master
                                                         isPressFullScreen.toggle()
                                                     }
@@ -93,40 +81,16 @@ struct User_MasterDetailse: View {
                             .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.3)
                             .background(.regularMaterial.opacity(0.8), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
                     }
-                }
+                }.padding(.top, 60)
                 Spacer()
             }.createBackgrounfFon()
                 .swipeBackDismiss(dismiss: dismiss)
-                .overlay(alignment: .center) {
-                    
-                    
-                    if isPressFullScreen, let selectedImage {
-                        
-                            Color.black
-                                .ignoresSafeArea(.all)
-                                .opacity(0.9)
-                                .transition(.opacity)
-                            
-                            WebImage(url: URL(string: selectedImage))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(minWidth: geo.size.width, maxHeight: geo.size.height)
-                                .clipped()
-                                .onTapGesture {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        isPressFullScreen.toggle()
-                                    }
-                                }.transition(.blurReplace)
-                        
-                    }
-                }.ignoresSafeArea(.all)
+                .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImage ?? "", isShowTrash: false, deleteImage: {})
+                .ignoresSafeArea(.all)
                 .toolbar(content: {
                         ToolbarItem(placement: .topBarLeading) {
                             if !isPressFullScreen {
-                                Button(action: {
-                                    
-                                    dismiss()
-                                }, label: {
+                                Button(action: { dismiss()}, label: {
                                     HStack(spacing: 4) {
                                          Image(systemName: "chevron.backward.circle.fill")
                                         .font(.system(size: 18))

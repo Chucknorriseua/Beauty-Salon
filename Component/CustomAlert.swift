@@ -11,6 +11,7 @@ struct CustomAlert: ViewModifier {
     
     
     @Binding var isPresented: Bool
+    var hideCancel: Bool
     var message: String
     var title: String
     var onConfirm: () -> Void
@@ -37,18 +38,21 @@ struct CustomAlert: ViewModifier {
                                 .padding(.horizontal, 20)
                             
                             HStack {
-                                Button(action: {
+                                if hideCancel {
+                                    
+                                    Button(action: {
                                         onCancel()
                                         isPresented = false
-                                    
-                                }) {
-                                    Text("Cancel")
-                                        .foregroundColor(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .clipped()
-                                        .padding()
-                                        .background(Color.red.opacity(0.7))
-                                        .cornerRadius(10)
+                                        
+                                    }) {
+                                        Text("Cancel")
+                                            .foregroundColor(.white)
+                                            .frame(maxWidth: .infinity)
+                                            .clipped()
+                                            .padding()
+                                            .background(Color.red.opacity(0.7))
+                                            .cornerRadius(10)
+                                    }
                                 }
                                 
                                 Button(action: {
@@ -80,7 +84,7 @@ struct CustomAlert: ViewModifier {
     }
 
 extension View {
-    func customAlert(isPresented: Binding<Bool>, message: String, title: String, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) -> some View {
-        self.modifier(CustomAlert(isPresented: isPresented, message: message, title: title, onConfirm: onConfirm, onCancel: onCancel))
+    func customAlert(isPresented: Binding<Bool>, hideCancel: Bool, message: String, title: String, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) -> some View {
+        self.modifier(CustomAlert(isPresented: isPresented, hideCancel: hideCancel, message: message, title: title, onConfirm: onConfirm, onCancel: onCancel))
     }
 }

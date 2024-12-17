@@ -82,7 +82,7 @@ struct UserRegisters: View {
 
             .createBackgrounfFon()
             .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
-            .customAlert(isPresented: $isPressAlarm, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
+            .customAlert(isPresented: $isPressAlarm, hideCancel: false, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
     }
 }
 

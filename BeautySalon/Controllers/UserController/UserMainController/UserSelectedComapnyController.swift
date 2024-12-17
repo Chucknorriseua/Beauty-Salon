@@ -12,8 +12,12 @@ struct UserSelectedComapnyController: View {
     
     @StateObject var clientViewModel: ClientViewModel
     @StateObject var locationManager = LocationManager()
-    @Environment (\.dismiss) var dismiss
     @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var google: GoogleSignInViewModel
+    @Environment (\.dismiss) var dismiss
+    
+    @AppStorage ("useRole") private var useRole: String?
+    
     @State private var searchText: String = ""
     @State private var loader: String = "Loader"
     @State private var isLoader: Bool = false
@@ -47,9 +51,8 @@ struct UserSelectedComapnyController: View {
                     LazyVStack {
                         
                         ForEach(searchCompanyNearby, id:\.self) { company  in
-                            NavigationLink(destination: UserMainForSheduleController(clientViewModel: clientViewModel).navigationBarBackButtonHidden(true)) {
-                                withAnimation {
-                                    
+                            NavigationLink(destination: UserMainForSheduleController(clientViewModel:
+                                                                                        clientViewModel).navigationBarBackButtonHidden(true)) {   
                                     Button {
                                         isLoader = true
                                         Task {
@@ -65,16 +68,13 @@ struct UserSelectedComapnyController: View {
                                         CompanyAllCell(companyModel: company)
                                         
                                     }.padding(.bottom, 50)
-                                }
                             }.id(company)
                              
                                 .scrollTransition(.animated) { content, phase in
-                                    withAnimation(.snappy(duration: 1)) {
-                                        
                                         content
                                             .opacity(phase.isIdentity ? 1 : 0)
-                                            .offset(y: phase.isIdentity ? 0 : 80)
-                                    }
+                                            .offset(y: phase.isIdentity ? 0 : 40)
+                                    
                                 }
                             
                         }
@@ -101,7 +101,8 @@ struct UserSelectedComapnyController: View {
                 ToolbarItem(placement: .topBarLeading) {
                     TabBarButtonBack {
                         Task {
-                            try await GoogleSignInViewModel.shared.logOut()
+                            useRole = nil
+                            try await google.logOut()
                             Auth_ClientViewModel.shared.signOutClient()
                             coordinator.popToRoot()
                         }

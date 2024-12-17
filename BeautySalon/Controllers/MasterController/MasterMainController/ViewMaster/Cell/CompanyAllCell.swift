@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import MapKit
 
 struct CompanyAllCell: View {
     
@@ -42,12 +43,23 @@ struct CompanyAllCell: View {
                                 Text(companyModel?.companyName ?? "no found company")
                                     .font(.system(size: 24, weight: .heavy))
                                     .lineLimit(2)
+                                
                                 Text(companyModel?.description ?? "no description")
                                     .fontWeight(.medium)
                                     .lineLimit(10)
-                                Text(companyModel?.adress ?? "no adress")
-                                    .font(.system(size: 18, weight: .heavy))
+                                
+                                HStack(spacing: 18) {
+                                    Text(companyModel?.adress ?? "no adress")
+                                        .font(.system(size: 18, weight: .heavy))
                                     .lineLimit(2)
+                                    
+                                    Button(action: { openInMaps()}) {
+                                        Image(systemName: "mappin.and.ellipse")
+                                            .font(.system(size: 24, weight: .bold))
+                                            .foregroundStyle(Color.blue.opacity(0.8))
+                                    }
+                                }
+
                                 HStack {
                                     Image(systemName: "phone.circle.fill")
                                         .font(.system(size: 22))
@@ -62,12 +74,12 @@ struct CompanyAllCell: View {
                                     Image(systemName: "envelope.fill")
                                         .font(.system(size: 20))
                                     Text(" \(companyModel?.email ?? "no email")")
-                                }
-                            }.truncationMode(.middle)
-                            
+                                }.truncationMode(.tail)
+                                    .multilineTextAlignment(.center)
+                            }
                         }
                     }
-                    .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.58)
+                    .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.6)
                     .background(.regularMaterial.opacity(0.7), in: .rect(bottomTrailingRadius: 42))
 
                 }
@@ -77,5 +89,13 @@ struct CompanyAllCell: View {
         }.frame(height: 360)
             .padding(.bottom, 30)
 
+    }
+    
+    private func openInMaps() {
+        guard let longitude = companyModel?.longitude, let latitude = companyModel?.latitude else { return }
+                let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)))
+                mapItem.name = "We're here"
+                mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving
+                                                  ])
     }
 }

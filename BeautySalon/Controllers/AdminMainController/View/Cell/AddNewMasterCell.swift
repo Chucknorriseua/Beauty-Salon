@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
+
 
 struct AddNewMasterCell: View {
     
@@ -40,28 +40,9 @@ struct AddNewMasterCell: View {
                     .lineLimit(2)
                 
                 Spacer()
-                
-                
-                if let url = URL(string: addMasterInRoom.image ?? "" ) {
-                    
-                    WebImage(url: url)
-                        .resizable()
-                        .indicator(.activity)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width * 0.3,
-                               height: geometry.size.height * 0.6)
-                        .clipShape(Circle())
-                        .padding(.trailing, 4)
-                    
-                } else {
-                    Image("ab3")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width * 0.3,
-                               height: geometry.size.height * 0.6)
-                        .clipShape(Circle())
-                        .padding(.trailing, 4)
-                }
+                VStack {}
+                    .createImageView(model: addMasterInRoom.image ?? "", width: geometry.size.width * 0.56 / 2,
+                                     height: geometry.size.height * 0.56)
                 
             }.frame(height: geometry.size.height * 0.77)
                 .background(Color.init(hex: "#3e5b47").opacity(0.7), in: .rect(cornerRadius: 36))

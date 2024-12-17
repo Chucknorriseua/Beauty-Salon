@@ -62,7 +62,9 @@ struct MasterTabBar: View {
                 HStack{
                     ForEach((TabbedItemsMaster.allCases), id: \.self) { item in
                             Button {
-                                selectedTab = item.rawValue
+                                withAnimation(.snappy(duration: 0.7)) {
+                                    selectedTab = item.rawValue
+                                }
                             } label: {
                                 
                             CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))

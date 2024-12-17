@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "salonImage.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Снимок экрана 2021-11-08 в 18.19.07.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

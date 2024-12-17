@@ -34,6 +34,7 @@ struct MasterMainController: View {
             }
             
         }.onAppear {
+       
             VmCalendar.setupWeeks()
             Task {
                     

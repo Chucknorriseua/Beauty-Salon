@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
+
 
 struct User_AdminViewProfile: View {
     
@@ -18,25 +18,9 @@ struct User_AdminViewProfile: View {
             
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
-              
-                    if let url = URL(string: clientViewModel.adminProfile.image ?? "" ) {
-                        
-                        WebImage(url: url)
-                            .resizable()
-                            .indicator(.activity)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width * 0.3,
-                                   height: geo.size.height * 0.65)
-                            .clipShape(Circle())
-                        
-                    } else {
-                        Image("ab3")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width * 0.3,
-                                   height: geo.size.height * 0.65)
-                            .clipShape(Circle())
-                    }
+                    VStack {}
+                        .createImageView(model: clientViewModel.adminProfile.image ?? "", width: geo.size.width * 0.6 / 2,
+                                         height: geo.size.height * 0.68)
                     
                     Text(clientViewModel.adminProfile.name)
                         .font(.system(size: 24, weight: .bold))

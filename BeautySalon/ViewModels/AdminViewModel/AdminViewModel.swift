@@ -31,7 +31,6 @@ final class AdminViewModel: ObservableObject {
     //  MARK: Fetch profile admin
     func fetchProfileAdmin() async {
         do {
-            
             let profile = try await Admin_DataBase.shared.fetchAdmiProfile()
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }

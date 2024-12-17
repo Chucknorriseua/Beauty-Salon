@@ -43,10 +43,10 @@ struct MasterUploadProfile: View {
                                         .clipShape(Circle())
                                         .overlay(content: {
                                             Circle()
-                                                .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                                .stroke(Color.white, lineWidth: 2)
                                         })
                                         .onTapGesture {
-                                            withAnimation(.easeInOut(duration: 0.5)) {
+                                            withAnimation(.snappy(duration: 0.5)) {
                                                 
                                                 selectedImages = image
                                                 isPressFullScreen = true
@@ -113,7 +113,7 @@ struct MasterUploadProfile: View {
                 }
             }.padding(.leading, 4)
                 .padding(.trailing, 4)
-      
+         
                 .overlay(alignment: .topTrailing) {
                     PhotosPicker(selection: $photoPickerArray, maxSelectionCount: 10, selectionBehavior: .ordered) {
                         HStack {
@@ -127,56 +127,18 @@ struct MasterUploadProfile: View {
                             .padding(.trailing, 6)
                     }
                 }
-            
-            
-                .overlay(alignment: .center) {
-                    
-                    if isPressFullScreen, let selectedImages {
-                        ZStack {
-                            Color.black
-                                .ignoresSafeArea(.all)
-                                .opacity(0.9)
-                                .transition(.opacity)
-                                .overlay(alignment: .topTrailing) {
-                                    Button {
-                                        let image = selectedImages
-                                        withAnimation(.easeInOut(duration: 0.5)) {
-                                            
-                                            masterViewModel.deleteImage(image: image)
-                                            isPressFullScreen.toggle()
-                                        }
-                                        
-                                    } label: {
-                                        Image(systemName: "trash.circle.fill")
-                                            .foregroundStyle(Color.red.opacity(0.8))
-                                            .font(.system(size: 32, weight: .bold))
-                                    }.padding(.trailing, 10)
-                                        
-                                }
-                            
-                            WebImage(url: URL(string: selectedImages))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(minWidth: geo.size.width * 0.9, maxHeight: geo.size.height * 0.8)
-                                .clipped()
-                                .onTapGesture {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        isPressFullScreen = false
-                                    }
-                                }.transition(.blurReplace)
-                        }
-                        
-                    }
-                }
-            
+
         }).createBackgrounfFon()
+            .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImages ?? "", isShowTrash: true, deleteImage: {
+                masterViewModel.deleteImage(image: selectedImages ?? "")
+            })
             .swipeBack(coordinator: coordinator)
             .onTapGesture {
                 withAnimation(.snappy) {
                     UIApplication.shared.endEditing(true)
                 }
             }
-            .customAlert(isPresented: $isLocationAlarm, message: massage, title: title, onConfirm: {
+            .customAlert(isPresented: $isLocationAlarm, hideCancel: true, message: massage, title: title, onConfirm: {
                 Task { await locationManager.updateLocationMaster(company: masterViewModel.masterModel) }
             }, onCancel: {})
         

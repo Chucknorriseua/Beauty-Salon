@@ -61,6 +61,18 @@ final class GoogleSignInViewModel: ObservableObject {
         }
     }
     
+    func checkSubscribeGoogleProfile(coordinator: CoordinatorView) async throws -> Bool {
+        if StoreViewModel.shared.checkSubscribe {
+            if isLogin {
+                goConntrollerProfile(coordinator: coordinator)
+            } else {
+             signInWuthGoogle(coordinator: coordinator)
+            }
+            return true
+        } else {
+            return false
+        }
+    }
     
     private func loadUserProfile(coordinator: CoordinatorView) async throws {
         let db = Firestore.firestore()

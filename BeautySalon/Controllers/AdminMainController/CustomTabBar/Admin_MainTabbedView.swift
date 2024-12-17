@@ -43,7 +43,7 @@ struct Admin_MainTabbedView: View {
     
     @State private var selectedTab = 0
     @StateObject var adminViewModel: AdminViewModel
-//    @StateObject var admimCalendarViewModel: Admin_CalendarViewModel
+
     
     var body: some View {
         
@@ -68,7 +68,9 @@ struct Admin_MainTabbedView: View {
                 HStack{
                     ForEach((TabbedItems.allCases), id: \.self){ item in
                         Button{
-                            selectedTab = item.rawValue
+                            withAnimation(.snappy(duration: 0.7)) {
+                                selectedTab = item.rawValue
+                            }
                         } label: {
                             CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
                         }

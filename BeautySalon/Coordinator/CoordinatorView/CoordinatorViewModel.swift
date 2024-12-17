@@ -23,5 +23,6 @@ struct CoordinatorViewModel: View {
         .environmentObject(coordinator)
         .environmentObject(storeKitView)
         .environmentObject(google)
+
     }
 }

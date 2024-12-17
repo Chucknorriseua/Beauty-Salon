@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct CellMaster: View {
     
@@ -42,31 +41,9 @@ struct CellMaster: View {
                 
                 Spacer()
                 
-                VStack {
-                    if let url = URL(string: masterModel?.image ?? "" ) {
-                        
-                        WebImage(url: url)
-                            .resizable()
-                            .indicator(.activity)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width * 0.3,
-                                   height: geometry.size.height * 0.6)
-                            .clipShape(Circle())
-                            .padding(.trailing, 4)
-                        
-                    } else {
-                        Image("ab3")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width * 0.3,
-                                   height: geometry.size.height * 0.6)
-                            .clipShape(Circle())
-                            .padding(.trailing, 4)
-                    }
-                }.overlay(content: {
-                    Circle()
-                        .stroke(Color.white, lineWidth: 2)
-                })
+                VStack {}
+                    .createImageView(model: masterModel?.image ?? "", width: geometry.size.width * 0.56 / 2,
+                                     height: geometry.size.height * 0.56)
  
             }.frame(height: geometry.size.height * 0.7)
                 .background(Color.init(hex: "#3e5b47").opacity(0.7), in: .rect(cornerRadius: 36))

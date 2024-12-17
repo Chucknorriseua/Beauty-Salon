@@ -14,10 +14,12 @@ struct SettingsMaster: View {
     
     @StateObject var authViewModel = Auth_Master_ViewModel()
     @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var google: GoogleSignInViewModel
     @StateObject var masterViewModel: MasterViewModel
     @StateObject private var keyBoard = KeyboardResponder()
     
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage ("useRole") private var useRole: String?
     
     @State private var isPressAlarm: Bool = false
     @State private var isEditor: Bool = false
@@ -34,26 +36,9 @@ struct SettingsMaster: View {
                         HStack {
                             
                             PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                                VStack {
-                                    if let image = masterViewModel.masterModel.image, let url = URL(string: image) {
-                                        
-                                        WebImage(url: url)
-                                            .resizable()
-                                            .indicator(.activity)
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
-                                            .clipShape(Circle())
-                                    } else {
-                                        Image("ab3")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geo.size.width * 0.3, height: geo.size.height * 0.3 / 2)
-                                            .clipShape(Circle())
-                                    }
-                                }.overlay(content: {
-                                    Circle()
-                                        .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
-                                })
+                                VStack {}
+                                    .createImageView(model: masterViewModel.masterModel.image ?? "", width: geo.size.width * 0.3,
+                                                     height: geo.size.height * 0.3 / 2)
                             }.padding(.leading, 6)
                             
                             VStack(alignment: .leading, spacing: 14) {
@@ -89,16 +74,18 @@ struct SettingsMaster: View {
                       
                         }.padding(.top, 6)
                         
-                        Text("Description about you:").opacity(0.4)
-                            .font(.system(size: 16, weight: .semibold))
-                        TextEditor(text:  $masterViewModel.masterModel.description)
-                            .multilineTextAlignment(.leading)
-                            .scrollContentBackground(.hidden)
-                            .padding(.bottom, 6).onTapGesture {
-                                isEditor = true
-                                UIApplication.shared.endEditing(true)
-                                isEditor = false
+                        ZStack(alignment: .topLeading) {
+                            if masterViewModel.masterModel.description.isEmpty {
+                                Text("Please limit your input to 160 characters.")
+                                    .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
+                                    .padding(.top, 4)
+                                    .padding(.leading, 4)
                             }
+                                TextEditor(text: $masterViewModel.masterModel.description)
+                                    .scrollContentBackground(.hidden)
+
+                        }.padding(.leading, 6)
+                            .padding(.bottom, 6)
                     }.frame(width: geo.size.width * 0.95, height: geo.size.height * 0.40, alignment: .leading)
                         .background(.ultraThickMaterial.opacity(0.6), in: .rect(bottomLeadingRadius: 24, bottomTrailingRadius: 24))
                         .foregroundStyle(Color(hex: "F3E3CE"))
@@ -140,47 +127,21 @@ struct SettingsMaster: View {
                 .padding(.bottom, keyBoard.currentHeight / 2)
             }.scrollIndicators(.hidden)
                 .createBackgrounfFon()
-            
-                .overlay(alignment: .center) {
-                    
-                    if isPressFullScreen, let selectedImage {
+                .onTapGesture {
+                    withAnimation(.snappy(duration: 0.5)) {
                         
-                        Color.black
-                            .ignoresSafeArea(.all)
-                            .opacity(0.9)
-                            .transition(.opacity)
-                            .overlay(alignment: .topTrailing) {
-                                Button {
-                                    let image = selectedImage
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        
-                                        masterViewModel.deleteImage(image: image)
-                                        isPressFullScreen.toggle()
-                                    }
-                                    
-                                } label: {
-                                    Image(systemName: "trash.circle.fill")
-                                        .foregroundStyle(Color.red.opacity(0.8))
-                                        .font(.system(size: 32, weight: .bold))
-                                }.padding(.trailing, 10)
-                            }
-                        
-                        WebImage(url: URL(string: selectedImage))
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(minWidth: geo.size.width * 0.9, maxHeight: geo.size.height * 0.8)
-                            .clipped()
-                            .onTapGesture {
-                                withAnimation(.snappy) {
-                                    isPressFullScreen = false
-                                }
-                            }.transition(.blurReplace)
-                        
+                        isEditor = true
+                        UIApplication.shared.endEditing(true)
+                        isEditor = false
                     }
+                }
+            
+                .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImage ?? "", isShowTrash: true) {
+                    masterViewModel.deleteImage(image: selectedImage ?? "")
                 }
         }.ignoresSafeArea(.keyboard, edges: .all)
         
-            .customAlert(isPresented: $isPressAlarm, message: "Are you sure you want to leave?",
+            .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: "Are you sure you want to leave?",
                          title: "Leave session", onConfirm: {
                 signOut()
             }, onCancel: {
@@ -211,11 +172,16 @@ struct SettingsMaster: View {
     }
     private func signOut() {
         Task {
-            
             selectedAdminID = nil
+            useRole = nil
             authViewModel.signOut()
-            try await GoogleSignInViewModel.shared.logOut()
+            try await google.logOut()
             coordinator.popToRoot()
         }
+    }
+}
+extension SettingsMaster: isFormValid {
+    var isFarmValid: Bool {
+        return masterViewModel.masterModel.description.count < 160
     }
 }

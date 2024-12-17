@@ -24,11 +24,11 @@ struct MasterRegister: View {
                 HStack(spacing: 10) {
                     
                     PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                        Image(uiImage: UIImage(data:  authMaster.selectedImage ?? Data() ) ?? UIImage(resource: .ab1))
+                        Image(uiImage: UIImage(data:  authMaster.selectedImage ?? Data() ) ?? UIImage(resource: .imageProfile))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 90, height: 90)
-                            .clipShape(Circle())
+                            .clipShape(.rect(cornerRadius: 16))
                     }
                     
                     Text("Сhoose your photo profile")
@@ -106,7 +106,7 @@ struct MasterRegister: View {
                 }
             }
             .createBackgrounfFon()
-            .customAlert(isPresented: $authMaster.isShowAlert, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
+            .customAlert(isPresented: $authMaster.isShowAlert, hideCancel: false, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
             .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
     }
 }

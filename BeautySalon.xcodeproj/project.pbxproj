@@ -44,13 +44,11 @@
 		BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */; };
 		BC22B4F32C9B38F40034B45A /* MasterWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */; };
 		BC24B52A2CD95ECB009F2257 /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24B5292CD95ECB009F2257 /* StoreViewModel.swift */; };
-		BC28CFE72C91A783006F6A6A /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFE62C91A783006F6A6A /* UserCell.swift */; };
 		BC28CFE92C91B8A8006F6A6A /* ExtentionsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFE82C91B8A8006F6A6A /* ExtentionsApp.swift */; };
 		BC28CFEB2C91BFB5006F6A6A /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFEA2C91BFB5006F6A6A /* CustomAlert.swift */; };
 		BC28CFEF2C9467FF006F6A6A /* PhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFEE2C9467FF006F6A6A /* PhoneNumber.swift */; };
 		BC3A26A62CD6A24D000A674C /* MasterUploadProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */; };
 		BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */; };
-		BC4659F12CDC26D200E9ACD2 /* CustomAlertOk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4659F02CDC26D200E9ACD2 /* CustomAlertOk.swift */; };
 		BC50AF482CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC50AF472CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift */; };
 		BC644B882C75025900B57117 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B872C75025900B57117 /* MainCoordinator.swift */; };
 		BC644B992C7612DB00B57117 /* CellUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B982C7612DB00B57117 /* CellUser.swift */; };
@@ -69,7 +67,10 @@
 		BC644BC72C78854800B57117 /* ShedulMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */; };
 		BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */; };
 		BC7723BB2CBE64200001650A /* TabBarButtonBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */; };
+		BC7C6F032D00984F000AAD03 /* ImageViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7C6F022D00984F000AAD03 /* ImageViewCustom.swift */; };
+		BC7C6F052D00B158000AAD03 /* ImageViewSelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7C6F042D00B158000AAD03 /* ImageViewSelected.swift */; };
 		BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D521B2CC6B112009036E2 /* ImageCache.swift */; };
+		BC8BC91C2D01CFDF00E37759 /* SignInValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8BC91B2D01CFDF00E37759 /* SignInValidator.swift */; };
 		BC971F582C9C2E100046A625 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC971F572C9C2E100046A625 /* SettingsButton.swift */; };
 		BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF952CAEDA0F0055F458 /* Auth_ClientViewModel.swift */; };
 		BCADDF982CAEDC900055F458 /* Client_DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF972CAEDC900055F458 /* Client_DataBase.swift */; };
@@ -157,14 +158,12 @@
 		BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterCalendarViewModel.swift; sourceTree = "<group>"; };
 		BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterWeekView.swift; sourceTree = "<group>"; };
 		BC24B5292CD95ECB009F2257 /* StoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewModel.swift; sourceTree = "<group>"; };
-		BC28CFE62C91A783006F6A6A /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		BC28CFE82C91B8A8006F6A6A /* ExtentionsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionsApp.swift; sourceTree = "<group>"; };
 		BC28CFEA2C91BFB5006F6A6A /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		BC28CFEE2C9467FF006F6A6A /* PhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumber.swift; sourceTree = "<group>"; };
 		BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterUploadProfile.swift; sourceTree = "<group>"; };
 		BC4659ED2CDB9E6A00E9ACD2 /* BeautySalonSubscribe.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = BeautySalonSubscribe.storekit; sourceTree = "<group>"; };
 		BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetStoreKitProductSelect.swift; sourceTree = "<group>"; };
-		BC4659F02CDC26D200E9ACD2 /* CustomAlertOk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertOk.swift; sourceTree = "<group>"; };
 		BC50AF472CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin_DataBaseProtocolExt.swift; sourceTree = "<group>"; };
 		BC644B872C75025900B57117 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		BC644B982C7612DB00B57117 /* CellUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellUser.swift; sourceTree = "<group>"; };
@@ -183,7 +182,10 @@
 		BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulMasterHeader.swift; sourceTree = "<group>"; };
 		BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonBack.swift; sourceTree = "<group>"; };
+		BC7C6F022D00984F000AAD03 /* ImageViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCustom.swift; sourceTree = "<group>"; };
+		BC7C6F042D00B158000AAD03 /* ImageViewSelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewSelected.swift; sourceTree = "<group>"; };
 		BC7D521B2CC6B112009036E2 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		BC8BC91B2D01CFDF00E37759 /* SignInValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInValidator.swift; sourceTree = "<group>"; };
 		BC971F572C9C2E100046A625 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		BCADDF952CAEDA0F0055F458 /* Auth_ClientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth_ClientViewModel.swift; sourceTree = "<group>"; };
 		BCADDF972CAEDC900055F458 /* Client_DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client_DataBase.swift; sourceTree = "<group>"; };
@@ -309,6 +311,14 @@
 			path = StoreKitViewModel;
 			sourceTree = "<group>";
 		};
+		BC28632E2D03890900F6EBB7 /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */,
+			);
+			path = StoreKit;
+			sourceTree = "<group>";
+		};
 		BC644B912C75FF3C00B57117 /* AdminViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,7 +368,6 @@
 			isa = PBXGroup;
 			children = (
 				BC644BA92C762CEF00B57117 /* CompanyAllCell.swift */,
-				BC28CFE62C91A783006F6A6A /* UserCell.swift */,
 				BC22B4EE2C9B20240034B45A /* ShedulCell.swift */,
 			);
 			path = Cell;
@@ -405,6 +414,14 @@
 				BC644BB62C766D6E00B57117 /* CalendarAddTask.swift */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		BC8BC91A2D01CFB500E37759 /* SignInValidator */ = {
+			isa = PBXGroup;
+			children = (
+				BC8BC91B2D01CFDF00E37759 /* SignInValidator.swift */,
+			);
+			path = SignInValidator;
 			sourceTree = "<group>";
 		};
 		BCAE0A0D2CB82948004F41E2 /* NotificationManager */ = {
@@ -470,6 +487,7 @@
 		BCBC58182C6F43D400FB3E77 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BC28632E2D03890900F6EBB7 /* StoreKit */,
 				BCBC58242C70896A00FB3E77 /* AdminMainController */,
 				BCBC581B2C6F43FE00FB3E77 /* MasterController */,
 				BCBC581C2C6F440D00FB3E77 /* UserController */,
@@ -519,6 +537,7 @@
 		BCBC581F2C6F448800FB3E77 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				BC8BC91A2D01CFB500E37759 /* SignInValidator */,
 				BC24B5282CD95AD5009F2257 /* StoreKitViewModel */,
 				BCB1E6282CC5728E007E2151 /* LocationManager */,
 				BCAE0A0D2CB82948004F41E2 /* NotificationManager */,
@@ -622,7 +641,8 @@
 				BC971F572C9C2E100046A625 /* SettingsButton.swift */,
 				BCF28C6D2CB087CE007BDB24 /* CustomLoader.swift */,
 				BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */,
-				BC4659F02CDC26D200E9ACD2 /* CustomAlertOk.swift */,
+				BC7C6F022D00984F000AAD03 /* ImageViewCustom.swift */,
+				BC7C6F042D00B158000AAD03 /* ImageViewSelected.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -678,7 +698,6 @@
 		BCBC589F2C735FB400FB3E77 /* CreateAccountSignIn */ = {
 			isa = PBXGroup;
 			children = (
-				BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */,
 				BCD7760C2CC4308300307013 /* GogleRegister */,
 				BCBC58192C6F43E000FB3E77 /* RegistersController */,
 			);
@@ -826,6 +845,7 @@
 				BCBC58AB2C73996B00FB3E77 /* AdminMainController.swift in Sources */,
 				BCBC58912C73411900FB3E77 /* SettingsAdminView.swift in Sources */,
 				BCBC58362C70CC5E00FB3E77 /* MasterModel.swift in Sources */,
+				BC8BC91C2D01CFDF00E37759 /* SignInValidator.swift in Sources */,
 				BCF28C642CB005A4007BDB24 /* UserMainSelectedMaster.swift in Sources */,
 				BC28CFEF2C9467FF006F6A6A /* PhoneNumber.swift in Sources */,
 				BCBC586B2C70EE5F00FB3E77 /* Color.swift in Sources */,
@@ -848,7 +868,6 @@
 				BC971F582C9C2E100046A625 /* SettingsButton.swift in Sources */,
 				BCBC58812C73391A00FB3E77 /* CellMaster.swift in Sources */,
 				BCBC58B62C746B4000FB3E77 /* AdminViewModel.swift in Sources */,
-				BC28CFE72C91A783006F6A6A /* UserCell.swift in Sources */,
 				BCBC58682C70EE2000FB3E77 /* CustomTextField.swift in Sources */,
 				BCBC58632C70D8E000FB3E77 /* AdminAddForMasterShedule.swift in Sources */,
 				BC28CFEB2C91BFB5006F6A6A /* CustomAlert.swift in Sources */,
@@ -861,15 +880,16 @@
 				BC0537CC2C85E584008EEA32 /* SettingsMaster.swift in Sources */,
 				BCCD5F102CB45A75007976F9 /* CellListMasterDelete.swift in Sources */,
 				BCBC586D2C70EEEA00FB3E77 /* SignInViewModel.swift in Sources */,
+				BC7C6F052D00B158000AAD03 /* ImageViewSelected.swift in Sources */,
 				BCF28C622CB00059007BDB24 /* User_MasterInToRoomCell.swift in Sources */,
 				BC0A50282C8F72BA00CBDCFD /* Master_DataBase.swift in Sources */,
 				BC0537C72C81D3D8008EEA32 /* MasterViewModel.swift in Sources */,
 				BCD990392C96FFE500E91229 /* KeyboardResponder.swift in Sources */,
 				BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */,
 				BCF178B62C7B792100135D81 /* Admin_DataBase.swift in Sources */,
+				BC7C6F032D00984F000AAD03 /* ImageViewCustom.swift in Sources */,
 				BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */,
 				BC15CE872CC7958B003AE944 /* RecordFlippedCell.swift in Sources */,
-				BC4659F12CDC26D200E9ACD2 /* CustomAlertOk.swift in Sources */,
 				BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */,
 				BCBC58B82C7474E600FB3E77 /* Shedule.swift in Sources */,
 				BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */,

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct User_MasterInToRoomCell: View {
     
@@ -15,32 +14,9 @@ struct User_MasterInToRoomCell: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(alignment: .center) {
-                VStack {
-                    if let url = URL(string: masterModel.image ?? "") {
-                        
-                        WebImage(url: url)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width * 0.2,
-                                   height: geometry.size.height * 0.6)
-                            .clipShape(Circle())
-                            .padding(.leading, 6)
-                        
-                    } else {
-                        Image("ab3")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width * 0.2,
-                                   height: geometry.size.height * 0.6)
-                            .clipShape(Circle())
-                            .padding(.leading, 6)
-                        
-                    }
-                }.overlay(content: {
-                    Circle()
-                        .stroke(Color.white, lineWidth: 2)
-                })
-
+                VStack {}
+                    .createImageView(model: masterModel.image ?? "", width: geometry.size.width * 0.4 / 2,
+                                     height: geometry.size.height * 0.6)
                 VStack(alignment: .leading, spacing: 10) {
                     Text(masterModel.name)
                         .font(.system(size: 24, weight: .heavy))

@@ -37,24 +37,22 @@ struct GoogleRegisterProfile: View {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                         CustomTextField(text: $registerGoogle.nameCompany, title: "Name Company", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                         CustomTextField(text: $registerGoogle.phone, title: "Phone", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
+                            .keyboardType(.phonePad)
+                            .textContentType(.telephoneNumber)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                         
-                    } else if selectedProfile == "Master" {
+                    } else if selectedProfile == "Master" || selectedProfile == "Client" {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                         CustomTextField(text: $registerGoogle.phone, title: "Phone", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
+                            .keyboardType(.phonePad)
+                            .textContentType(.telephoneNumber)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                         
-                    } else if selectedProfile == "Client" {
-                        CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: $registerGoogle.phone, title: "Phone", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                     }
-                }.transition(.slide)
-                    .onChange(of: registerGoogle.phone) { _, new in
+                }.transition(.fade)
+                .onChange(of: registerGoogle.phone) { _, new in
                         registerGoogle.phone = formatPhoneNumber(new)
                     }
-                    .animation(.easeInOut(duration: 0.5), value: selectedProfile)
-
             }
             .padding()
             
@@ -63,6 +61,7 @@ struct GoogleRegisterProfile: View {
                 
                 Task {
                     try await registerGoogle.registerProfileWithGoogle(coordinator: coordinator, id: google.idGoogle)
+                    google.isLogin = false
                 }
             }
             .onAppear(perform: {
@@ -70,6 +69,7 @@ struct GoogleRegisterProfile: View {
             })
   
             Button {
+                google.isLogin = false
                 coordinator.popToRoot()
             } label: {
                 Image(systemName: "arrow.left.to.line")
@@ -81,8 +81,8 @@ struct GoogleRegisterProfile: View {
         .navigationBarTitleDisplayMode(.inline).toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Register Profile with Google")
-                    .foregroundStyle(Color.white.opacity(0.8))
-                    .font(.system(size: 18, weight: .heavy).bold())
+                    .foregroundStyle(Color.yellow.opacity(0.8))
+                    .font(.system(size: 26, weight: .heavy).bold())
             }
         }
         .createBackgrounfFon()

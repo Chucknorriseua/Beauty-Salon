@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 import PhotosUI
 
 struct SettingsAdminView: View {
@@ -15,9 +14,11 @@ struct SettingsAdminView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject  var adminViewModel: AdminViewModel
     @StateObject private var keyBoard = KeyboardResponder()
-    @EnvironmentObject var coordinator: CoordinatorView
-    @EnvironmentObject var googleSignInViewModel: GoogleSignInViewModel
     
+    @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var google: GoogleSignInViewModel
+    
+    @AppStorage ("useRole") private var useRole: String?
     
     @State private var isPressAlarm: Bool = false
     @State private var isLocationAlarm: Bool = false
@@ -39,29 +40,8 @@ struct SettingsAdminView: View {
                             
                             HStack(alignment: .center, spacing: 10) {
                                 PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                                    VStack {
-                                        
-                                        if let image = adminViewModel.adminProfile.image,
-                                           let url = URL(string: image) {
-                                            
-                                            WebImage(url: url)
-                                                .resizable()
-                                                .indicator(.activity)
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
-                                                .clipShape(Circle())
-                                        } else {
-                                            Image("ab3")
-                                                .resizable()
-                                                .scaledToFill()
-                                                .frame(width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
-                                                .clipShape(Circle())
-                                        }
-                                    }.overlay(content: {
-                                        Circle()
-                                            .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
-                                    })
-                                    
+                                    VStack {}
+                                        .createImageView(model: adminViewModel.adminProfile.image ?? "", width: geometry.size.width * 0.3, height: geometry.size.height * 0.3 / 2)
                                 }
                                 
                                 VStack(spacing: 10) {
@@ -117,23 +97,20 @@ struct SettingsAdminView: View {
                                     }.padding(.all, 4)
                                         .background(Color.blue.opacity(0.6), in: .rect(cornerRadius: 24))
                                 }
-                                Text("Description about Company").opacity(0.6)
-                                    .font(.system(size: 16, weight: .semibold))
-                                
-                                TextEditor(text: $adminViewModel.adminProfile.description)
-                                    .scrollContentBackground(.hidden)
-                                    .padding(.bottom, 6)
-                                    .padding(.leading, 6)
+
+                                ZStack(alignment: .topLeading) {
+                                    if adminViewModel.adminProfile.description.isEmpty {
+                                        Text("Please limit your input to 160 characters.")
+                                            .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
+                                            .padding(.top, 4)
+                                            .padding(.leading, 4)
+                                    }
+                                        TextEditor(text: $adminViewModel.adminProfile.description)
+                                            .scrollContentBackground(.hidden)
+
+                                }.padding(.leading, 6)
                                 
                             }.padding(.top, 6)
-                                .onTapGesture {
-                                    withAnimation(.easeIn(duration: 0.5)) {
-                                        
-                                        isEditor = true
-                                        UIApplication.shared.endEditing(true)
-                                        isEditor = false
-                                    }
-                                }
                             
                         }.frame(width: geometry.size.width * 0.95,
                                 height: geometry.size.height * 0.6)
@@ -181,12 +158,20 @@ struct SettingsAdminView: View {
                 }.padding(.bottom, keyBoard.currentHeight / 2)
             }.scrollIndicators(.hidden)
                 .createBackgrounfFon()
+                .onTapGesture {
+                    withAnimation(.snappy(duration: 0.5)) {
+                        
+                        isEditor = true
+                        UIApplication.shared.endEditing(true)
+                        isEditor = false
+                    }
+                }
             
         }).ignoresSafeArea(.keyboard, edges: .bottom)
-            .customAlert(isPresented: $isLocationAlarm, message: massage, title: title, onConfirm: {
+            .customAlert(isPresented: $isLocationAlarm, hideCancel: true, message: massage, title: title, onConfirm: {
                 Task { await locationManager.updateLocation(company: adminViewModel.adminProfile) }
             }, onCancel: {})
-            .customAlert(isPresented: $isPressAlarm,message: massage,title: title, onConfirm: {
+            .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: massage,title: title, onConfirm: {
                 Task {await signOutProfile()}
             }, onCancel: {})
         
@@ -216,9 +201,15 @@ struct SettingsAdminView: View {
     
     private func signOutProfile() async {
         Task {
+            useRole = nil
             await authViewModel.signOut()
-            try await googleSignInViewModel.logOut()
+            try await google.logOut()
             coordinator.popToRoot()
         }
+    }
+}
+extension SettingsAdminView: isFormValid {
+    var isFarmValid: Bool {
+        return adminViewModel.adminProfile.description.count < 160
     }
 }

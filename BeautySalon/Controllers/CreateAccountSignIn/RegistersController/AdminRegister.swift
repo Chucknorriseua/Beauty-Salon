@@ -26,11 +26,11 @@ struct AdminRegister: View {
                 HStack {
                     
                     PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                        Image(uiImage: UIImage(data:  authViewModel.selectedImage ?? Data() ) ?? UIImage(resource: .ab1))
+                        Image(uiImage: UIImage(data:  authViewModel.selectedImage ?? Data() ) ?? UIImage(resource: .imageProfile))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 90, height: 90)
-                            .clipShape(Circle())
+                            .clipShape(.rect(cornerRadius: 16))
                     }
                     
                     Text("Сhoose company logo")
@@ -111,7 +111,7 @@ struct AdminRegister: View {
                 }
             }
             .createBackgrounfFon()
-            .customAlert(isPresented: $isPressAlarm, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
+            .customAlert(isPresented: $isPressAlarm, hideCancel: false, message: messageAdmin, title: "Something went wrong", onConfirm: {}, onCancel: {})
             .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
     }
 }

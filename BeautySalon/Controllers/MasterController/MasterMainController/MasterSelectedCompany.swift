@@ -15,12 +15,11 @@ struct MasterSelectedCompany: View {
     @EnvironmentObject var coordinator: CoordinatorView
 
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?
-    @AppStorage ("shoudNavManin") private var shoudNavManin: Bool = false
     
     @State private var selectedAdmin: String? = nil
     @State private var searchText: String = ""
     @State private var loader: String = "Loader"
-    @State private var isMessageNT: String = ""
+    @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
   
@@ -61,24 +60,22 @@ struct MasterSelectedCompany: View {
                             CompanyAllCell(companyModel: company)
                         }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
                             if !newValue { selectedAdmin = nil }
-                        }), message: isMessageNT, title: isTitle) {
+                        }), hideCancel: true, message: message, title: isTitle) {
                             
                             Task { await enterToSalon(company: company)}
                             
                         } onCancel: {
                             selectedAdmin = nil
                             isTitle = ""
-                            isMessageNT = ""
+                            message = ""
                         }.id(company)
                             .padding(.bottom, 46)
                     
                             .scrollTransition(.animated) { content, phase in
-                                withAnimation(.snappy(duration: 1)) {
                                     
                                     content
                                         .opacity(phase.isIdentity ? 1 : 0)
-                                        .offset(y: phase.isIdentity ? 0 : 80)
-                                }
+                                        .offset(y: phase.isIdentity ? 0 : 40)
                             }
                     }
                 }.scrollTargetLayout()
@@ -118,31 +115,10 @@ struct MasterSelectedCompany: View {
         })
         .foregroundStyle(Color.white)
         .tint(.yellow)
-        .onAppear {
-            Task {
-            await checkStateLogin()
-            }
-
-        }.navigationDestination(isPresented: $shoudNavManin) {
-            MasterTabBar(masterViewModel: masterViewModel, VmCalendar: MasterCalendarViewModel.shared).navigationBarBackButtonHidden(true)
-        }.onDisappear {
+        .onDisappear {
             isLoader = false
         }
 
-    }
-    
-    private func checkStateLogin() async {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if let saveAdmin = selectedAdminID {
-                isLoader = true
-                MasterCalendarViewModel.shared.company.adminID = saveAdmin
-                masterViewModel.admin.adminID = saveAdmin
-                shoudNavManin = true
-            } else {
-                isLoader = false
-                print("no selected")
-            }
-        }
     }
     
     private func enterToSalon(company: Company_Model) async {
@@ -165,7 +141,7 @@ struct MasterSelectedCompany: View {
                     
                     selectedAdmin = company.adminID
                     isTitle = "Not correct"
-                    isMessageNT = "The login was incorrect, perhaps the admin did not add you to the salon as a master"
+                    message = "The login was incorrect, perhaps the admin did not add you to the salon as a master"
                 }
             }
       

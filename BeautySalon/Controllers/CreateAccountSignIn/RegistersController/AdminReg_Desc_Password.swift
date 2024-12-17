@@ -12,7 +12,7 @@ struct AdminReg_Desc_Password: View {
     @StateObject var authViewModel = Auth_ADMIN_Viewmodel()
     @StateObject var adminViewModel: AdminViewModel
     @EnvironmentObject var coordinator: CoordinatorView
-    @State private var isEditor: Bool = false
+    
     @State private var loader: String = "Loader"
     @State private var isLoader: Bool = false
     
@@ -35,13 +35,18 @@ struct AdminReg_Desc_Password: View {
                     .foregroundStyle(Color.white)
                     .font(.system(size: 20, weight: .bold))
                 
-                VStack {
-                    
-                    TextEditor(text: $adminViewModel.adminProfile.description)
-                        .foregroundStyle(Color(hex: "F3E3CE"))
-                        .frame(width: 380, height: 180)
-                        .scrollContentBackground(.hidden)
-     
+                ZStack(alignment: .topLeading) {
+                    if adminViewModel.adminProfile.description.isEmpty {
+                        Text("Please limit your input to 160 characters.")
+                            .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
+                            .padding(.top, 4)
+                            .padding(.leading, 4)
+                    }
+                        TextEditor(text: $adminViewModel.adminProfile.description)
+                            .foregroundStyle(Color(hex: "F3E3CE"))
+                            .frame(width: 380, height: 180)
+                            .scrollContentBackground(.hidden)
+
                 }.background(.ultraThinMaterial.opacity(0.8))
                     .clipShape(.rect(cornerRadius: 12))
                     .padding(.leading, 6)
@@ -62,13 +67,6 @@ struct AdminReg_Desc_Password: View {
                 .padding(.trailing, 4)
             
         }.createBackgrounfFon()
-            .toolbar(content: {
-                ToolbarItem(placement: .topBarLeading) {
-                    TabBarButtonBack {
-                        coordinator.pop()
-                    }
-                }
-            }).navigationBarBackButtonHidden(true)
             .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
             .onAppear {
                 Task {
@@ -79,9 +77,6 @@ struct AdminReg_Desc_Password: View {
 }
 extension AdminReg_Desc_Password: isFormValid {
     var isFarmValid: Bool {
-        return authViewModel.signInViewModel.textEditorDescrt.count < 200
-  
+        return adminViewModel.adminProfile.description.count < 160
     }
-    
-    
 }

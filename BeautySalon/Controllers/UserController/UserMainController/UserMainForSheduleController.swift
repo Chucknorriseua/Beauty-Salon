@@ -29,7 +29,7 @@ struct UserMainForSheduleController: View {
             }.background(Color.init(hex: "#3e5b47").opacity(0.9))
                 .sheet(isPresented: $isShowSheet, content: {
                     UserSettings(clientViewModel: clientViewModel)
-                        .presentationDetents([.height(320)])
+                        .presentationDetents([.height(260)])
                         .interactiveDismissDisabled()
                 })
                 .toolbar(content: {

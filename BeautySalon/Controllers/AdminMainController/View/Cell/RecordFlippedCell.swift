@@ -107,7 +107,7 @@ struct RecordFlippedCell: View {
             }
             .overlay(alignment: .center, content: {
                 ZStack {}
-                .customAlert(isPresented: $isShowAlert, message: message, title: "") {
+                    .customAlert(isPresented: $isShowAlert, hideCancel: true, message: message, title: "") {
                     Task {
                         await viewModelAdmin.deleteRecord(record: recordModel)
                     }
