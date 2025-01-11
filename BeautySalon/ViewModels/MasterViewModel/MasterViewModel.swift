@@ -16,6 +16,9 @@ final class MasterViewModel: ObservableObject {
     @Published  private(set) var company: [Company_Model] = []
     @Published  private(set) var client: [Client] = []
     
+    @Published  var isAlert: Bool = false
+    @Published  var errorMassage: String = ""
+    
     @Published var admin: Company_Model
     @Published var masterModel: MasterModel
     @Published var sheduleModel: Shedule
@@ -40,6 +43,8 @@ final class MasterViewModel: ObservableObject {
             await fetchAllData()
             
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error get company...", error.localizedDescription)
         }
     }
@@ -62,6 +67,8 @@ final class MasterViewModel: ObservableObject {
                 self.masterModel = master
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetch profile master from fb...", error.localizedDescription)
         }
     }
@@ -74,6 +81,8 @@ final class MasterViewModel: ObservableObject {
                 self.client = client
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetch current user...", error.localizedDescription)
         }
     }
@@ -83,6 +92,8 @@ final class MasterViewModel: ObservableObject {
             try await Master_DataBase.shared.setData_For_Master_FB(master: masterModel)
             try await Master_DataBase.shared.setDataMaster_ForAdminRoom(adminId: admin.adminID, master: masterModel)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR save master profile....", error.localizedDescription)
         }
     }
@@ -91,6 +102,8 @@ final class MasterViewModel: ObservableObject {
         do {
             try await Master_DataBase.shared.setData_For_Master_FB(master: masterModel)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR save master profile....", error.localizedDescription)
         }
     }
@@ -111,6 +124,8 @@ final class MasterViewModel: ObservableObject {
             try await Master_DataBase.shared.deleteImageFromFirebase(imageURL: image)
             await uploadArrarURL_Image_Firebase(masterID: uid, image: image)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR delete image from fire storage...", error.localizedDescription)
         }
     }

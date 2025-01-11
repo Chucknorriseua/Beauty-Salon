@@ -22,8 +22,6 @@ struct TabBarButtonBack: View {
                 Text("Back")
                     .font(.system(size: 18).bold())
             }.foregroundStyle(Color.white)
-                .padding(.all, 4)
-                .background(Color.white.opacity(0.4), in: .rect(cornerRadius: 24))
         })
     }
 }

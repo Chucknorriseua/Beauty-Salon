@@ -20,6 +20,9 @@ final class Admin_CalendarViewModel: ObservableObject {
     @Published var productTask: [Shedule] = []
     @Published var shedules: Shedule
     
+    @Published  var isAlert: Bool = false
+    @Published  var errorMassage: String = ""
+    
     private init(shedules: Shedule? = nil) {
         self.shedules = shedules ?? Shedule.sheduleModel()
     }
@@ -35,6 +38,8 @@ final class Admin_CalendarViewModel: ObservableObject {
                 self.productTask = sortedDate
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR--fetchAllSheduleCurrentMaster" , error.localizedDescription)
         }
     }
@@ -48,6 +53,8 @@ final class Admin_CalendarViewModel: ObservableObject {
                 self.productTask.append(addTask)
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR--addTaskShedule" , error.localizedDescription)
         }
     }
@@ -60,6 +67,8 @@ final class Admin_CalendarViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.remove_MasterShedule(shedule: shedule, clientID: clientID)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error deleteRecord...", error.localizedDescription)
         }
     }

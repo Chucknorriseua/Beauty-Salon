@@ -36,7 +36,7 @@ struct AddNewMasterCell: View {
                         Text(addMasterInRoom.email)
                     }
                 }.padding(.leading, 6)
-                    .foregroundStyle(Color.white.opacity(0.92))
+                    .foregroundStyle(Color(hex: "F3E3CE"))
                     .lineLimit(2)
                 
                 Spacer()
@@ -45,28 +45,9 @@ struct AddNewMasterCell: View {
                                      height: geometry.size.height * 0.56)
                 
             }.frame(height: geometry.size.height * 0.77)
-                .background(Color.init(hex: "#3e5b47").opacity(0.7), in: .rect(cornerRadius: 36))
+                .background(.ultraThinMaterial.opacity(0.8).opacity(0.7), in: .rect(cornerRadius: 36))
                 .padding(.leading, 5)
                 .padding(.trailing, 5)
-                .overlay(alignment: .bottomTrailing) {
-                    ZStack {
-                        Button(action: {
-                            Task {
-                                let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
-                                await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
-                                NotificationController.sharet.notify(title: "You have added a master to your salon 💇‍♀️ 💅", subTitle: "now you can send him the schedule", timeInterval: 2)
-                            }
-                            
-                        }, label: {
-                            Text("Add")
-                                .foregroundStyle(Color.white)
-                                .font(.system(size: 24, weight: .bold))
-                                .padding(.leading, 30)
-                                .padding(.trailing, 30)
-                        })
-                    }.background(Color.gray.opacity(0.5), in: .rect(topLeadingRadius: 24, topTrailingRadius: 24))
-                        .padding(.trailing, 140)
-                }
         }
         .frame(height: 200)
         .padding(.vertical, -26)

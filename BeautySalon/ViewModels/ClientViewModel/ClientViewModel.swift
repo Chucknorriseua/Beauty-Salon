@@ -17,6 +17,9 @@ final class ClientViewModel: ObservableObject {
     @Published private(set) var mastersInRoom: [MasterModel] = []
     
     
+    @Published  var isAlert: Bool = false
+    @Published  var errorMassage: String = ""
+    
     @Published var adminProfile: Company_Model
     @Published var clientModel: Client
     
@@ -37,6 +40,8 @@ final class ClientViewModel: ObservableObject {
             }
             await fetch_ProfileClient()
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR fetch company", error.localizedDescription)
         }
     }
@@ -49,6 +54,8 @@ final class ClientViewModel: ObservableObject {
                 self.clientModel = client
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
         print("DEBUG: ERROR fetch current client...", error.localizedDescription)
         }
     }
@@ -61,6 +68,8 @@ final class ClientViewModel: ObservableObject {
                 self.adminProfile = admin
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR fetch current admin salon...", error.localizedDescription)
         }
     }
@@ -74,6 +83,8 @@ final class ClientViewModel: ObservableObject {
                 self.mastersInRoom = masters
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR fetch all masters...", error.localizedDescription)
         }
     }
@@ -83,6 +94,8 @@ final class ClientViewModel: ObservableObject {
             try await Client_DataBase.shared.send_RecordForAdmin(adminID: adminID, record: record)
             try await Client_DataBase.shared.setData_ClientForAdmin(adminID: adminID, clientModel: clientModel)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR send record admin...", error.localizedDescription)
         }
     }
@@ -93,6 +106,8 @@ final class ClientViewModel: ObservableObject {
             try await Client_DataBase.shared.setData_ClientFireBase(clientModel: clientModel)
             try await Client_DataBase.shared.setData_ClientForAdmin(adminID: adminID, clientModel: clientModel)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR send record admin...", error.localizedDescription)
         }
     }

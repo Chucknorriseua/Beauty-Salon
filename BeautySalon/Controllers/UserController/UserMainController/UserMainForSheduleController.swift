@@ -27,6 +27,7 @@ struct UserMainForSheduleController: View {
                 }
                 
             }.background(Color.init(hex: "#3e5b47").opacity(0.9))
+                .customAlert(isPresented: $clientViewModel.isAlert, hideCancel: true, message: clientViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .sheet(isPresented: $isShowSheet, content: {
                     UserSettings(clientViewModel: clientViewModel)
                         .presentationDetents([.height(260)])

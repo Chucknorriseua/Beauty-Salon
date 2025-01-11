@@ -17,29 +17,35 @@ struct UserSelectedComapnyController: View {
     @Environment (\.dismiss) var dismiss
     
     @AppStorage ("useRole") private var useRole: String?
+    @State private var selectedCategory: Categories = .nail
+    @State private var selectedID: String? = nil
     
     @State private var searchText: String = ""
     @State private var loader: String = "Loader"
     @State private var isLoader: Bool = false
-    
+    @State private var isShowMenu: Bool = false
     
     
     private var searchCompanyNearby: [Company_Model] {
         guard let userLocation = locationManager.locationManager.location else {
-            return  searchText.isEmpty ? clientViewModel.comapny :
-           clientViewModel.comapny.filter({$0.companyName.localizedCaseInsensitiveContains(searchText)})
+            return filterCompanies(clientViewModel.comapny)
         }
-        
+
         let radius: CLLocationDistance = 10000
-        return clientViewModel.comapny.filter { company in
-            let matchesName = searchText.isEmpty ||  company.companyName.localizedCaseInsensitiveContains(searchText)
-            let isNearby: Bool
+        let nearbyCompanies = clientViewModel.comapny.filter { company in
             if let distance = locationManager.calculateDistance(from: userLocation, to: company) {
-                isNearby = distance <= radius
-            } else {
-                isNearby = false
+                return distance <= radius
             }
-            return matchesName && isNearby
+            return false
+        }
+        return filterCompanies(nearbyCompanies)
+    }
+
+    private func filterCompanies(_ companies: [Company_Model]) -> [Company_Model] {
+        companies.filter { company in
+            let matchesName = searchText.isEmpty || company.companyName.localizedCaseInsensitiveContains(searchText)
+            let matchesCategory = company.categories.localizedCaseInsensitiveContains(selectedCategory.rawValue)
+            return matchesName && matchesCategory
         }
     }
     
@@ -53,7 +59,18 @@ struct UserSelectedComapnyController: View {
                         ForEach(searchCompanyNearby, id:\.self) { company  in
                             NavigationLink(destination: UserMainForSheduleController(clientViewModel:
                                                                                         clientViewModel).navigationBarBackButtonHidden(true)) {   
-                                    Button {
+                                CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {
+                                    withAnimation {
+                                        if selectedID == company.id {
+                                            selectedID = nil
+                                        } else {
+                                            selectedID = company.id
+                                        }
+                                    }
+
+                                })
+                                .padding(.bottom, 30)
+                                    .onTapGesture {
                                         isLoader = true
                                         Task {
                                             clientViewModel.adminProfile.adminID = company.adminID
@@ -64,12 +81,10 @@ struct UserSelectedComapnyController: View {
                                                 isLoader = false
                                             }
                                         }
-                                    } label: {
-                                        CompanyAllCell(companyModel: company)
-                                        
-                                    }.padding(.bottom, 50)
+                                    }
+        
                             }.id(company)
-                             
+                                .disabled(isShowMenu)
                                 .scrollTransition(.animated) { content, phase in
                                         content
                                             .opacity(phase.isIdentity ? 1 : 0)
@@ -84,7 +99,23 @@ struct UserSelectedComapnyController: View {
             }.scrollIndicators(.hidden)
                 .scrollContentBackground(.hidden)
                 .createBackgrounfFon()
-                .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
+                .customAlert(isPresented: $clientViewModel.isAlert, hideCancel: true, message: clientViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+                .overlay(alignment: .center) {CustomLoader(isLoader: $isLoader, text: $loader)}
+                .overlay {
+                    if isShowMenu {
+                        Color.clear
+                            .ignoresSafeArea()
+                            .overlay(alignment: .center) {
+                                ZStack {
+                                    UserSelectedCategories(selectedCategory: $selectedCategory, onSelectedCategory: {
+                                        withAnimation {
+                                            isShowMenu.toggle()
+                                        }
+                                    })
+                                }
+                        }
+                    }
+                }
 
         }.searchable(text: $searchText)
             .navigationBarTitleDisplayMode(.inline)
@@ -109,6 +140,20 @@ struct UserSelectedComapnyController: View {
                     }
                 }
             })
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        withAnimation(.easeIn) {
+                            isShowMenu.toggle()
+                        }
+                    }) {
+                        Image(systemName: "filemenu.and.selection")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundStyle(Color.white)
+                    }
+                }
+            })
             .foregroundStyle(Color.white)
             .tint(.yellow)
             .onAppear {
@@ -124,4 +169,8 @@ struct UserSelectedComapnyController: View {
             }
     }
     
+}
+
+#Preview {
+    UserSelectedComapnyController(clientViewModel: ClientViewModel.shared)
 }

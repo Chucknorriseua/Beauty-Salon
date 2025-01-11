@@ -19,6 +19,7 @@ struct SettingsAdminView: View {
     @EnvironmentObject var google: GoogleSignInViewModel
     
     @AppStorage ("useRole") private var useRole: String?
+    @State private var selectedCategory: Categories = .nail
     
     @State private var isPressAlarm: Bool = false
     @State private var isLocationAlarm: Bool = false
@@ -82,6 +83,27 @@ struct SettingsAdminView: View {
                                 SettingsButton(text: $adminViewModel.adminProfile.adress,
                                                
                                                title: "Adress", width: geometry.size.width * 1)
+                                HStack {
+                                    Text("Selected categories: ")
+                                        .font(.system(size: 18, weight: .bold))
+                                        .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    
+                                    Picker("", selection: $selectedCategory) {
+                                        Image(systemName: "filemenu.and.selection")
+                                        ForEach(Categories.allCases, id: \.id) { category in
+                                            Text(category.displayName).tag(category)
+                                        }
+                                        
+                                    }.pickerStyle(.menu)
+                                        .onChange(of: selectedCategory, { _, new in
+                                            adminViewModel.adminProfile.categories = new.rawValue
+                                        })
+                                        .tint(Color(hex: "F3E3CE")).opacity(0.7)
+                                    Spacer()
+                                    
+                                }.frame(maxWidth: .infinity, maxHeight: 44)
+                                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                .padding(.horizontal, 4)
                                 
                                 Button {
                                     isLocationAlarm = true
@@ -196,7 +218,11 @@ struct SettingsAdminView: View {
             .onDisappear {
                 Admin_DataBase.shared.deinitListener()
             }
-        
+            .onAppear {
+                if let categories = Categories(rawValue: adminViewModel.adminProfile.categories) {
+                    selectedCategory = categories
+                }
+            }
     }
     
     private func signOutProfile() async {
@@ -212,4 +238,8 @@ extension SettingsAdminView: isFormValid {
     var isFarmValid: Bool {
         return adminViewModel.adminProfile.description.count < 160
     }
+}
+
+#Preview {
+    SettingsAdminView(adminViewModel: AdminViewModel.shared)
 }

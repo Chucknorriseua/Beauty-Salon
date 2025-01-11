@@ -82,13 +82,14 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let adress = data?["adress"] as? String,
               let desc = data?["description"] as? String,
               let latitude = data?["latitude"] as? Double,
-              let longitude = data?["longitude"] as? Double else {
+              let longitude = data?["longitude"] as? Double,
+              let categories = data?["categories"] as? String else {
             throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
         }
         return Company_Model(id: id, adminID: adminID, name: name,
                              companyName: companyName,
                              adress: adress, email: email,
                              phone: phone, description: desc,
-                             image: image, latitude: latitude, longitude: longitude)
+                             image: image, latitude: latitude, longitude: longitude, categories: categories)
     }
 }

@@ -65,6 +65,7 @@ struct AdminMainController: View {
                     }
                 
             }.scrollTargetLayout()
+                .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
                         NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel)) {

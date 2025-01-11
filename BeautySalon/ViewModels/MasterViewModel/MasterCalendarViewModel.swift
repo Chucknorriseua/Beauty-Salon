@@ -20,6 +20,9 @@ final class MasterCalendarViewModel: ObservableObject {
     @Published private(set) var productTask: [Shedule] = [] 
     
 
+    @Published  var isAlert: Bool = false
+    @Published  var errorMassage: String = ""
+    
     @Published var company: Company_Model
     @Published var shedule: Shedule
     
@@ -56,6 +59,8 @@ final class MasterCalendarViewModel: ObservableObject {
                 strongSelf.productTask = sortedDate
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: ERROR getSheduleMaster....", error.localizedDescription)
         }
     }

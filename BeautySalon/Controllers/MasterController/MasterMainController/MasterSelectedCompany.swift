@@ -22,7 +22,7 @@ struct MasterSelectedCompany: View {
     @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
-  
+    @State private var selectedID: String? = nil
     
     
     private var searchCompanyNearby: [Company_Model] {
@@ -57,8 +57,9 @@ struct MasterSelectedCompany: View {
                                 isTitle = "Do you want to enter \(company.companyName) salon?".uppercased()
                             }
                         } label: {
-                            CompanyAllCell(companyModel: company)
-                        }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
+                            CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {})
+                        }
+                        .customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
                             if !newValue { selectedAdmin = nil }
                         }), hideCancel: true, message: message, title: isTitle) {
                             
@@ -68,8 +69,9 @@ struct MasterSelectedCompany: View {
                             selectedAdmin = nil
                             isTitle = ""
                             message = ""
-                        }.id(company)
-                            .padding(.bottom, 46)
+                        }
+                        .id(company)
+                            .padding(.bottom, 26)
                     
                             .scrollTransition(.animated) { content, phase in
                                     
@@ -84,6 +86,7 @@ struct MasterSelectedCompany: View {
     
         }
         .createBackgrounfFon()
+        .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
         .swipeBack(coordinator: coordinator)
         .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
         .searchable(text: $searchText)

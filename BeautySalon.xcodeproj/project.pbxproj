@@ -79,6 +79,8 @@
 		BCADDF9E2CAF15860055F458 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF9D2CAF15860055F458 /* UserSettings.swift */; };
 		BCAE0A0F2CB829D8004F41E2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAE0A0E2CB829D8004F41E2 /* NotificationController.swift */; };
 		BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB1E6292CC572B9007E2151 /* LocationManager.swift */; };
+		BCB8886C2D3040840085C895 /* UserSelectedCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB8886B2D3040840085C895 /* UserSelectedCategories.swift */; };
+		BCB8886E2D3190AF0085C895 /* AddNewMasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB8886D2D3190AF0085C895 /* AddNewMasterView.swift */; };
 		BCBC580B2C6F43B100FB3E77 /* BeautyMastersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC580A2C6F43B100FB3E77 /* BeautyMastersApp.swift */; };
 		BCBC580F2C6F43B400FB3E77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCBC580E2C6F43B400FB3E77 /* Assets.xcassets */; };
 		BCBC58122C6F43B400FB3E77 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCBC58112C6F43B400FB3E77 /* Preview Assets.xcassets */; };
@@ -194,6 +196,8 @@
 		BCADDF9D2CAF15860055F458 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		BCAE0A0E2CB829D8004F41E2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		BCB1E6292CC572B9007E2151 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		BCB8886B2D3040840085C895 /* UserSelectedCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSelectedCategories.swift; sourceTree = "<group>"; };
+		BCB8886D2D3190AF0085C895 /* AddNewMasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMasterView.swift; sourceTree = "<group>"; };
 		BCBC58072C6F43B100FB3E77 /* BeautySalon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeautySalon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCBC580A2C6F43B100FB3E77 /* BeautyMastersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautyMastersApp.swift; sourceTree = "<group>"; };
 		BCBC580E2C6F43B400FB3E77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -386,6 +390,7 @@
 		BC644BA72C762CCA00B57117 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BCB8886B2D3040840085C895 /* UserSelectedCategories.swift */,
 				BCADDF9D2CAF15860055F458 /* UserSettings.swift */,
 				BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */,
 				BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */,
@@ -679,6 +684,7 @@
 			isa = PBXGroup;
 			children = (
 				BCD775FE2CBFE8C100307013 /* AdminListMasterAddShedule.swift */,
+				BCB8886D2D3190AF0085C895 /* AddNewMasterView.swift */,
 				BCBC587F2C73390600FB3E77 /* Cell */,
 			);
 			path = View;
@@ -878,6 +884,7 @@
 				BC644BB12C76662100B57117 /* HeaderView.swift in Sources */,
 				BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */,
 				BC0537CC2C85E584008EEA32 /* SettingsMaster.swift in Sources */,
+				BCB8886C2D3040840085C895 /* UserSelectedCategories.swift in Sources */,
 				BCCD5F102CB45A75007976F9 /* CellListMasterDelete.swift in Sources */,
 				BCBC586D2C70EEEA00FB3E77 /* SignInViewModel.swift in Sources */,
 				BC7C6F052D00B158000AAD03 /* ImageViewSelected.swift in Sources */,
@@ -900,6 +907,7 @@
 				BCD8DE022CEF38F500EBBF88 /* PhoneFormatter.swift in Sources */,
 				BC50AF482CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift in Sources */,
 				BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */,
+				BCB8886E2D3190AF0085C895 /* AddNewMasterView.swift in Sources */,
 				BCADDF9A2CAF05EA0055F458 /* ClientViewModel.swift in Sources */,
 				BC644BB32C76663000B57117 /* WeekView.swift in Sources */,
 				BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */,

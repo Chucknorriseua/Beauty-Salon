@@ -48,8 +48,7 @@ final class Admin_DataBase {
         guard let uid = auth.currentUser?.uid else { return }
         try await mainFS.document(uid).setData(admin.admin_Model_FB, merge: true)
     }
-    
-    
+
 // Send shedule for master about client
     func send_ShedulesTo_Master(idMaster: String, shedule: Shedule) async throws {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
@@ -93,6 +92,7 @@ final class Admin_DataBase {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
         
         do { let snapShot = try await mainFS.document(uid).getDocument(as: Company_Model.self)
+            print("snapShot", snapShot)
             return snapShot
         } catch {
             print("DEBUG: Error fetch profile as admin...", error.localizedDescription)

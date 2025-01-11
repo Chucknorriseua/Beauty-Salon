@@ -18,6 +18,8 @@ final class AdminViewModel: ObservableObject {
     @Published private(set) var addMasterInRoom: [MasterModel] = []
     @Published private(set) var client: [Client] = []
     
+    @Published  var isAlert: Bool = false
+    @Published  var errorMassage: String = ""
     
     @Published var adminProfile: Company_Model
     @Published var masterModel: MasterModel
@@ -39,6 +41,8 @@ final class AdminViewModel: ObservableObject {
             await fethAllData()
             
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("Error fetchProfileAdmin...", error.localizedDescription)
         }
         
@@ -65,6 +69,8 @@ final class AdminViewModel: ObservableObject {
             }
             try await Admin_DataBase.shared.add_MasterToRoom(idMaster: masterID, master: master)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error add master in to room", error.localizedDescription)
         }
     }
@@ -77,6 +83,8 @@ final class AdminViewModel: ObservableObject {
                 self.client = client
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetch current user...", error.localizedDescription)
         }
     }
@@ -86,8 +94,9 @@ final class AdminViewModel: ObservableObject {
         
         do {
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: adminProfile)
-            
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error save new data on firebase...", error.localizedDescription)
         }
     }
@@ -102,6 +111,8 @@ final class AdminViewModel: ObservableObject {
                 
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetchAllMasters...", error.localizedDescription)
         }
         
@@ -117,6 +128,8 @@ final class AdminViewModel: ObservableObject {
                 self.addMasterInRoom = master
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetchAllMasters...", error.localizedDescription)
         }
         
@@ -127,6 +140,8 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.send_ShedulesTo_Master(idMaster: masterID, shedule: shedule)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error send current master records...", error.localizedDescription)
         }
     }
@@ -147,6 +162,8 @@ final class AdminViewModel: ObservableObject {
                 }
             }
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error fetchRecordsClient...", error.localizedDescription)
         }
     }
@@ -162,6 +179,8 @@ final class AdminViewModel: ObservableObject {
             try await Admin_DataBase.shared.removeRecordFireBase(id: record.id)
             
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error deleteRecord...", error.localizedDescription)
         }
     }
@@ -178,6 +197,8 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.remove_MasterFromSalon(masterID: master.masterID)
         } catch {
+            isAlert = true
+            errorMassage = error.localizedDescription
             print("DEBUG: Error deleteRecord...", error.localizedDescription)
         }
     }

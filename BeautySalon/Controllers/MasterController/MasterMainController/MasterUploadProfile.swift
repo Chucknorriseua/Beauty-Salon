@@ -129,6 +129,7 @@ struct MasterUploadProfile: View {
                 }
 
         }).createBackgrounfFon()
+            .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
             .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImages ?? "", isShowTrash: true, deleteImage: {
                 masterViewModel.deleteImage(image: selectedImages ?? "")
             })

@@ -22,6 +22,7 @@ struct AdminAddForMasterShedule: View {
             }
             .createBackgrounfFon()
             .swipeBackDismiss(dismiss: dismiss)
+            
         }
         
     }

@@ -29,6 +29,7 @@ struct MasterMainController: View {
                 .scrollIndicators(.hidden)
                 
             }.createBackgrounfFon()
+                .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
             .refreshable {
                 await VmCalendar.getSheduleMaster()
             }

@@ -21,9 +21,10 @@ struct Company_Model: Identifiable, Codable, Hashable {
     
     var latitude: Double?
     var longitude: Double?
+    var categories: String
     
     static func companyModel() -> Company_Model {
-        return Company_Model(id: "", adminID: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", latitude: 0.0, longitude: 0.0)
+        return Company_Model(id: "", adminID: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", latitude: 0.0, longitude: 0.0, categories: "")
     }
     
     var admin_Model_FB: [String: Any] {
@@ -39,6 +40,7 @@ struct Company_Model: Identifiable, Codable, Hashable {
         model["image"] = self.image
         model["latitude"] = self.latitude
         model["longitude"] = self.longitude
+        model["categories"] = self.categories
         return model
     }
 }

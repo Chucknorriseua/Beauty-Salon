@@ -46,7 +46,7 @@ struct CellMaster: View {
                                      height: geometry.size.height * 0.56)
  
             }.frame(height: geometry.size.height * 0.7)
-                .background(Color.init(hex: "#3e5b47").opacity(0.7), in: .rect(cornerRadius: 36))
+                .background(.ultraThinMaterial.opacity(0.8), in: .rect(cornerRadius: 36))
                 .padding(.leading, 5)
                 .padding(.trailing, 5)
         }
