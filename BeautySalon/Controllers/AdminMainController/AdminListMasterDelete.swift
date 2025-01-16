@@ -19,8 +19,10 @@ struct AdminListMasterDelete: View {
             List {
                 Section {
                     ForEach(adminViewModel.addMasterInRoom, id: \.self) { master in
-                        CellListMasterDelete(master: master)
-                            .listRowBackground(Color.init(hex: "#3e5b47").opacity(0.5))
+                        NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                            CellListMasterDelete(master: master)
+                            
+                        }.listRowBackground(Color.init(hex: "#3e5b47").opacity(0.5))
                     }.onDelete(perform: { indexSet in
                         deleteMaster(indexOffset: indexSet)
                     })

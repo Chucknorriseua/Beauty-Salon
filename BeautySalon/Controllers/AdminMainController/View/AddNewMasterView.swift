@@ -13,7 +13,7 @@ struct AddNewMasterView: View {
     @Environment (\.dismiss) private var dismiss
     @State private var selectedImage: String? = nil
     @State private var isPressFullScreen: Bool = false
-    
+    @State var isShowButtonAdd: Bool = false
     @State var addMasterInRoom: MasterModel
     
     var body: some View {
@@ -24,6 +24,20 @@ struct AddNewMasterView: View {
                     VStack {}
                         .createImageView(model: addMasterInRoom.image ?? "", width: geo.size.width * 0.8,
                                          height: geo.size.height * 0.44)
+                    VStack(spacing: 10) {
+                        Text(addMasterInRoom.name)
+                            .font(.system(size: 28, weight: .bold))
+                            .fontDesign(.monospaced)
+                        
+                        Text(addMasterInRoom.phone)
+                            .font(.system(size: 18, weight: .bold))
+                            .onTapGesture {
+                                let phoneNumber = "tel://" + addMasterInRoom.phone
+                                if let url = URL(string: phoneNumber) {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                    }.foregroundStyle(Color(hex: "F3E3CE"))
                     
                     VStack {
                         ScrollView(.horizontal) {
@@ -38,8 +52,8 @@ struct AddNewMasterView: View {
                                                 .resizable()
                                                 .indicator(.activity)
                                                 .aspectRatio(contentMode: .fill)
-                                                .frame(width: geo.size.width * 0.32,
-                                                       height: geo.size.height * 0.18)
+                                                .frame(width: geo.size.width * 0.26,
+                                                       height: geo.size.height * 0.14)
                                                 .clipShape(Circle())
                                                 .overlay(content: {
                                                     Circle()
@@ -55,11 +69,6 @@ struct AddNewMasterView: View {
                                             
                                         }
                                     }.id(master)
-                                        .scrollTransition(.interactive) { content, phase in
-                                            content
-                                                .opacity(phase.isIdentity ? 1 : 0)
-                                                .offset(y: phase.isIdentity ? 0 : -50)
-                                        }
                                 }
                                 
                             }.scrollTargetLayout()
@@ -67,23 +76,33 @@ struct AddNewMasterView: View {
                         }.scrollIndicators(.hidden)
                             .padding(.leading, 4)
                             .padding(.trailing, 4)
-                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.2)
-                            .background(.regularMaterial.opacity(0.8), in: .rect(topLeadingRadius: 16, topTrailingRadius: 16))
+                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.16)
+                            .background(.ultraThinMaterial.opacity(0.6), in: .rect(topLeadingRadius: 16, topTrailingRadius: 16))
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 10) {
+
                             Text(addMasterInRoom.description)
                                 .lineLimit(12)
-                                .foregroundStyle(Color(hex: "F3E3CE"))
                                 .font(.system(size: 22, weight: .regular))
-                                .padding(.leading, 6)
-                                .padding(.trailing, 6)
+                                .padding(.horizontal, 6)
+       
                             Spacer()
                         }.truncationMode(.middle)
-                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.3)
-                            .background(.regularMaterial.opacity(0.8), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
+                            .foregroundStyle(Color(hex: "F3E3CE"))
+                            .frame(width: geo.size.width * 0.96, height: isShowButtonAdd ? geo.size.height * 0.18 : geo.size.height * 0.26)
+                            .background(.ultraThinMaterial.opacity(0.6), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
+                       
                     }
                 }.padding(.top, 60)
-                Spacer()
+                if isShowButtonAdd {
+                    CustomButton(title: "Add") {
+                        Task {
+                            let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
+                            await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
+                            NotificationController.sharet.notify(title: "You have added a master to your salon 💇‍♀️ 💅", subTitle: "now you can send him the schedule", timeInterval: 2)
+                        }
+                    }
+                }
             }.createBackgrounfFon()
                 .swipeBackDismiss(dismiss: dismiss)
                 .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImage ?? "", isShowTrash: false, deleteImage: {})
@@ -106,29 +125,10 @@ struct AddNewMasterView: View {
                             Text("")
                         }
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        if !isPressFullScreen {
-                            Button(action: {
-                                Task {
-                                    let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
-                                    await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
-                                    NotificationController.sharet.notify(title: "You have added a master to your salon 💇‍♀️ 💅", subTitle: "now you can send him the schedule", timeInterval: 2)
-                                }
-                                
-                            }, label: {
-                                Image(systemName: "person.crop.circle.fill.badge.plus")
-                                    .font(.system(size: 26))
-                                    .foregroundStyle(Color.white)
-                            })
-                        } else {
-                            Text("")
-                        }
-                    }
-                })
+            })
         }
     }
 }
 #Preview {
     AddNewMasterView(addMasterInRoom: MasterModel.masterModel())
 }
-

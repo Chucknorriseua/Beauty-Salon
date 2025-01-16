@@ -33,9 +33,7 @@ struct GetAllMastersInCompany: View {
                                 }
                             }
                             
-                        }.padding(.top, 30)
-                            .padding(.bottom, 50)
-
+                        }.padding(.top, 40)
                     }.scrollIndicators(.hidden)
                         
                     

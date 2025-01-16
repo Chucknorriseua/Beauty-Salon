@@ -11,7 +11,7 @@ import SwiftUI
 struct User_AdminViewProfile: View {
     
     @ObservedObject var clientViewModel: ClientViewModel
-    @State private var isShowSheet: Bool = false
+    @State private var isPriseList: Bool = false
     
     var body: some View {
         GeometryReader { geo in
@@ -23,22 +23,26 @@ struct User_AdminViewProfile: View {
                                          height: geo.size.height * 0.68)
                     
                     Text(clientViewModel.adminProfile.name)
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.system(size: 22, weight: .bold))
     
                     Spacer()
+                    VStack(alignment: .leading, spacing: 18) {
                         Button {
-                            isShowSheet = true
+                            isPriseList = true
                         } label: {
-                            Image(systemName: "newspaper.circle")
-                                .font(.system(size: 48, weight: .bold))
-                                .padding(.trailing, 15)
-                                .padding(.top, 40)
+                            VStack {
+                                Image(systemName: "list.bullet.rectangle.portrait.fill")
+                                    .font(.system(size: 28))
+                                Text("Price list")
+                                    .font(.system(size: 16, weight: .bold))
+                            }.padding(.horizontal, 12)
                         }
-                }.sheet(isPresented: $isShowSheet, content: {
-                    UserSend_SheduleForAdmin(clientViewModel: clientViewModel)
+                    }
+                }
+                .sheet(isPresented: $isPriseList, content: {
+                    User_PriceList(clientViewModel: clientViewModel)
                         .foregroundStyle(Color.white)
-                        .presentationDetents([.height(400)])
-                        .interactiveDismissDisabled()
+                        .presentationDetents([.height(740)])
                 })
                 HStack {
                     Image(systemName: "phone.circle.fill")
@@ -62,3 +66,7 @@ struct User_AdminViewProfile: View {
             .padding(.bottom, 8)
     }
 }
+
+#Preview(body: {
+    User_AdminViewProfile(clientViewModel: ClientViewModel.shared)
+})

@@ -18,7 +18,7 @@ struct AdminAddForMasterShedule: View {
         GeometryReader { geo in
             
             VStack {
-                CalendarMainController(viewModel: Admin_CalendarViewModel.shared, masterModel: masterModel)  
+                CalendarMainController(viewModel: Admin_CalendarViewModel.shared, adminViewModel: adminViewModel, masterModel: masterModel)  
             }
             .createBackgrounfFon()
             .swipeBackDismiss(dismiss: dismiss)

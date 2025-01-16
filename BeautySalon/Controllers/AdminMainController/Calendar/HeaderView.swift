@@ -10,6 +10,7 @@ import SwiftUI
 struct HeaderView: View {
     
     @ObservedObject var viewModel: Admin_CalendarViewModel
+    @StateObject var adminViewModel: AdminViewModel
     @Environment(\.dismiss) var dismiss
     @State var masterModel: MasterModel
     
@@ -59,8 +60,8 @@ struct HeaderView: View {
                         .font(.system(size: 28))
                 }
                 .sheet(isPresented: $viewModel.isPresentedNewTask) {
-                    CalendarAddTask(adminCalendarViewModel: Admin_CalendarViewModel.shared, masterModel: masterModel)
-                        .presentationDetents([.height(320)])
+                    CalendarAddTask(adminCalendarViewModel: Admin_CalendarViewModel.shared, adminViewModel: adminViewModel, masterModel: masterModel)
+                        .presentationDetents([.height(540)])
                         .interactiveDismissDisabled()
                 }
             }

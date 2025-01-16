@@ -67,12 +67,12 @@ final class Admin_DataBase {
     // add a master to your room
     func add_MasterToRoom(idMaster: String, master: MasterModel) async throws {
             guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
-            do {
-                try await mainFS.document(uid).collection("Masters").document(master.masterID).setData(master.master_ModelFB)
-            } catch {
-                print("DEBUG: sendAppoitmentToMaster not correct send...", error.localizedDescription)
-                throw error
-            }
+            try await mainFS.document(uid).collection("Masters").document(master.masterID).setData(master.master_ModelFB)
+        }
+    
+    func addProcedure(procedure: Procedure) async throws {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        try await mainFS.document(uid).updateData(["procedure": FieldValue.arrayUnion([procedure.procedure])])
         }
     
     func isMasterAllReadyInRoom(masterId: String) async -> Bool {
@@ -263,6 +263,22 @@ final class Admin_DataBase {
         }
     }
     
+    func removeProcedureFireBase(procedureID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = mainFS.document(uid)
+
+        let snapshot = try await record.getDocument()
+        guard let data = snapshot.data(),
+              var procedures = data["procedure"] as? [[String: Any]] else { return }
+        procedures.removeAll { procedure in
+            guard let id = procedure["id"] as? String else { return false }
+            return id == procedureID
+        }
+        
+        // Обновите документ в Firebase с новым массивом процедур
+        try await record.updateData(["procedure": procedures])
+    }
+    
     func remove_MasterFromSalon(masterID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         let record =  mainFS.document(uid).collection("Masters")
@@ -281,47 +297,43 @@ final class Admin_DataBase {
         }
     }
     
-    func removeYesterdaysSchedule(masterID: String) async throws {
+    func removeOldSchedules(masterID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
-        
-        let calendar = Calendar.current
-        guard let yesterday = calendar.date(byAdding: .day, value: -6, to: Date()) else { return }
-        let startOfYesterday =  calendar.startOfDay(for: yesterday)
-        guard let endOfYesterday = calendar.date(byAdding: .day, value: 1, to: startOfYesterday) else { return }
 
-        let record = mainFS.document(uid).collection("Masters").document(masterID).collection("Shedule")
-        let snap = try await record.whereField("creationDate", isGreaterThanOrEqualTo: startOfYesterday)
-                                    .whereField("creationDate", isLessThan: endOfYesterday)
-                                    .getDocuments()
- 
-         for doc in snap.documents {
-             try await doc.reference.delete()
-          
-         }
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
+
+        let record = mainFS.document(uid)
+            .collection("Masters")
+            .document(masterID)
+            .collection("Shedule")
         
+        let snap = try await record
+            .whereField("creationDate", isLessThan: startOfToday)
+            .getDocuments()
+
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
     }
     
-    func removeYesterdaysClient() async {
+    func removeYesterdaysClient() async  {
         guard let uid = auth.currentUser?.uid else { return }
-        
+
         let calendar = Calendar.current
-        guard let yesterday = calendar.date(byAdding: .day, value: -4, to: Date()) else { return }
-        let startOfYesterday = calendar.startOfDay(for: yesterday)
-        guard let endOfYesterday = calendar.date(byAdding: .day, value: 1, to: startOfYesterday) else { return }
+        let startOfToday = calendar.startOfDay(for: Date())
 
         let record = mainFS.document(uid).collection("Record")
-        
         do {
-        
-            let snap = try await record.whereField("creationDate", isGreaterThanOrEqualTo: startOfYesterday)
-                                       .whereField("creationDate", isLessThan: endOfYesterday)
-                                       .getDocuments()
+            let snap = try await record
+                .whereField("creationDate", isLessThan: startOfToday)
+                .getDocuments()
             
             for doc in snap.documents {
                 try await doc.reference.delete()
             }
         } catch {
-            print("DEBUG: Error deleting records for yesterday...", error.localizedDescription)
+            print("removeYesterdaysClient", error.localizedDescription)
         }
     }
     

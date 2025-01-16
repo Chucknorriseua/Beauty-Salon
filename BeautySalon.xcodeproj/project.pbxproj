@@ -16,6 +16,8 @@
 		BC0537CE2C85E5DE008EEA32 /* ClientForMastrer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0537CD2C85E5DE008EEA32 /* ClientForMastrer.swift */; };
 		BC0A50242C8F08F200CBDCFD /* SettingsPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0A50232C8F08F200CBDCFD /* SettingsPhotoView.swift */; };
 		BC0A50282C8F72BA00CBDCFD /* Master_DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0A50272C8F72BA00CBDCFD /* Master_DataBase.swift */; };
+		BC0AD7082D367D30005D4B37 /* AdminMenuProcedureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0AD7072D367D30005D4B37 /* AdminMenuProcedureView.swift */; };
+		BC0AD70A2D367FCC005D4B37 /* AdminProcedureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0AD7092D367FCC005D4B37 /* AdminProcedureCell.swift */; };
 		BC0ED2D82C79D6D2003FBEC2 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED2D72C79D6D2003FBEC2 /* FirebaseAnalytics */; };
 		BC0ED2DA2C79D6D2003FBEC2 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED2D92C79D6D2003FBEC2 /* FirebaseAnalyticsOnDeviceConversion */; };
 		BC0ED2DC2C79D6D2003FBEC2 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED2DB2C79D6D2003FBEC2 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -39,7 +41,6 @@
 		BC0ED3002C79D6D2003FBEC2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED2FF2C79D6D2003FBEC2 /* FirebaseStorage */; };
 		BC0ED3022C79D6D2003FBEC2 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED3012C79D6D2003FBEC2 /* FirebaseStorageCombine-Community */; };
 		BC0ED3042C79D6D2003FBEC2 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED3032C79D6D2003FBEC2 /* FirebaseVertexAI-Preview */; };
-		BC15CE872CC7958B003AE944 /* RecordFlippedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC15CE862CC7958B003AE944 /* RecordFlippedCell.swift */; };
 		BC22B4EF2C9B20240034B45A /* ShedulCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4EE2C9B20240034B45A /* ShedulCell.swift */; };
 		BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */; };
 		BC22B4F32C9B38F40034B45A /* MasterWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */; };
@@ -47,6 +48,9 @@
 		BC28CFE92C91B8A8006F6A6A /* ExtentionsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFE82C91B8A8006F6A6A /* ExtentionsApp.swift */; };
 		BC28CFEB2C91BFB5006F6A6A /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFEA2C91BFB5006F6A6A /* CustomAlert.swift */; };
 		BC28CFEF2C9467FF006F6A6A /* PhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC28CFEE2C9467FF006F6A6A /* PhoneNumber.swift */; };
+		BC2AE2922D35724600776FBC /* User_MenuProcedureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2AE2912D35724600776FBC /* User_MenuProcedureView.swift */; };
+		BC2AE2942D357CEF00776FBC /* User_SelectProcedureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2AE2932D357CEF00776FBC /* User_SelectProcedureCell.swift */; };
+		BC2AE2962D35C5A900776FBC /* AdminSheduleFromClientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2AE2952D35C5A900776FBC /* AdminSheduleFromClientCell.swift */; };
 		BC3A26A62CD6A24D000A674C /* MasterUploadProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */; };
 		BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */; };
 		BC50AF482CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC50AF472CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift */; };
@@ -120,6 +124,12 @@
 		BCD8DE022CEF38F500EBBF88 /* PhoneFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8DE012CEF38F500EBBF88 /* PhoneFormatter.swift */; };
 		BCD8DE062CEF4E6000EBBF88 /* SwipeBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8DE052CEF4E6000EBBF88 /* SwipeBack.swift */; };
 		BCD990392C96FFE500E91229 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD990382C96FFE500E91229 /* KeyboardResponder.swift */; };
+		BCDF9B792D33F3D50006A230 /* User_PriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B782D33F3D50006A230 /* User_PriceList.swift */; };
+		BCDF9B7B2D33FA350006A230 /* User_PriceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B7A2D33FA350006A230 /* User_PriceListCell.swift */; };
+		BCDF9B7F2D34196E0006A230 /* AdminCreatePriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B7E2D34196E0006A230 /* AdminCreatePriceList.swift */; };
+		BCDF9B812D341B9F0006A230 /* AdminSheetCreatPriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B802D341B9F0006A230 /* AdminSheetCreatPriceList.swift */; };
+		BCDF9B832D34230B0006A230 /* Procedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B822D34230B0006A230 /* Procedure.swift */; };
+		BCDF9B852D3426A70006A230 /* ProcedureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDF9B842D3426A70006A230 /* ProcedureCell.swift */; };
 		BCEB7B952C9EDA9D00A17F9E /* AdminReg_Desc_Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEB7B942C9EDA9D00A17F9E /* AdminReg_Desc_Password.swift */; };
 		BCEB7B972CA05E4A00A17F9E /* AddNewMasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEB7B962CA05E4A00A17F9E /* AddNewMasterCell.swift */; };
 		BCEE1E792CB3084A003C6933 /* UserSend_SheduleForAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */; };
@@ -129,7 +139,6 @@
 		BCF28C622CB00059007BDB24 /* User_MasterInToRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C612CB00059007BDB24 /* User_MasterInToRoomCell.swift */; };
 		BCF28C642CB005A4007BDB24 /* UserMainSelectedMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */; };
 		BCF28C662CB00CDA007BDB24 /* User_AdminViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */; };
-		BCF28C6A2CB01CE9007BDB24 /* User_MasterDetailse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C692CB01CE9007BDB24 /* User_MasterDetailse.swift */; };
 		BCF28C6E2CB087CE007BDB24 /* CustomLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C6D2CB087CE007BDB24 /* CustomLoader.swift */; };
 /* End PBXBuildFile section */
 
@@ -155,7 +164,8 @@
 		BC0537CD2C85E5DE008EEA32 /* ClientForMastrer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientForMastrer.swift; sourceTree = "<group>"; };
 		BC0A50232C8F08F200CBDCFD /* SettingsPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPhotoView.swift; sourceTree = "<group>"; };
 		BC0A50272C8F72BA00CBDCFD /* Master_DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Master_DataBase.swift; sourceTree = "<group>"; };
-		BC15CE862CC7958B003AE944 /* RecordFlippedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlippedCell.swift; sourceTree = "<group>"; };
+		BC0AD7072D367D30005D4B37 /* AdminMenuProcedureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminMenuProcedureView.swift; sourceTree = "<group>"; };
+		BC0AD7092D367FCC005D4B37 /* AdminProcedureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminProcedureCell.swift; sourceTree = "<group>"; };
 		BC22B4EE2C9B20240034B45A /* ShedulCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulCell.swift; sourceTree = "<group>"; };
 		BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterCalendarViewModel.swift; sourceTree = "<group>"; };
 		BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterWeekView.swift; sourceTree = "<group>"; };
@@ -163,6 +173,9 @@
 		BC28CFE82C91B8A8006F6A6A /* ExtentionsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtentionsApp.swift; sourceTree = "<group>"; };
 		BC28CFEA2C91BFB5006F6A6A /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		BC28CFEE2C9467FF006F6A6A /* PhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumber.swift; sourceTree = "<group>"; };
+		BC2AE2912D35724600776FBC /* User_MenuProcedureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_MenuProcedureView.swift; sourceTree = "<group>"; };
+		BC2AE2932D357CEF00776FBC /* User_SelectProcedureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_SelectProcedureCell.swift; sourceTree = "<group>"; };
+		BC2AE2952D35C5A900776FBC /* AdminSheduleFromClientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminSheduleFromClientCell.swift; sourceTree = "<group>"; };
 		BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterUploadProfile.swift; sourceTree = "<group>"; };
 		BC4659ED2CDB9E6A00E9ACD2 /* BeautySalonSubscribe.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = BeautySalonSubscribe.storekit; sourceTree = "<group>"; };
 		BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetStoreKitProductSelect.swift; sourceTree = "<group>"; };
@@ -236,6 +249,12 @@
 		BCD8DE012CEF38F500EBBF88 /* PhoneFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneFormatter.swift; sourceTree = "<group>"; };
 		BCD8DE052CEF4E6000EBBF88 /* SwipeBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeBack.swift; sourceTree = "<group>"; };
 		BCD990382C96FFE500E91229 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
+		BCDF9B782D33F3D50006A230 /* User_PriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_PriceList.swift; sourceTree = "<group>"; };
+		BCDF9B7A2D33FA350006A230 /* User_PriceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_PriceListCell.swift; sourceTree = "<group>"; };
+		BCDF9B7E2D34196E0006A230 /* AdminCreatePriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminCreatePriceList.swift; sourceTree = "<group>"; };
+		BCDF9B802D341B9F0006A230 /* AdminSheetCreatPriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminSheetCreatPriceList.swift; sourceTree = "<group>"; };
+		BCDF9B822D34230B0006A230 /* Procedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Procedure.swift; sourceTree = "<group>"; };
+		BCDF9B842D3426A70006A230 /* ProcedureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcedureCell.swift; sourceTree = "<group>"; };
 		BCEB7B942C9EDA9D00A17F9E /* AdminReg_Desc_Password.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReg_Desc_Password.swift; sourceTree = "<group>"; };
 		BCEB7B962CA05E4A00A17F9E /* AddNewMasterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMasterCell.swift; sourceTree = "<group>"; };
 		BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSend_SheduleForAdmin.swift; sourceTree = "<group>"; };
@@ -245,7 +264,6 @@
 		BCF28C612CB00059007BDB24 /* User_MasterInToRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_MasterInToRoomCell.swift; sourceTree = "<group>"; };
 		BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMainSelectedMaster.swift; sourceTree = "<group>"; };
 		BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_AdminViewProfile.swift; sourceTree = "<group>"; };
-		BCF28C692CB01CE9007BDB24 /* User_MasterDetailse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_MasterDetailse.swift; sourceTree = "<group>"; };
 		BCF28C6D2CB087CE007BDB24 /* CustomLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -395,6 +413,8 @@
 				BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */,
 				BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */,
 				BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */,
+				BCDF9B782D33F3D50006A230 /* User_PriceList.swift */,
+				BC2AE2912D35724600776FBC /* User_MenuProcedureView.swift */,
 				BC644BA82C762CD100B57117 /* Cell */,
 			);
 			path = View;
@@ -404,7 +424,8 @@
 			isa = PBXGroup;
 			children = (
 				BCF28C612CB00059007BDB24 /* User_MasterInToRoomCell.swift */,
-				BCF28C692CB01CE9007BDB24 /* User_MasterDetailse.swift */,
+				BCDF9B7A2D33FA350006A230 /* User_PriceListCell.swift */,
+				BC2AE2932D357CEF00776FBC /* User_SelectProcedureCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -535,6 +556,7 @@
 				BCBC58352C70CC5E00FB3E77 /* MasterModel.swift */,
 				BCBC58372C70CC6E00FB3E77 /* Client.swift */,
 				BCBC58B72C7474E600FB3E77 /* Shedule.swift */,
+				BCDF9B822D34230B0006A230 /* Procedure.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -670,12 +692,14 @@
 		BCBC587F2C73390600FB3E77 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				BC2AE2952D35C5A900776FBC /* AdminSheduleFromClientCell.swift */,
 				BCBC58802C73391A00FB3E77 /* CellMaster.swift */,
 				BC644B982C7612DB00B57117 /* CellUser.swift */,
 				BCEB7B962CA05E4A00A17F9E /* AddNewMasterCell.swift */,
 				BCCD5F0F2CB45A75007976F9 /* CellListMasterDelete.swift */,
 				BCD776002CBFEB4800307013 /* CellAdminAddSheduleMasterList.swift */,
-				BC15CE862CC7958B003AE944 /* RecordFlippedCell.swift */,
+				BCDF9B842D3426A70006A230 /* ProcedureCell.swift */,
+				BC0AD7092D367FCC005D4B37 /* AdminProcedureCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -685,6 +709,9 @@
 			children = (
 				BCD775FE2CBFE8C100307013 /* AdminListMasterAddShedule.swift */,
 				BCB8886D2D3190AF0085C895 /* AddNewMasterView.swift */,
+				BCDF9B802D341B9F0006A230 /* AdminSheetCreatPriceList.swift */,
+				BCDF9B7E2D34196E0006A230 /* AdminCreatePriceList.swift */,
+				BC0AD7072D367D30005D4B37 /* AdminMenuProcedureView.swift */,
 				BCBC587F2C73390600FB3E77 /* Cell */,
 			);
 			path = View;
@@ -858,7 +885,10 @@
 				BC0537BF2C80916B008EEA32 /* Auth_Master_ViewModel.swift in Sources */,
 				BCD775FF2CBFE8C100307013 /* AdminListMasterAddShedule.swift in Sources */,
 				BCADDF9E2CAF15860055F458 /* UserSettings.swift in Sources */,
+				BC0AD7082D367D30005D4B37 /* AdminMenuProcedureView.swift in Sources */,
+				BCDF9B792D33F3D50006A230 /* User_PriceList.swift in Sources */,
 				BCD7760E2CC4309D00307013 /* GoogleRegisterProfile.swift in Sources */,
+				BC0AD70A2D367FCC005D4B37 /* AdminProcedureCell.swift in Sources */,
 				BCF178B82C7E0A0800135D81 /* ImageSize.swift in Sources */,
 				BCBC58302C70C50F00FB3E77 /* MasterMainController.swift in Sources */,
 				BCEB7B952C9EDA9D00A17F9E /* AdminReg_Desc_Password.swift in Sources */,
@@ -881,6 +911,7 @@
 				BCBC58B42C73BACD00FB3E77 /* OffsetKey.swift in Sources */,
 				BC644BAA2C762CEF00B57117 /* CompanyAllCell.swift in Sources */,
 				BCBC589E2C735AF300FB3E77 /* Main_Controller_Register.swift in Sources */,
+				BCDF9B812D341B9F0006A230 /* AdminSheetCreatPriceList.swift in Sources */,
 				BC644BB12C76662100B57117 /* HeaderView.swift in Sources */,
 				BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */,
 				BC0537CC2C85E584008EEA32 /* SettingsMaster.swift in Sources */,
@@ -890,16 +921,17 @@
 				BC7C6F052D00B158000AAD03 /* ImageViewSelected.swift in Sources */,
 				BCF28C622CB00059007BDB24 /* User_MasterInToRoomCell.swift in Sources */,
 				BC0A50282C8F72BA00CBDCFD /* Master_DataBase.swift in Sources */,
+				BCDF9B852D3426A70006A230 /* ProcedureCell.swift in Sources */,
 				BC0537C72C81D3D8008EEA32 /* MasterViewModel.swift in Sources */,
 				BCD990392C96FFE500E91229 /* KeyboardResponder.swift in Sources */,
 				BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */,
 				BCF178B62C7B792100135D81 /* Admin_DataBase.swift in Sources */,
 				BC7C6F032D00984F000AAD03 /* ImageViewCustom.swift in Sources */,
 				BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */,
-				BC15CE872CC7958B003AE944 /* RecordFlippedCell.swift in Sources */,
 				BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */,
 				BCBC58B82C7474E600FB3E77 /* Shedule.swift in Sources */,
 				BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */,
+				BC2AE2922D35724600776FBC /* User_MenuProcedureView.swift in Sources */,
 				BCADDF9C2CAF07A50055F458 /* UserMainForSheduleController.swift in Sources */,
 				BCBC58B02C73BAAC00FB3E77 /* View+ext.swift in Sources */,
 				BC22B4EF2C9B20240034B45A /* ShedulCell.swift in Sources */,
@@ -909,14 +941,17 @@
 				BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */,
 				BCB8886E2D3190AF0085C895 /* AddNewMasterView.swift in Sources */,
 				BCADDF9A2CAF05EA0055F458 /* ClientViewModel.swift in Sources */,
+				BCDF9B7F2D34196E0006A230 /* AdminCreatePriceList.swift in Sources */,
 				BC644BB32C76663000B57117 /* WeekView.swift in Sources */,
 				BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */,
 				BC24B52A2CD95ECB009F2257 /* StoreViewModel.swift in Sources */,
 				BCF28C662CB00CDA007BDB24 /* User_AdminViewProfile.swift in Sources */,
 				BC3A26A62CD6A24D000A674C /* MasterUploadProfile.swift in Sources */,
 				BCBC580B2C6F43B100FB3E77 /* BeautyMastersApp.swift in Sources */,
+				BCDF9B832D34230B0006A230 /* Procedure.swift in Sources */,
 				BCD776012CBFEB4800307013 /* CellAdminAddSheduleMasterList.swift in Sources */,
 				BC0537CE2C85E5DE008EEA32 /* ClientForMastrer.swift in Sources */,
+				BC2AE2962D35C5A900776FBC /* AdminSheduleFromClientCell.swift in Sources */,
 				BCBC58B22C73BAB800FB3E77 /* Date+ext.swift in Sources */,
 				BCF28C6E2CB087CE007BDB24 /* CustomLoader.swift in Sources */,
 				BCD8DE062CEF4E6000EBBF88 /* SwipeBack.swift in Sources */,
@@ -929,12 +964,13 @@
 				BCADDF982CAEDC900055F458 /* Client_DataBase.swift in Sources */,
 				BCBC58952C73471F00FB3E77 /* Admin_MainTabbedView.swift in Sources */,
 				BCBC58932C73413200FB3E77 /* GetAllUsersOfCompany.swift in Sources */,
-				BCF28C6A2CB01CE9007BDB24 /* User_MasterDetailse.swift in Sources */,
 				BCEB7B972CA05E4A00A17F9E /* AddNewMasterCell.swift in Sources */,
 				BC28CFE92C91B8A8006F6A6A /* ExtentionsApp.swift in Sources */,
 				BC644BA62C7629CB00B57117 /* MasterTabBar.swift in Sources */,
 				BC644B992C7612DB00B57117 /* CellUser.swift in Sources */,
 				BC644BAF2C76660B00B57117 /* CalendarMainController.swift in Sources */,
+				BCDF9B7B2D33FA350006A230 /* User_PriceListCell.swift in Sources */,
+				BC2AE2942D357CEF00776FBC /* User_SelectProcedureCell.swift in Sources */,
 				BCBC58322C70CBC400FB3E77 /* UserSelectedComapnyController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

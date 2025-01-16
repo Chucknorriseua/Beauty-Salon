@@ -10,13 +10,14 @@ import SwiftUI
 struct CalendarMainController: View {
     
     @StateObject var viewModel: Admin_CalendarViewModel
+    @StateObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel
     
     var body: some View {
         GeometryReader { geo in
             
             VStack {
-                HeaderView(viewModel: viewModel, masterModel: masterModel)
+                HeaderView(viewModel: viewModel, adminViewModel: adminViewModel, masterModel: masterModel)
                 ScrollView {
                     TasksForSelectedDate(viewModel: viewModel, masterModel: masterModel, currentDate: viewModel.currentDate)
                 }

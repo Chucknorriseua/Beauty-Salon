@@ -18,13 +18,14 @@ struct Company_Model: Identifiable, Codable, Hashable {
     var phone: String
     var description: String
     var image: String?
+    var procedure: [Procedure]
     
     var latitude: Double?
     var longitude: Double?
     var categories: String
     
     static func companyModel() -> Company_Model {
-        return Company_Model(id: "", adminID: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", latitude: 0.0, longitude: 0.0, categories: "")
+        return Company_Model(id: "", adminID: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", procedure: [], latitude: 0.0, longitude: 0.0, categories: "")
     }
     
     var admin_Model_FB: [String: Any] {
@@ -38,6 +39,12 @@ struct Company_Model: Identifiable, Codable, Hashable {
         model["phone"] = self.phone
         model["description"] = self.description
         model["image"] = self.image
+        model["procedure"] = self.procedure.map({ proc in
+            return ["id": proc.id,
+                    "title": proc.title,
+                    "price": proc.price,
+                    "description": proc.description]
+        })
         model["latitude"] = self.latitude
         model["longitude"] = self.longitude
         model["categories"] = self.categories

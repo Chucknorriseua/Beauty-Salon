@@ -27,7 +27,7 @@ struct AdminMainController: View {
                         ForEach(admimViewModel.recordsClient, id: \.id) { record in
                             VStack {
                                 
-                                RecordFlippedCell(recordModel: record, viewModelAdmin: admimViewModel,
+                                AdminSheduleFromClientCell(recordModel: record, viewModelAdmin: admimViewModel,
                                                   isShowList: $isShowListMaster, selecetedRecord: $selecetedRecord).onTapGesture {
                                     selecetedRecord = record
                                 }.id(record.id)
@@ -37,7 +37,7 @@ struct AdminMainController: View {
                                             .opacity(phase.isIdentity ? 1 : 0)
                                             .offset(y: phase.isIdentity ? 0 : -40)
                                     }
-                            }.padding(.bottom, -40)
+                            }
                         }
                     }.padding(.top, 18)
                         .animation(.easeOut(duration: 0.5), value: admimViewModel.recordsClient)

@@ -44,8 +44,8 @@ struct CellUser: View {
                 Image(systemName: "person.crop.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: geometry.size.width * 0.25,
-                           height: geometry.size.height * 0.2)
+                    .frame(width: geometry.size.width * 0.2,
+                           height: geometry.size.height * 0.1)
                     .foregroundStyle(Color.white.opacity(0.7))
                     .padding(.trailing, 4)
             }.frame(height: geometry.size.height * 0.7)
@@ -53,7 +53,10 @@ struct CellUser: View {
                 .padding(.leading, 5)
                 .padding(.trailing, 5)
         }
-        .frame(height: 200)
+        .frame(height: 160)
         .padding(.vertical, -26)
     }
 }
+#Preview(body: {
+    CellUser(clientModel: Client.clientModel())
+})

@@ -15,10 +15,10 @@ final class ClientViewModel: ObservableObject {
     
     @Published private(set) var comapny: [Company_Model] = []
     @Published private(set) var mastersInRoom: [MasterModel] = []
+    @Published var procedure: [Procedure] = []
     
-    
-    @Published  var isAlert: Bool = false
-    @Published  var errorMassage: String = ""
+    @Published var isAlert: Bool = false
+    @Published var errorMassage: String = ""
     
     @Published var adminProfile: Company_Model
     @Published var clientModel: Client
@@ -30,6 +30,25 @@ final class ClientViewModel: ObservableObject {
         self.clientModel = clientModel ?? Client.clientModel()
     }
     
+    @MainActor
+    func addNewProcedure(addProcedure: Procedure) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if !procedure.contains(where: {$0.id == addProcedure.id}) {
+                self.procedure.append(addProcedure)
+            }
+        }
+
+    }
+    
+    @MainActor
+    func removeProcedure(selectedProcedure: [Procedure]) {
+        for procedure in selectedProcedure {
+            if let index = self.procedure.firstIndex(where: { $0.id == procedure.id }) {
+                self.procedure.remove(at: index)
+            }
+        }
+    }
     
     func fetchAll_Comapny() async {
         do {
@@ -40,9 +59,7 @@ final class ClientViewModel: ObservableObject {
             }
             await fetch_ProfileClient()
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: ERROR fetch company", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -54,9 +71,7 @@ final class ClientViewModel: ObservableObject {
                 self.clientModel = client
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-        print("DEBUG: ERROR fetch current client...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
  
@@ -68,9 +83,7 @@ final class ClientViewModel: ObservableObject {
                 self.adminProfile = admin
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: ERROR fetch current admin salon...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -83,9 +96,7 @@ final class ClientViewModel: ObservableObject {
                 self.mastersInRoom = masters
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: ERROR fetch all masters...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -94,9 +105,7 @@ final class ClientViewModel: ObservableObject {
             try await Client_DataBase.shared.send_RecordForAdmin(adminID: adminID, record: record)
             try await Client_DataBase.shared.setData_ClientForAdmin(adminID: adminID, clientModel: clientModel)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: ERROR send record admin...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -106,9 +115,13 @@ final class ClientViewModel: ObservableObject {
             try await Client_DataBase.shared.setData_ClientFireBase(clientModel: clientModel)
             try await Client_DataBase.shared.setData_ClientForAdmin(adminID: adminID, clientModel: clientModel)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: ERROR send record admin...", error.localizedDescription)
+            await handleError(error: error)
         }
+    }
+    
+    private func handleError(error: Error) async {
+        isAlert = true
+        errorMassage = error.localizedDescription
+        print("Error in task: \(error.localizedDescription)")
     }
 }

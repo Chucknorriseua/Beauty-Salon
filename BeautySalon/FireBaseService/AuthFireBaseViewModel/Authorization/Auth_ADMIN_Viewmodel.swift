@@ -68,7 +68,7 @@ class Auth_ADMIN_Viewmodel: ObservableObject {
                                    email: email,
                                    phone: phone,
                                     description: desc,
-                                      image: dowloadURL?.absoluteString ?? "",
+                                      image: dowloadURL?.absoluteString ?? "", procedure: [],
                                       latitude: locationManager.userLatitude, longitude: locationManager.userLongitude, categories: "")
           
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: admin)

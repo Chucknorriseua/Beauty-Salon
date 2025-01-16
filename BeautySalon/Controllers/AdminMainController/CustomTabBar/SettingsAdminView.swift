@@ -24,6 +24,9 @@ struct SettingsAdminView: View {
     @State private var isPressAlarm: Bool = false
     @State private var isLocationAlarm: Bool = false
     @State private var isEditor: Bool = false
+    @State private var isCreateService: Bool = false
+    @State private var isShowTextField: Bool = false
+    
     @State private var photoPickerItems: PhotosPickerItem? = nil
     @State private var massage: String = ""
     @State private var title: String = ""
@@ -63,82 +66,151 @@ struct SettingsAdminView: View {
                         } .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.2)
                             .background(.ultraThickMaterial.opacity(0.6), in: .rect(topLeadingRadius: 35,
                                                                                     topTrailingRadius: 35))
-                        VStack(spacing: 14) {
-                            VStack(spacing: 4) {
-                                
-                                SettingsButton(text: $adminViewModel.adminProfile.companyName,
-                                               title: "Compane name", width: geometry.size.width * 1)
-                                
-                                SettingsButton(text: $adminViewModel.adminProfile.name,
-                                               title: "Name", width: geometry.size.width * 1)
-                                
-                                SettingsButton(text: $adminViewModel.adminProfile.phone,
-                                               title: "Phone +(000)-000-000-00-00", width: geometry.size.width * 1)
-                                .keyboardType(.numberPad)
-                                .textContentType(.telephoneNumber)
-                                .onChange(of: adminViewModel.adminProfile.phone) { _, new in
-                                    adminViewModel.adminProfile.phone = formatPhoneNumber(new)
-                                }
-                                
-                                SettingsButton(text: $adminViewModel.adminProfile.adress,
-                                               
-                                               title: "Adress", width: geometry.size.width * 1)
-                                HStack {
-                                    Text("Selected categories: ")
-                                        .font(.system(size: 18, weight: .bold))
-                                        .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
-                                    
-                                    Picker("", selection: $selectedCategory) {
-                                        Image(systemName: "filemenu.and.selection")
-                                        ForEach(Categories.allCases, id: \.id) { category in
-                                            Text(category.displayName).tag(category)
+   
+                        
+                        VStack(spacing: 4) {
+                            if !isShowTextField {
+                                VStack {
+                                    Button {
+                                        withAnimation(.snappy(duration: 0.5)) {
+                                            isShowTextField.toggle()
                                         }
-                                        
-                                    }.pickerStyle(.menu)
-                                        .onChange(of: selectedCategory, { _, new in
-                                            adminViewModel.adminProfile.categories = new.rawValue
-                                        })
-                                        .tint(Color(hex: "F3E3CE")).opacity(0.7)
-                                    Spacer()
-                                    
-                                }.frame(maxWidth: .infinity, maxHeight: 44)
-                                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
-                                .padding(.horizontal, 4)
-                                
-                                Button {
-                                    isLocationAlarm = true
-                                    massage = "Do you really want to update your location?"
-                                    title = "Change you'r loacation?"
-                                } label: {
-                                    HStack {
-                                        Text("Change geolocation")
-                                        Image(systemName: "location.fill")
-                                            .foregroundStyle(Color.white.opacity(0.9))
-                                            .font(.system(size: 24))
-                                        
-                                    }.padding(.all, 4)
-                                        .background(Color.blue.opacity(0.6), in: .rect(cornerRadius: 24))
-                                }
-
-                                ZStack(alignment: .topLeading) {
-                                    if adminViewModel.adminProfile.description.isEmpty {
-                                        Text("Please limit your input to 160 characters.")
-                                            .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
-                                            .padding(.top, 4)
-                                            .padding(.leading, 4)
+                                    } label: {
+                                        HStack {
+                                            Text("Change profile")
+                                                .font(.system(size: 18, weight: .bold))
+                                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                                .padding(.leading, 4)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 4)
+                                            
+                                        }.frame(maxWidth: .infinity, maxHeight: 44)
+                                        .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                        .padding(.horizontal, 4)
                                     }
-                                        TextEditor(text: $adminViewModel.adminProfile.description)
-                                            .scrollContentBackground(.hidden)
+                                    Button {
+                                        withAnimation(.snappy(duration: 0.5)) {
+                                            coordinator.push(page: .Admin_CreatPriseList)
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text("Create service")
+                                                .font(.system(size: 18, weight: .bold))
+                                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                                .padding(.leading, 4)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 4)
+                                            
+                                        }.frame(maxWidth: .infinity, maxHeight: 44)
+                                        .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                        .padding(.horizontal, 4)
+                                    }
+                                    HStack {
+                                        Text("Selected categories: ")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                            .padding(.leading, 4)
+                                        
+                                        Picker("", selection: $selectedCategory) {
+                                            Image(systemName: "filemenu.and.selection")
+                                            ForEach(Categories.allCases, id: \.id) { category in
+                                                Text(category.displayName).tag(category)
+                                            }
+                                            
+                                        }.pickerStyle(.menu)
+                                            .onChange(of: selectedCategory, { _, new in
+                                                adminViewModel.adminProfile.categories = new.rawValue
+                                            })
+                                            .tint(Color(hex: "F3E3CE")).opacity(0.7)
+                                        Spacer()
+                                        
+                                    }.frame(maxWidth: .infinity, maxHeight: 44)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal, 4)
+                                    
+                                    ZStack(alignment: .topLeading) {
+                                        if adminViewModel.adminProfile.description.isEmpty {
+                                            Text("Please limit your input to 160 characters.")
+                                                .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
+                                                .padding(.top, 4)
+                                                .padding(.leading, 4)
+                                        }
+                                            TextEditor(text: $adminViewModel.adminProfile.description)
+                                                .scrollContentBackground(.hidden)
 
-                                }.padding(.leading, 6)
-                                
-                            }.padding(.top, 6)
+                                    }.frame(height: 150)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal, 4)
+                                    
+                                    Button {
+                                        isLocationAlarm = true
+                                        massage = "Do you really want to update your location?"
+                                        title = "Change you'r loacation?"
+                                    } label: {
+                                        HStack {
+                                            Text("Change geolocation")
+                                            Image(systemName: "location.fill")
+                                                .font(.system(size: 24))
+                                            
+                                        }.padding(.all, 4)
+                                            .frame(maxWidth: .infinity, maxHeight: 44)
+                                            .foregroundStyle(Color.white)
+                                            .background(Color.blue.opacity(0.6), in: .rect(cornerRadius: 24))
+                                            .padding(.horizontal, 8)
+                                    }
+                                    Spacer()
+                                }.padding(.top, 10)
+                            } else {
+                                VStack(spacing: 4) {
+                                    HStack {
+                                        Button {
+                                            withAnimation(.snappy(duration: 0.5)) {
+                                                isShowTextField.toggle()
+                                            }
+                                        } label: {
+                                            HStack {
+                                                Image(systemName: "chevron.left")
+                                                    .padding(.trailing, 4)
+                                                Text("Back")
+                                                    .font(.system(size: 18, weight: .bold))
+                                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                                
+                                            }.padding(.all, 6)
+                                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 24))
+                                        }
+                                Spacer()
+                                    }.padding(.leading, 8)
+                                        .padding(.bottom, 18)
+                       
+                                    SettingsButton(text: $adminViewModel.adminProfile.companyName,
+                                                   title: "Compane name", width: geometry.size.width * 1)
+                                    
+                                    SettingsButton(text: $adminViewModel.adminProfile.name,
+                                                   title: "Name", width: geometry.size.width * 1)
+                                    
+                                    SettingsButton(text: $adminViewModel.adminProfile.phone,
+                                                   title: "Phone +(000)-000-000-00-00", width: geometry.size.width * 1)
+                                    .keyboardType(.numberPad)
+                                    .textContentType(.telephoneNumber)
+                                    .onChange(of: adminViewModel.adminProfile.phone) { _, new in
+                                        adminViewModel.adminProfile.phone = formatPhoneNumber(new)
+                                    }
+                                    
+                                    SettingsButton(text: $adminViewModel.adminProfile.adress,
+                                                   
+                                                   title: "Adress", width: geometry.size.width * 1)
+        
+                                    Spacer()
+                                }.padding(.top, 6)
+                            }
                             
-                        }.frame(width: geometry.size.width * 0.95,
-                                height: geometry.size.height * 0.6)
+                        }.frame(width: geometry.size.width * 0.95, height: isShowTextField ? geometry.size.height * 0.4 : geometry.size.height * 0.5)
                         
                         .background(.ultraThickMaterial.opacity(0.6), in: .rect(bottomLeadingRadius: 24,
                                                                                 bottomTrailingRadius: 24))
+           
                         .foregroundStyle(Color(hex: "F3E3CE"))
                         
                     }
@@ -175,7 +247,7 @@ struct SettingsAdminView: View {
                                                                              bottomLeadingRadius: 40,
                                                                              bottomTrailingRadius: 40,
                                                                              topTrailingRadius: 10))
-                    .padding(.bottom, 80)
+//                    .padding(.bottom, 80)
                     
                 }.padding(.bottom, keyBoard.currentHeight / 2)
             }.scrollIndicators(.hidden)
@@ -239,7 +311,6 @@ extension SettingsAdminView: isFormValid {
         return adminViewModel.adminProfile.description.count < 160
     }
 }
-
 #Preview {
     SettingsAdminView(adminViewModel: AdminViewModel.shared)
 }

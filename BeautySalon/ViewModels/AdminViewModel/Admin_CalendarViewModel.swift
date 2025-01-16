@@ -18,6 +18,7 @@ final class Admin_CalendarViewModel: ObservableObject {
     @Published var isPresentedNewTask: Bool = false
     @Published var createWeek: Bool = false
     @Published var productTask: [Shedule] = []
+    @Published var procedure: [Procedure] = []
     @Published var shedules: Shedule
     
     @Published  var isAlert: Bool = false
@@ -30,7 +31,7 @@ final class Admin_CalendarViewModel: ObservableObject {
     @MainActor
     func fetchAllSheduleCurrentMaster(masterID: String, sheduleMaster: Shedule) async {
         do {
-            try await Admin_DataBase.shared.removeYesterdaysSchedule(masterID: masterID)
+            try await Admin_DataBase.shared.removeOldSchedules(masterID: masterID)
             let shedule = try await Admin_DataBase.shared.fetchShedule_CurrentMaster(masterID: masterID)
             let sortedDate = shedule.sorted(by: {$0.creationDate < $1.creationDate})
             await MainActor.run { [weak self] in

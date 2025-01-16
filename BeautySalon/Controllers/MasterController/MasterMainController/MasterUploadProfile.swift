@@ -20,89 +20,168 @@ struct MasterUploadProfile: View {
     
     @State private var selectedImage: Data? = nil
     @State private var photoPickerArray: [PhotosPickerItem] = []
+    @State private var photoPickerItems: PhotosPickerItem? = nil
     @State private var isPressFullScreen: Bool = false
     @State private var selectedImages: String? = nil
     @State private var isLocationAlarm: Bool = false
+    @State private var isShowInfo: Bool = false
+    @State private var isChangeProfilePhoto: Bool = false
+    
     @State private var massage: String = ""
     @State private var title: String = ""
-        
+    
     var body: some View {
         GeometryReader(content: { geo in
             VStack {
                 Group {
-                    ScrollView(.horizontal) {
-                        LazyHStack {
-                            ForEach(masterViewModel.masterModel.imagesUrl ?? [], id:\.self) { image in
-                                HStack {
-                                    WebImage(url: URL(string: image))
-                                        .resizable()
-                                        .indicator(.activity)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geo.size.width * 0.3,
-                                               height: geo.size.height * 0.2)
-                                        .clipShape(Circle())
-                                        .overlay(content: {
-                                            Circle()
-                                                .stroke(Color.white, lineWidth: 2)
-                                        })
-                                        .onTapGesture {
-                                            withAnimation(.snappy(duration: 0.5)) {
-                                                
-                                                selectedImages = image
-                                                isPressFullScreen = true
-                                            }
-                                        }.transition(.blurReplace)
-                                }.id(image)
-                                    .scrollTransition(.interactive, axis: .horizontal) { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            .offset(y: phase.isIdentity ? 0 : -50)
-                                    }
-                            }
-                        }.scrollTargetLayout()
-                            .padding(.top, 50)
-                    }.scrollIndicators(.hidden)
-                    
-                    SettingsButton(text: $masterViewModel.masterModel.name, title: "Name", width: geo.size.width * 1)
-                    SettingsButton(text: $masterViewModel.masterModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
-                        .keyboardType(.numberPad)
-                        .textContentType(.telephoneNumber)
-                        .onChange(of: masterViewModel.masterModel.phone) { _, new in
-                            masterViewModel.masterModel.phone = formatPhoneNumber(new)
-                        }
-                    Button {
-                        isLocationAlarm = true
-                        massage = "Do you really want to update your location?"
-                        title = "Change you'r loacation?"
-                    } label: {
-                        HStack {
-                            Text("Change geolocation")
-                                .foregroundStyle(Color(hex: "F3E3CE"))
-                            Image(systemName: "location.fill")
-                                .foregroundStyle(Color.white.opacity(0.9))
-                                .font(.system(size: 24))
-                          
-                        }.padding(.all, 4)
-                        .background(Color.blue.opacity(0.6), in: .rect(cornerRadius: 24))
-                    }
-                    
-                    
-                    Text("Description about you:").opacity(0.8)
-                        .foregroundStyle(Color.white)
-                        .font(.system(size: 16, weight: .semibold))
-                    
+                    VStack {}
+                        .createImageView(model: masterViewModel.masterModel.image ?? "", width: geo.size.width * 0.6, height: geo.size.height * 0.6 / 2)
                     VStack {
-                        
-                        TextEditor(text:  $masterViewModel.masterModel.description)
-                            .frame(height: geo.size.height * 0.3)
-                            .background(.ultraThickMaterial.opacity(0.6), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
-                            .foregroundStyle(Color(hex: "F3E3CE"))
-                            .scrollContentBackground(.hidden)
-            
-                    }.padding(.leading, 4)
-                        .padding(.trailing, 4)
-                        .padding(.bottom, 6)
-                    
+                        if !isShowInfo {
+                            
+                            ScrollView(.horizontal) {
+                                LazyHStack {
+                                    ForEach(masterViewModel.masterModel.imagesUrl ?? [], id:\.self) { image in
+                                        HStack {
+                                            WebImage(url: URL(string: image))
+                                                .resizable()
+                                                .indicator(.activity)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: geo.size.width * 0.3,
+                                                       height: geo.size.height * 0.2)
+                                                .clipShape(Circle())
+                                                .overlay(content: {
+                                                    Circle()
+                                                        .stroke(Color.white, lineWidth: 2)
+                                                })
+                                                .onTapGesture {
+                                                    withAnimation(.snappy(duration: 0.5)) {
+                                                        
+                                                        selectedImages = image
+                                                        isPressFullScreen = true
+                                                    }
+                                                }.transition(.blurReplace)
+                                        }.id(image)
+                                    }
+                                }
+                            }.scrollIndicators(.hidden)
+                            VStack {
+                                
+                                Button {
+                                    withAnimation(.snappy(duration: 0.5)) {
+                                        isShowInfo.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Change profile")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    
+                                }
+                                Button {
+                                    withAnimation(.snappy(duration: 0.5)) {
+                                        isChangeProfilePhoto.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Change profile photo")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    
+                                }
+                                PhotosPicker(selection: $photoPickerArray, maxSelectionCount: 10, selectionBehavior: .ordered) {
+                                    HStack {
+                                        Text("Upload photos of my work")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                }
+                            }.padding(.bottom, 40)
+                        } else {
+                            VStack {
+                                SettingsButton(text: $masterViewModel.masterModel.name, title: "Name", width: geo.size.width * 1)
+                                SettingsButton(text: $masterViewModel.masterModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
+                                    .keyboardType(.numberPad)
+                                    .textContentType(.telephoneNumber)
+                                    .onChange(of: masterViewModel.masterModel.phone) { _, new in
+                                        masterViewModel.masterModel.phone = formatPhoneNumber(new)
+                                    }
+                                Button {
+                                    isLocationAlarm = true
+                                    massage = "Do you really want to update your location?"
+                                    title = "Change you'r loacation?"
+                                } label: {
+                                    HStack {
+                                        Text("Change geolocation")
+                                        Image(systemName: "location.fill")
+                                            .font(.system(size: 24))
+                                        
+                                    }.padding(.all, 6)
+                                        .frame(maxWidth: .infinity, maxHeight: 44)
+                                        .foregroundStyle(Color.white)
+                                        .background(Color.blue.opacity(0.6), in: .rect(cornerRadius: 18))
+                                    
+                                }
+                                
+                                
+                                ZStack(alignment: .topLeading) {
+                                    if masterViewModel.masterModel.description.isEmpty {
+                                        Text("Please limit your input to 160 characters.")
+                                            .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
+                                            .padding(.top, 4)
+                                            .padding(.leading, 4)
+                                    }
+                                    TextEditor(text: $masterViewModel.masterModel.description)
+                                        .scrollContentBackground(.hidden)
+                                    
+                                }.frame(height: 140)
+                                    .foregroundStyle(Color(hex: "F3E3CE"))
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                Button {
+                                    withAnimation(.snappy(duration: 0.5)) {
+                                        isShowInfo.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Back")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Spacer()
+                                        Image(systemName: "chevron.left")
+                                            .padding(.trailing, 4)
+                                    }.padding(.horizontal, 6)
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    
+                                }
+                                
+                            }
+                        }
+                    }
                     CustomButton(title: "Update") {
                         Task {
                             await masterViewModel.save_Profile()
@@ -110,74 +189,74 @@ struct MasterUploadProfile: View {
                         }
                     }
                     
-                }
-            }.padding(.leading, 4)
-                .padding(.trailing, 4)
-         
-                .overlay(alignment: .topTrailing) {
-                    PhotosPicker(selection: $photoPickerArray, maxSelectionCount: 10, selectionBehavior: .ordered) {
-                        HStack {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundStyle(Color.white)
-                                .font(.system(size: 18))
-                            
-                        }.frame(width: geo.size.width * 0.14, height: geo.size.height * 0.07)
-                            .background(Color.init(hex: "#3e5b47").opacity(0.6))
-                            .clipShape(Circle())
-                            .padding(.trailing, 6)
+                }.padding(.horizontal, 8)
+            }.createBackgrounfFon()
+                .photosPicker(isPresented: $isChangeProfilePhoto, selection: $photoPickerItems, matching: .images)
+            
+        })
+        .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+        .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImages ?? "", isShowTrash: true, deleteImage: {
+            masterViewModel.deleteImage(image: selectedImages ?? "")
+        })
+        .swipeBack(coordinator: coordinator)
+        .onTapGesture {
+            withAnimation(.snappy) {
+                UIApplication.shared.endEditing(true)
+            }
+        }
+        .customAlert(isPresented: $isLocationAlarm, hideCancel: true, message: massage, title: title, onConfirm: {
+            Task { await locationManager.updateLocationMaster(company: masterViewModel.masterModel) }
+        }, onCancel: {})
+        
+        .onChange(of: photoPickerArray) {
+            guard let uid = authViewModel.auth.currentUser?.uid else { return }
+            Task {
+                
+                var imageData: [Data] = []
+                
+                for item in photoPickerArray {
+                    if let data = try? await item.loadTransferable(type: Data.self) {
+                        imageData.append(data)
                     }
                 }
-
-        }).createBackgrounfFon()
-            .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
-            .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImages ?? "", isShowTrash: true, deleteImage: {
-                masterViewModel.deleteImage(image: selectedImages ?? "")
-            })
-            .swipeBack(coordinator: coordinator)
-            .onTapGesture {
-                withAnimation(.snappy) {
-                    UIApplication.shared.endEditing(true)
+                if !imageData.isEmpty {
+                    await Master_DataBase.shared.uploadMultipleImages(id: uid, imageData: imageData)
+                    await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
                 }
+                photoPickerArray.removeAll()
             }
-            .customAlert(isPresented: $isLocationAlarm, hideCancel: true, message: massage, title: title, onConfirm: {
-                Task { await locationManager.updateLocationMaster(company: masterViewModel.masterModel) }
-            }, onCancel: {})
-        
-            .onChange(of: photoPickerArray) {
-                guard let uid = authViewModel.auth.currentUser?.uid else { return }
-                Task {
-                    
-                    var imageData: [Data] = []
-                    
-                    for item in photoPickerArray {
-                        if let data = try? await item.loadTransferable(type: Data.self) {
-                            imageData.append(data)
+            
+        }
+        .onChange(of: photoPickerItems) {
+            guard let uid = authViewModel.auth.currentUser?.uid else { return }
+            Task {
+                if let photoPickerItems,
+                   let data = try? await photoPickerItems.loadTransferable(type: Data.self) {
+                    if UIImage(data: data) != nil {
+                        
+                        if let url = await Master_DataBase.shared.uploadImage_URLAvatar_Storage_Master(imageData: data) {
+                            await Master_DataBase.shared.updateImageFireBase_Master(id: uid, url: url)
+                            await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
                         }
                     }
-                    if !imageData.isEmpty {
-                        await Master_DataBase.shared.uploadMultipleImages(id: uid, imageData: imageData)
-                        await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
+                }
+                photoPickerItems = nil
+            }
+            
+        }
+        .onDisappear {
+            Admin_DataBase.shared.deinitListener()
+        }
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarLeading) {
+                if !isPressFullScreen {
+                    TabBarButtonBack {
+                        coordinator.pop()
                     }
-                    photoPickerArray.removeAll()
+                } else {
+                    Text("")
                 }
-                
             }
-            .onDisappear {
-                Admin_DataBase.shared.deinitListener()
-            }
-            .toolbar(content: {
-                ToolbarItem(placement: .topBarLeading) {
-                    VStack(alignment: .leading) {
-                        if !isPressFullScreen {
-                            TabBarButtonBack {
-                                coordinator.pop()
-                            }
-                            Text("Profile")
-                                .foregroundColor(.yellow)
-                                .font(.system(size: 24, weight: .bold, design: .serif))
-                        } else { Text("") }
-                    }.padding(.top, 20)
-                }
-            })
+        })
     }
 }

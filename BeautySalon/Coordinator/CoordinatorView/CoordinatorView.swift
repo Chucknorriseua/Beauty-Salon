@@ -12,7 +12,7 @@ enum PageAll: String, Identifiable {
 // MARK: Main controller Sign In or Main Register Profile
     case main, Main_Reg_Profile
 // MARK: ADMIN VIEW CONTROLLER
-    case Admin_Register, Admin_main, Admin_Desc_Pass
+    case Admin_Register, Admin_main, Admin_Desc_Pass, Admin_CreatPriseList
 // MARK: MASTER VIEW CONTROLLER
     case Master_Register, Master_Main, Master_Select_Company, Master_upDateProfile
 //MARK: USER VIEW CONTROLLER
@@ -60,6 +60,8 @@ final class CoordinatorView: ObservableObject {
                     Admin_MainTabbedView(adminViewModel: AdminViewModel.shared)
                 case .Admin_Desc_Pass:
                     AdminReg_Desc_Password(adminViewModel: AdminViewModel.shared)
+                case .Admin_CreatPriseList:
+                    AdminCreatePriceList(adminViewModel: AdminViewModel.shared)
                     
                     //                MARK: MASTER CONTROLLER----------------------------------------
                 case .Master_Register:

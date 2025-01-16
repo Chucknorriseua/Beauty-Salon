@@ -17,19 +17,9 @@ struct AddNewMasterCell: View {
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(addMasterInRoom.name)
-                        .font(.system(size: 24, weight: .heavy))
-                        .padding(.leading, 14)
-                    
-                    HStack {
-                        Image(systemName: "phone.circle.fill")
-                            .font(.system(size: 22))
-                        Text(addMasterInRoom.phone)
-                    }.onTapGesture {
-                        let phoneNumber = "tel://" + addMasterInRoom.phone
-                        if let url = URL(string: phoneNumber) {
-                            UIApplication.shared.open(url)
-                        }
-                    }
+                        .font(.system(size: 20, weight: .heavy))
+                        .padding(.leading, 8)
+
                     HStack {
                         Image(systemName: "envelope.fill")
                             .font(.system(size: 20))
@@ -41,15 +31,17 @@ struct AddNewMasterCell: View {
                 
                 Spacer()
                 VStack {}
-                    .createImageView(model: addMasterInRoom.image ?? "", width: geometry.size.width * 0.56 / 2,
-                                     height: geometry.size.height * 0.56)
+                    .createImageView(model: addMasterInRoom.image ?? "", width: geometry.size.width * 0.46 / 2,
+                                     height: geometry.size.height * 0.46)
                 
-            }.frame(height: geometry.size.height * 0.77)
+            }.frame(height: geometry.size.height * 0.54)
                 .background(.ultraThinMaterial.opacity(0.8).opacity(0.7), in: .rect(cornerRadius: 36))
-                .padding(.leading, 5)
-                .padding(.trailing, 5)
+                .padding(.horizontal, 6)
         }
-        .frame(height: 200)
-        .padding(.vertical, -26)
+        .frame(height: 150)
+        .padding(.vertical, -36)
     }
 }
+#Preview(body: {
+    AddNewMasterCell(addMasterInRoom: MasterModel.masterModel())
+})

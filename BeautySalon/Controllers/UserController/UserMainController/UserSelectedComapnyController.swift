@@ -25,13 +25,15 @@ struct UserSelectedComapnyController: View {
     @State private var isLoader: Bool = false
     @State private var isShowMenu: Bool = false
     
+    @State private var sliderDistance: Double = 500.0
+    
     
     private var searchCompanyNearby: [Company_Model] {
         guard let userLocation = locationManager.locationManager.location else {
             return filterCompanies(clientViewModel.comapny)
         }
 
-        let radius: CLLocationDistance = 10000
+        let radius: CLLocationDistance = sliderDistance
         let nearbyCompanies = clientViewModel.comapny.filter { company in
             if let distance = locationManager.calculateDistance(from: userLocation, to: company) {
                 return distance <= radius
@@ -107,7 +109,7 @@ struct UserSelectedComapnyController: View {
                             .ignoresSafeArea()
                             .overlay(alignment: .center) {
                                 ZStack {
-                                    UserSelectedCategories(selectedCategory: $selectedCategory, onSelectedCategory: {
+                                    UserSelectedCategories(selectedCategory: $selectedCategory, distanceValue: $sliderDistance, onSelectedCategory: {
                                         withAnimation {
                                             isShowMenu.toggle()
                                         }

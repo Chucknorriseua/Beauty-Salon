@@ -78,6 +78,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
                     if self.isUpdateLocation {
                         await self.updateLocationMaster(company: MasterViewModel.shared.masterModel)
                         await self.updateLocationClient(company: ClientViewModel.shared.clientModel)
+                        self.isUpdateLocation = false
                     }
                 }
             }

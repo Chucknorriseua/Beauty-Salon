@@ -19,6 +19,10 @@ struct UserSend_SheduleForAdmin: View {
     @State private var nameMaster: String = ""
     @State private var comment: String = ""
     @State private var selected: String = ""
+    @State private var isMenuProcedure: Bool = false
+    @State private var isAddrocedure: Bool = false
+    @State private var selectedProcedures: [Procedure] = []
+    @State private var selectedProceduresColor: [Procedure] = []
     
     var body: some View {
         GeometryReader { geo in
@@ -42,7 +46,64 @@ struct UserSend_SheduleForAdmin: View {
                         .onChange(of: clientViewModel.clientModel.phone) { _, new in
                             clientViewModel.clientModel.phone = formatPhoneNumber(new)
                         }
-                    SettingsButton(text: $serviceRecord, title: "Service- make nails", width: geo.size.width * 1)
+                    SettingsButton(text: $serviceRecord, title: "Procedure make nails", width: geo.size.width * 1)
+                        .overlay(alignment: .trailing) {
+                            if !clientViewModel.adminProfile.procedure.isEmpty {
+                                Button {
+                                    withAnimation(.easeOut(duration: 0.5)) {
+                                        isMenuProcedure.toggle()
+                                    }
+                                } label: {
+                                    Image(systemName: isMenuProcedure ? "minus.circle" : "plus.circle")
+                                        .font(.system(size: 32))
+                                }
+                                .clipped()
+                                .padding(.trailing, 8)
+                            }
+                        }
+                    if !clientViewModel.procedure.isEmpty {
+                        VStack {
+                            withAnimation {
+                                User_SelectProcedureCell(clientViewModel: clientViewModel, selectedProcedures: $selectedProcedures)
+                            }
+                        }.frame(width: geo.size.width * 0.92, height: geo.size.height * 0.3)
+                            .background(.ultraThinMaterial.opacity(0.6))
+                            .clipShape(.rect(cornerRadius: 12))
+                            .overlay(alignment: .bottom) {
+                                if !clientViewModel.procedure.isEmpty {
+                                    HStack(spacing: 34) {
+                                        Button {
+                                            withAnimation(.easeOut(duration: 0.5)) {
+                                                selectedProcedures.removeAll()
+                                            }
+                                        } label: {
+                                            Image(systemName: "xmark.circle")
+                                                .font(.system(size: 28))
+                                                .foregroundStyle(Color.red.opacity(0.7))
+                                        }
+                                        
+                                        Button {
+                                            withAnimation(.easeOut(duration: 0.5)) {
+                                                let saveSelected = selectedProcedures
+                                                clientViewModel.removeProcedure(selectedProcedure: selectedProcedures)
+                                                selectedProcedures.removeAll()
+                                                DispatchQueue.main.async {
+                                                    selectedProceduresColor.removeAll { proc in
+                                                        saveSelected.contains(where: {$0.id == proc.id})
+                                                    }
+                                                }
+                                            }
+                                        } label: {
+                                            Image(systemName: "trash.circle")
+                                                .font(.system(size: 28))
+                                                .foregroundStyle(Color.blue.opacity(0.7))
+                                        }
+                                        
+                                    }
+                                }
+                                
+                            }
+                    }
                     HStack {
                         Text("Selected master: ")
                             .font(.system(size: 18, weight: .bold))
@@ -64,26 +125,45 @@ struct UserSend_SheduleForAdmin: View {
                     .foregroundStyle(Color.white)
                 
                 HStack {
-                DatePicker("", selection: $clientViewModel.currentDate)
-                            .datePickerStyle(.compact)
-                }.padding(.trailing, 110)
+                    DatePicker("", selection: $clientViewModel.currentDate, displayedComponents: [.hourAndMinute, .date])
+                        .datePickerStyle(.compact)
+                       
+                }.padding(.trailing, 90)
                 HStack {
-               
-                    MainButtonSignIn(image: "pencil.line", title: "Send record", action: {
-                        
-                        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: clientViewModel.clientModel.name, taskService: serviceRecord, phone: clientViewModel.clientModel.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, tint: "Color1", timesTamp: Timestamp(date: Date()))
                     
+                    MainButtonSignIn(image: "pencil.line", title: "Send record", action: {
+                        let procedure = clientViewModel.adminProfile.procedure.filter { proc in
+                            clientViewModel.procedure.contains(where: {$0.id == proc.id})
+                        }
+                        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: clientViewModel.clientModel.name, taskService: serviceRecord, phone: clientViewModel.clientModel.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
+                        
                         Task {
                             await clientViewModel.send_SheduleForAdmin(adminID: clientViewModel.adminProfile.adminID, record: sendRecord)
                             NotificationController.sharet.notify(title: "You send record for \(clientViewModel.adminProfile.name)", subTitle: "your record has been sent to the admin, please wait for the admin to contact you", timeInterval: 1)
+                            clientViewModel.procedure.removeAll()
                             dismiss()
                         }
                     })
                 }
                 Spacer()
-            })
-            .background(Color.init(hex: "#3e5b47").opacity(0.8))
-            .ignoresSafeArea(.all)
-        }.frame(width: 420)
+            }).frame(width: geo.size.width * 1, height: geo.size.height * 1)
+                .background(Color.init(hex: "#3e5b47").opacity(0.8))
+                .ignoresSafeArea(.all)
+                .overlay(alignment: .center) {
+                    if isMenuProcedure {
+                        VStack {
+                            User_MenuProcedureView(clientViewModel: clientViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProceduresColor) {
+//                                withAnimation {
+//                                    isMenuProcedure.toggle()
+//                                }
+                            }
+                        }.padding(.horizontal, 8)
+                    }
+                }
+        }
     }
 }
+
+#Preview(body: {
+    UserSend_SheduleForAdmin(clientViewModel: ClientViewModel.shared)
+})

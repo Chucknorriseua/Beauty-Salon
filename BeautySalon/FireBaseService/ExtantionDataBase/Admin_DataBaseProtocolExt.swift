@@ -62,12 +62,23 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let creationDate = data?["creationDate"] as? Timestamp,
               let phone = data?["phone"] as? String,
               let nameMaster = data?["nameMaster"] as? String,
+              let procedure = data?["procedure"] as? [[String: Any]],
               let comment = data?["comment"] as? String,
               let tint = data?["tint"] as? String,
               let timesTamp = data?["timesTamp"] as? Timestamp else { throw NSError(domain: "Not correct create data", code: 0, userInfo: nil) }
         let createTampDate = creationDate.dateValue()
+         
+         let procedur: [Procedure] = try procedure.compactMap { proce in
+             guard let id = proce["id"] as? String,
+                   let title = proce["title"] as? String,
+                   let price = proce["price"] as? String,
+                   let description = proce["description"] as? String else {
+                 throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+             }
+             return Procedure(id: id, title: title, price: price, description: description)
+         }
         return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
-                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, tint: tint, timesTamp: timesTamp)
+                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, tint: tint, timesTamp: timesTamp, procedure: procedur)
     }
     
      func convertDocumentToCompany(_ document: DocumentSnapshot) throws -> Company_Model {
@@ -79,6 +90,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let email = data?["email"] as? String,
               let phone = data?["phone"] as? String,
               let image = data?["image"] as? String,
+              let procedure = data?["procedure"] as? [[String: Any]],
               let adress = data?["adress"] as? String,
               let desc = data?["description"] as? String,
               let latitude = data?["latitude"] as? Double,
@@ -86,10 +98,19 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let categories = data?["categories"] as? String else {
             throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
         }
+         let procedur: [Procedure] = try procedure.compactMap { proce in
+             guard let id = proce["id"] as? String,
+                   let title = proce["title"] as? String,
+                   let price = proce["price"] as? String,
+                   let description = proce["description"] as? String else {
+                 throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+             }
+             return Procedure(id: id, title: title, price: price, description: description)
+         }
         return Company_Model(id: id, adminID: adminID, name: name,
                              companyName: companyName,
                              adress: adress, email: email,
                              phone: phone, description: desc,
-                             image: image, latitude: latitude, longitude: longitude, categories: categories)
+                             image: image, procedure: procedur, latitude: latitude, longitude: longitude, categories: categories)
     }
 }

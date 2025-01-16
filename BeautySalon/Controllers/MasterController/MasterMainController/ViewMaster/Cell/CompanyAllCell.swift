@@ -123,7 +123,7 @@ struct CompanyAllCell: View {
                                         }
                                         Spacer()
 
-                                    }.padding(.horizontal, 4)
+                                    }.padding(.leading, 6)
                                 }
                             }
                         }
@@ -134,9 +134,8 @@ struct CompanyAllCell: View {
                             
                             Button(action: { openInMaps()}) {
                                 VStack {
-                                    Text("We're here")
-                                    Image(systemName: "mappin.and.ellipse")
-                                        .font(.system(size: 24))
+                                    Image(systemName: "location.fill.viewfinder")
+                                        .font(.system(size: 34))
                                         .foregroundStyle(Color.blue.opacity(0.8))
                                 }
                             }.padding([.horizontal, .vertical], 10)
@@ -175,7 +174,3 @@ struct CompanyAllCell: View {
                                           ])
     }
 }
-
-#Preview(body: {
-    CompanyAllCell(companyModel: Company_Model.init(id: "", adminID: "", name: "dsdsds", companyName: "sadsdsadsa", adress: "skljfdjsfdkls dskfjlkdsjflksd jdsfksdljflsdjflkds", email: "eqwewq@gmail.com", phone: "3243242342343", description: "fsdfdsfsdfsdfdsfsdfsdfsfdsfds djksjdkfhjkdfd fdjfhdkjfjd fdkj fjndkjfd djfjdkf fdfdjkfd", categories: ""), onToggle: {})
-})

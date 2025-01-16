@@ -12,6 +12,7 @@ struct UserMainForSheduleController: View {
     @EnvironmentObject var coordinator: CoordinatorView
     @StateObject  var clientViewModel: ClientViewModel
     @State private var isShowSheet: Bool = false
+    @State private var isSignUp: Bool = false
    
     var body: some View {
         GeometryReader { geo in
@@ -28,6 +29,19 @@ struct UserMainForSheduleController: View {
                 
             }.background(Color.init(hex: "#3e5b47").opacity(0.9))
                 .customAlert(isPresented: $clientViewModel.isAlert, hideCancel: true, message: clientViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+                .overlay(alignment: .bottom, content: {
+                    VStack {
+                        CustomButton(title: "Sign up") {
+                            isSignUp = true
+                        }
+                    }
+                })
+                .sheet(isPresented: $isSignUp, content: {
+                    UserSend_SheduleForAdmin(clientViewModel: clientViewModel)
+                        .foregroundStyle(Color.white)
+                        .presentationDetents([.height(600)])
+//                        .interactiveDismissDisabled()
+                })
                 .sheet(isPresented: $isShowSheet, content: {
                     UserSettings(clientViewModel: clientViewModel)
                         .presentationDetents([.height(260)])

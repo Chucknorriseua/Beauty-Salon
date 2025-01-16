@@ -44,13 +44,13 @@ struct AddNewMaster: View {
             ScrollView(.vertical) {
                     LazyVStack {
                         ForEach(searchCompanyNearby, id: \.self) { master in
-                            NavigationLink(destination: AddNewMasterView(addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
                                 
                                 AddNewMasterCell(addMasterInRoom: master)
                             }
-                        }.padding(.bottom, 14)
+                        }
                     }
-                    .padding(.top, 30)
+                    .padding(.top, 40)
             }.createBackgrounfFon()
 
         }.searchable(text: $searchText)

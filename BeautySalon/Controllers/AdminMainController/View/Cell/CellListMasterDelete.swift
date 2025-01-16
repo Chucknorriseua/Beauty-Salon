@@ -13,7 +13,7 @@ struct CellListMasterDelete: View {
     @State var master: MasterModel? = nil
     
     var body: some View {
-        VStack() {
+        VStack {
             HStack {
                 if let image = master?.image, let url = URL(string: image) {
                     WebImage(url: url)
@@ -31,11 +31,7 @@ struct CellListMasterDelete: View {
                 Text(master?.name ?? "no name")
                     .font(.system(size: 26, weight: .bold))
                     .foregroundStyle(Color.yellow.opacity(0.9))
-                Spacer()
-                Image(systemName: "chevron.left")
-                    .font(.title)
-                    .padding(.trailing, 6)
-                    .foregroundStyle(Color(hex: "F3E3CE"))
+
             }.padding(.leading, 6)
         }
     }

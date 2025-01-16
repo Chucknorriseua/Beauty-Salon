@@ -20,21 +20,22 @@ struct Shedule: Identifiable, Codable, Hashable {
     var creationDate: Date
     var tint: String
     var timesTamp: Timestamp
+    var procedure: [Procedure]
     
     static func sheduleModel() -> Shedule {
-        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), tint: "", timesTamp: Timestamp(date: Date()))
+        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), tint: "", timesTamp: Timestamp(date: Date()), procedure: [])
     }
     
     var tinColor: Color {
         switch tint {
         case "Color": return .white.opacity(0.5)
-        case "Color1": return .blue.opacity(0.5)
-        case "Color2": return .red.opacity(0.5)
-        case "Color3": return .green.opacity(0.5)
-        case "Color4": return .pink.opacity(0.5)
-        case "Color5": return .orange.opacity(0.5)
+        case "Color1": return .blue.opacity(0.2)
+        case "Color2": return .red.opacity(0.2)
+        case "Color3": return .green.opacity(0.3)
+        case "Color4": return .pink.opacity(0.3)
+        case "Color5": return .orange.opacity(0.2)
         default:
-            return .black
+            return .white
         }
     }
     
@@ -50,6 +51,12 @@ struct Shedule: Identifiable, Codable, Hashable {
         model["creationDate"] = self.creationDate
         model["tint"] = self.tint
         model["timesTamp"] = self.timesTamp
+        model["procedure"] = self.procedure.map({ proc in
+            return ["id": proc.id,
+                    "title": proc.title,
+                    "price": proc.price,
+                    "description": proc.description]
+        })
         return model
     }
 }

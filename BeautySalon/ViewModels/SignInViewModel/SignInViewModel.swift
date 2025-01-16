@@ -29,7 +29,7 @@ final class SignInViewModel: ObservableObject {
         case "Admin":
             let admin = Company_Model(id: id, adminID: id, name: fullName,
                                       companyName: nameCompany, adress: adress,
-                                      email: email, phone: phone, description: textEditorDescrt, image: "", latitude: 0.0, longitude: 0.0, categories: "")
+                                      email: email, phone: phone, description: textEditorDescrt, image: "", procedure: [], latitude: 0.0, longitude: 0.0, categories: "")
             
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: admin)
             coordinator.popToRoot()

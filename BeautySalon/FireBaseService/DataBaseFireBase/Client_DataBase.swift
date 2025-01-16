@@ -57,7 +57,7 @@ final class Client_DataBase {
             throw error
         }
     }
-    
+
     func fetchClient_DataFB() async throws -> Client? {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
         do {

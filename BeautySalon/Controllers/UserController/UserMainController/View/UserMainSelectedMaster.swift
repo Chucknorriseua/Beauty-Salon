@@ -17,7 +17,7 @@ struct UserMainSelectedMaster: View {
                 
                 LazyVStack {
                     ForEach(clientViewModel.mastersInRoom, id: \.self) { master in
-                        NavigationLink(destination: User_MasterDetailse(masterModel: master).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
                             
                             User_MasterInToRoomCell(masterModel: master)
                         }.padding(.bottom, 14)

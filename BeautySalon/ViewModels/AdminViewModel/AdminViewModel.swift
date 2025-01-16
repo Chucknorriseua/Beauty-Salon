@@ -17,9 +17,10 @@ final class AdminViewModel: ObservableObject {
     @Published private(set) var recordsClient: [Shedule] = []
     @Published private(set) var addMasterInRoom: [MasterModel] = []
     @Published private(set) var client: [Client] = []
+    @Published var procedure: [Procedure] = []
     
-    @Published  var isAlert: Bool = false
-    @Published  var errorMassage: String = ""
+    @Published var isAlert: Bool = false
+    @Published var errorMassage: String = ""
     
     @Published var adminProfile: Company_Model
     @Published var masterModel: MasterModel
@@ -27,7 +28,31 @@ final class AdminViewModel: ObservableObject {
     private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
-       
+        
+    }
+    
+    @MainActor
+    func addNewProcedure(addProcedure: Procedure) async {
+        do {
+            _ = try await Admin_DataBase.shared.addProcedure(procedure: addProcedure)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                if !procedure.contains(where: {$0.id == addProcedure.id}) {
+                    self.procedure.append(addProcedure)
+                }
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    @MainActor
+    func removeProcedure(selectedProcedure: [Procedure]) {
+        for procedure in selectedProcedure {
+            if let index = self.procedure.firstIndex(where: { $0.id == procedure.id }) {
+                self.procedure.remove(at: index)
+            }
+        }
     }
     
     //  MARK: Fetch profile admin
@@ -41,9 +66,7 @@ final class AdminViewModel: ObservableObject {
             await fethAllData()
             
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("Error fetchProfileAdmin...", error.localizedDescription)
+            await handleError(error: error)
         }
         
     }
@@ -51,11 +74,14 @@ final class AdminViewModel: ObservableObject {
     private func fethAllData() async {
         await withTaskGroup(of: Void.self) { [weak self] group in
             guard let self else { return }
-            group.addTask { await Admin_DataBase.shared.updateProfile_Admin()}
-            group.addTask { await self.get_AllAdded_Masters_InRomm()}
-            group.addTask { await Admin_DataBase.shared.removeYesterdaysClient()}
+            
+            group.addTask { await Admin_DataBase.shared.updateProfile_Admin() }
+            group.addTask { await self.get_AllAdded_Masters_InRomm() }
+            group.addTask { await Admin_DataBase.shared.removeYesterdaysClient() }
+
         }
     }
+
     
     //  MARK: ADD Master it to room
     func add_MasterToRoom(masterID: String, master: MasterModel) async {
@@ -69,9 +95,7 @@ final class AdminViewModel: ObservableObject {
             }
             try await Admin_DataBase.shared.add_MasterToRoom(idMaster: masterID, master: master)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error add master in to room", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -83,9 +107,7 @@ final class AdminViewModel: ObservableObject {
                 self.client = client
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error fetch current user...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -95,9 +117,7 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: adminProfile)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error save new data on firebase...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     //  MARK: Fetch all profile master in to rooms
@@ -111,9 +131,7 @@ final class AdminViewModel: ObservableObject {
                 
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error fetchAllMasters...", error.localizedDescription)
+            await handleError(error: error)
         }
         
     }
@@ -128,9 +146,7 @@ final class AdminViewModel: ObservableObject {
                 self.addMasterInRoom = master
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error fetchAllMasters...", error.localizedDescription)
+            await handleError(error: error)
         }
         
     }
@@ -140,9 +156,7 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.send_ShedulesTo_Master(idMaster: masterID, shedule: shedule)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error send current master records...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -162,9 +176,7 @@ final class AdminViewModel: ObservableObject {
                 }
             }
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error fetchRecordsClient...", error.localizedDescription)
+            await handleError(error: error)
         }
     }
     
@@ -179,9 +191,21 @@ final class AdminViewModel: ObservableObject {
             try await Admin_DataBase.shared.removeRecordFireBase(id: record.id)
             
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error deleteRecord...", error.localizedDescription)
+            await handleError(error: error)
+        }
+    }
+    
+    func deleteProcedure(procedureID: Procedure) async {
+        if let index = procedure.firstIndex(where: {$0.id == procedureID.id}) {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.procedure.remove(at: index)
+            }
+        }
+        do {
+            try await Admin_DataBase.shared.removeProcedureFireBase(procedureID: procedureID.id)
+        } catch {
+            await handleError(error: error)
         }
     }
     
@@ -197,9 +221,7 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.remove_MasterFromSalon(masterID: master.masterID)
         } catch {
-            isAlert = true
-            errorMassage = error.localizedDescription
-            print("DEBUG: Error deleteRecord...", error.localizedDescription)
+           await handleError(error: error)
         }
     }
     
@@ -208,4 +230,10 @@ final class AdminViewModel: ObservableObject {
         allMasters.removeAll()
     }
     
+    
+    private func handleError(error: Error) async {
+        isAlert = true
+        errorMassage = error.localizedDescription
+        print("Error in task: \(error.localizedDescription)")
+    }
 }
