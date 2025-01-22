@@ -18,10 +18,11 @@ struct AdminCreatePriceList: View {
         VStack {
             ScrollView {
                 LazyVStack {
-                    ForEach(adminViewModel.adminProfile.procedure, id:\.self) { proced in
+                    ForEach(adminViewModel.procedure, id:\.self) { proced in
                         ProcedureCell(procedure: proced, adminViewModel: adminViewModel)
                     }
                 }.padding(.top, 10)
+                    .animation(.easeInOut(duration: 1), value: adminViewModel.procedure)
             }
         }.createBackgrounfFon()
             .sheet(isPresented: $isShowSheet, content: {
@@ -34,11 +35,6 @@ struct AdminCreatePriceList: View {
                     TabBarButtonBack {
                         coordinator.pop()
                     }
-                }
-                ToolbarItem(placement: .principal) {
-                  Text("Price list")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(Color.yellow.opacity(0.9))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {

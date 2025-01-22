@@ -43,7 +43,6 @@ struct MainCoordinator: View {
                             let check = try await google.checkSubscribeGoogleProfile(coordinator: coordinator)
                             guard check else {
                                 checkProfile.isSubscribe = true
-                                checkProfile.messageSubscribe = "You don't have a subscription, to enter you need to buy a subscription"
                                 return
                             }
                         }
@@ -63,15 +62,17 @@ struct MainCoordinator: View {
                         .foregroundStyle(Color.white)
                     
                 }
-            }.navigationBarTitleDisplayMode(.inline).toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Welcom in Beauty Salon")
-                        .foregroundStyle(Color.yellow.opacity(0.8))
-                        .font(.system(size: 27, weight: .heavy).bold())
-                }
             }
 
         }.createBackgrounfFon()
+            .overlay(alignment: .top) {
+                VStack {
+                    Text("Welcom in Beauty Salon")
+                        .foregroundStyle(Color.yellow.opacity(0.8))
+                        .font(.system(size: 28, weight: .heavy).bold())
+                }
+               
+            }
             .task {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     Task {
@@ -81,12 +82,13 @@ struct MainCoordinator: View {
             }
             .overlay(alignment: .center) { CustomLoader(isLoader: $checkProfile.isLoader, text: $checkProfile.loader) }
             .customAlert(isPresented: $checkProfile.isPressAlarm, hideCancel: false, message: checkProfile.message, title: "Something went wrong", onConfirm: {}, onCancel: {})
-            .customAlert(isPresented: $checkProfile.isSubscribe, hideCancel: false, message: checkProfile.messageSubscribe, title: "Buy a Subscription", onConfirm: {
+        
+            .customAlert(isPresented: $checkProfile.isSubscribe, hideCancel: true, message: "You don't have a subscription, to enter you need to buy a subscription", title: "Buy a Subscription", onConfirm: {
                 checkProfile.isBuySubscribe = true
         }, onCancel: {})
             .sheet(isPresented: $checkProfile.isBuySubscribe) {
             SheetStoreKitProductSelect(storeKitView: StoreViewModel.shared)
-            .presentationDetents([.height(320)])
+            .presentationDetents([.height(500)])
     }
         .ignoresSafeArea(.keyboard)
     }

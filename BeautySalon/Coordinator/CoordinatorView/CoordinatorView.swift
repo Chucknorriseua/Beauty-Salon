@@ -44,7 +44,7 @@ final class CoordinatorView: ObservableObject {
 
     @ViewBuilder
         func Adminbuild(page: PageAll) -> some View {
-            NavigationView(content: {
+            NavigationView {
                 
                 switch page {
                     //                MARK: MAIN CONTROLLER----------------------------------------
@@ -86,7 +86,7 @@ final class CoordinatorView: ObservableObject {
                 case .google:
                     GoogleRegisterProfile()
                 }
-            }).navigationBarBackButtonHidden(true)
+            }.navigationBarBackButtonHidden(true)
                
         }
     

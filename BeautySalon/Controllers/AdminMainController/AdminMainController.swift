@@ -10,61 +10,62 @@ import SwiftUI
 struct AdminMainController: View {
     
     @StateObject var admimViewModel: AdminViewModel
-
-    @State private var scrollId: String? = nil
-    @State private var selecetedRecord: Shedule? = nil
-    @State private var isLoading: Bool = false
-    @State private var isShowListMaster: Bool = false
     
+    @State private var selecetedRecord: Shedule? = nil
+    @State private var isShowListMaster: Bool = false
+    @State private var isShowRedactor: Bool = false
+    @State private var isRefreshID: Bool = false
+    @State private var refreshID = UUID()
     
     var body: some View {
-        
-        NavigationView(content: {
+        NavigationView {
+            
             VStack {
-                ScrollView {
-                    
-                    LazyVStack {
-                        ForEach(admimViewModel.recordsClient, id: \.id) { record in
-                            VStack {
-                                
-                                AdminSheduleFromClientCell(recordModel: record, viewModelAdmin: admimViewModel,
-                                                  isShowList: $isShowListMaster, selecetedRecord: $selecetedRecord).onTapGesture {
-                                    selecetedRecord = record
-                                }.id(record.id)
-                                
-                                    .scrollTransition(.interactive) { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            .offset(y: phase.isIdentity ? 0 : -40)
-                                    }
+                VStack {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(admimViewModel.recordsClient, id: \.id) { record in
+                                VStack {
+                                    
+                                    AdminSheduleFromClientCell(recordModel: record, viewModelAdmin: admimViewModel,
+                                                               isShowList: $isShowListMaster, isShowRedactorDate: $isShowRedactor, selecetedRecord: $selecetedRecord).onTapGesture(perform: {
+                                        selecetedRecord = record
+                                    })
+                                       .transition(.opacity)
+                                       .scrollTransition(.animated) { content, phase in
+                                           content
+                                               .opacity(phase.isIdentity ? 1 : 0)
+                                               .offset(y: phase.isIdentity ? 0 : -40)
+                                       }
+                                }
                             }
                         }
-                    }.padding(.top, 18)
-                        .animation(.easeOut(duration: 0.5), value: admimViewModel.recordsClient)
-                    .padding(.bottom, 60)
-                    .onAppear {
-                        Task {
-                            isLoading = true
-                            await admimViewModel.getPagination_DataRecord(isLoading: true)
-                            isLoading = false
-                        }
-                    }
-                    
-                    
-                }.scrollIndicators(.hidden)
-                    .scrollPosition(id: $scrollId, anchor: .bottom)
-                    .onChange(of: scrollId) { _, new in
-                        if (new != nil) && !isLoading {
-                            
+                        .padding(.top, 18)
+                        .padding(.bottom, 60)
+                        .onAppear {
                             Task {
-                                isLoading = true
-                                await admimViewModel.getPagination_DataRecord(isLoading: false)
-                                isLoading = false
+                                await admimViewModel.fetchClientRecords()
                             }
                         }
-                    }
-                
-            }.scrollTargetLayout()
+                        
+                        
+                    }.scrollIndicators(.hidden)
+                        .id(refreshID)
+                        .refreshable {
+                            withAnimation(.snappy(duration: 0.5)) {
+                                isRefreshID = true
+                            }
+                            Task {
+                                await admimViewModel.fetchClientRecords()
+                                withAnimation(.snappy(duration: 0.5)) {
+                                    refreshID = UUID()
+                                    isRefreshID = false
+                                }
+                            }
+                        }
+                    
+                }
+            }.createBackgrounfFon()
                 .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
@@ -89,17 +90,19 @@ struct AdminMainController: View {
                 })
                 .foregroundStyle(Color.white)
                 .tint(.yellow)
-                .createBackgrounfFon()
                 .sheet(isPresented: $isShowListMaster, content: {
                     AdminListMasterAddShedule(adminViewModel: admimViewModel, selecetedRecord: $selecetedRecord)
                         .presentationDetents([.height(500)])
                         .interactiveDismissDisabled()
                 })
-        })
-        .refreshable {
-            Task {
-                await admimViewModel.getPagination_DataRecord(isLoading: true)
-            }
+                .sheet(isPresented: $isShowRedactor, content: {
+                    
+                    AdminSheetRedactorShedule(adminViewModel: admimViewModel, selecetedRecord: $selecetedRecord)
+                        .presentationDetents([.height(540)])
+                    
+                })
         }
+        
     }
 }
+

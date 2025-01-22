@@ -16,10 +16,10 @@ enum Categories: String, Identifiable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .nail: return "Nails"
-        case .hairStyle: return "Hair Style"
-        case .massage: return "Massage"
-        case .another: return "Another"
+        case .nail: return "Nails".localized
+        case .hairStyle: return "Hair Style".localized
+        case .massage: return "Massage".localized
+        case .another: return "Another".localized
         }
     }
 }
@@ -43,16 +43,7 @@ struct UserSelectedCategories: View {
                                 onSelectedCategory()
                             } label: {
                                 VStack {
-                                    switch category {
-                                    case .nail:
-                                        Text("Nails")
-                                    case .hairStyle:
-                                        Text("Hair Style")
-                                    case .massage:
-                                        Text("Massage")
-                                    case .another:
-                                        Text("Another")
-                                    }
+                                    Text(category.displayName.localized)
                                 }.frame(width: 140, height: 40)
                                     .fontWeight(.bold)
                                     .fontDesign(.monospaced)
@@ -131,7 +122,7 @@ struct UserSelectedCategories: View {
             }
             Spacer()
         }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 230 : 180)
-            .background(.ultraThickMaterial.opacity(0.8))
+            .background(.regularMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 24))
             .padding(.horizontal)
             .overlay(alignment: .topLeading) {
@@ -159,4 +150,9 @@ struct UserSelectedCategories: View {
 }
 #Preview {
     UserSelectedCategories(selectedCategory: .constant(Categories.another),  distanceValue: .constant(0.0), onSelectedCategory: {})
+}
+extension String {
+    var localized: String {
+        NSLocalizedString(self, comment: "")
+    }
 }

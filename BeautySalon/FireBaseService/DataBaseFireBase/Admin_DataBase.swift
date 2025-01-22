@@ -28,7 +28,7 @@ final class Admin_DataBase {
     
     private var lastDocument: DocumentSnapshot? = nil
     
-    private var pageSize: Int = 5
+    private var pageSize: Int = 8
     
     private let storage = Storage.storage().reference()
     
@@ -141,7 +141,7 @@ final class Admin_DataBase {
             }
             return shedule
         } catch {
-            print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE", error.localizedDescription)
+            print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE1111", error.localizedDescription)
             throw error
         }
     }
@@ -155,57 +155,70 @@ final class Admin_DataBase {
             }
             return client
         } catch {
-            print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE", error.localizedDescription)
+            print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE22222", error.localizedDescription)
             throw error
         }
     }
     
-    func fetch_ClientRecords(isLoad: Bool = false) async throws -> [Shedule] {
+    func fetch_ClientRecords() async throws -> [Shedule] {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
-        var query = mainFS.document(uid).collection("Record").order(by: "creationDate", descending: false).limit(to: pageSize)
-        
-        if let lastDoc = lastDocument, !isLoad {
-            query = query.start(afterDocument: lastDoc)
-        }
-        
         do {
-            
-            let snapShot = try await query.getDocuments()
-     
-            let newRec = snapShot.documents.compactMap { document in
-                try? document.data(as: Shedule.self)
-            }
-            
-            lastDocument = snapShot.documents.last
-            return newRec
+        let snapShot = try await mainFS.document(uid).collection("Record").getDocuments()
+        let shedule: [Shedule] = try snapShot.documents.compactMap {[weak self] doc in
+            return try self?.convertDocumentToShedule(doc)
+        }
+        return shedule
         } catch {
             print("DEBUG: ERROR FETCH records amount", error.localizedDescription)
             throw error
         }
     }
+//    func fetch_ClientRecords(isLoad: Bool = false) async throws -> [Shedule] {
+//        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
+//        var query = mainFS.document(uid).collection("Record").order(by: "creationDate", descending: false).limit(to: pageSize)
+//        
+//        if let lastDoc = lastDocument, !isLoad {
+//            query = query.start(afterDocument: lastDoc)
+//        }
+//        
+//        do {
+//            
+//            let snapShot = try await query.getDocuments()
+//     
+//            let newRec = snapShot.documents.compactMap { document in
+//                try? document.data(as: Shedule.self)
+//            }
+//            
+//            lastDocument = snapShot.documents.last
+//            return newRec
+//        } catch {
+//            print("DEBUG: ERROR FETCH records amount", error.localizedDescription)
+//            throw error
+//        }
+//    }
     
 // MARK: Update Image
 // update profile as admin
 
-    func updateProfile_Admin() async {
-        guard let uid = auth.currentUser?.uid else { return }
-        
-        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
-            
-            if let error = error {
-                print("Error", error.localizedDescription)
-            }
-            
-            guard let document = snap, document.exists else { return }
-            
-            if let data = try? document.data(as: Company_Model.self) {
-                
-                DispatchQueue.main.async {
-                    AdminViewModel.shared.adminProfile = data
-                }
-            }
-        })
-    }
+//    func updateProfile_Admin() async {
+//        guard let uid = auth.currentUser?.uid else { return }
+//        
+//        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
+//            
+//            if let error = error {
+//                print("Error", error.localizedDescription)
+//            }
+//            
+//            guard let document = snap, document.exists else { return }
+//            
+//            if let data = try? document.data(as: Company_Model.self) {
+//                
+//                DispatchQueue.main.async {
+//                    AdminViewModel.shared.adminProfile = data
+//                }
+//            }
+//        })
+//    }
     
     //    Update Image fire store
     func updateLocationCompany(company: Company_Model) async {
@@ -220,7 +233,15 @@ final class Admin_DataBase {
             print("DEBUG: Error updateLocationCompany", error.localizedDescription)
         }
     }
-
+    
+    func changeRecordFromClient(record: Shedule, id: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        var idrec = record
+        idrec.id = id
+        let shedule = mainFS.document(uid).collection("Record").document(record.id)
+        try await shedule.updateData(["nameMaster": record.nameMaster, "creationDate": record.creationDate, "procedure": record.procedure.map({$0.procedure})])
+        print("shedule data base", shedule)
+    }
     
     
     func upDatedImage_URL_Firebase_Admin(imageData: Data) async -> URL? {
@@ -274,8 +295,6 @@ final class Admin_DataBase {
             guard let id = procedure["id"] as? String else { return false }
             return id == procedureID
         }
-        
-        // Обновите документ в Firebase с новым массивом процедур
         try await record.updateData(["procedure": procedures])
     }
     
@@ -344,3 +363,16 @@ final class Admin_DataBase {
 
 }
 
+//func fetch_CurrentClient_SentRecord() async throws -> [Client] {
+//    guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
+//    do {
+//        let snapShot = try await mainFS.document(uid).collection("Client").getDocuments()
+//        let client: [Client] = try snapShot.documents.compactMap {[weak self] doc in
+//            return try self?.convertDocumentToClient(doc)
+//        }
+//        return client
+//    } catch {
+//        print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE22222", error.localizedDescription)
+//        throw error
+//    }
+//}

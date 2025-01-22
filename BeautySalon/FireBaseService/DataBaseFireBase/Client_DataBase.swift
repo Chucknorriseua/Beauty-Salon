@@ -51,7 +51,7 @@ final class Client_DataBase {
 
     func send_RecordForAdmin(adminID: String, record: Shedule) async throws {
         do {
-            try await mainFS.document(adminID).collection("Record").addDocument(data: record.shedule)
+            try await mainFS.document(adminID).collection("Record").document(record.id).setData(record.shedule)
         } catch {
             print("DEBUG: sendAppoitmentToMaster not correct send...", error.localizedDescription)
             throw error

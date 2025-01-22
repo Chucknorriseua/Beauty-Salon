@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  BeautySalon
+
+  Created by Евгений Полтавец on 17/01/2025.
+  
+*/
+"NSUserTrackingUsageDescription" = "Beauty Salon потрібні локації, щоб він міг запропонувати найближчі точки розташування";
+"NSLocationWhenInUseUsageDescription" = "Beauty Salon потрібні локації для пропозиції найближчих салонів та майстрів";
+"NSLocationAlwaysUsageDescription" = "Beauty Salon потрібні локації для роботи навіть у фоновому режимі";

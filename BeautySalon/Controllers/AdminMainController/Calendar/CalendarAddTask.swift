@@ -23,6 +23,7 @@ struct CalendarAddTask: View {
     @State var masterModel: MasterModel
     @State private var selectedProcedures: [Procedure] = []
     
+    
     var body: some View {
         GeometryReader { geo in
             
@@ -53,7 +54,7 @@ struct CalendarAddTask: View {
                         DatePicker("", selection: $adminCalendarViewModel.currentDate)
                             .datePickerStyle(.compact)
                         
-                    }.padding(.trailing, 90)
+                    }.padding(.trailing, 110)
                     HStack {
                         VStack {
                             
@@ -142,26 +143,24 @@ struct CalendarAddTask: View {
 
                             await Admin_CalendarViewModel.shared.addTaskShedule(masterID: masterModel.masterID, addTask: shedul)
                             adminViewModel.procedure.removeAll()
+                            dismiss()
                         }
-                        
-                        
-                        dismiss()
                     }
                 }
                 Spacer()
             })
+            .onDisappear {
+                adminViewModel.procedure.removeAll()
+            }
             .frame(width: geo.size.width * 1)
-                .padding(.trailing, 6)
             .background(Color.init(hex: "#3e5b47").opacity(0.8))
-            .overlay(alignment: .center) {
+            .overlay(alignment: .top) {
                 if isMenuProcedure {
                     VStack {
-                        AdminMenuProcedureView(adminViewModel: AdminViewModel.shared, addProcedure: $isAddrocedure) {
-                            withAnimation {
-                                isMenuProcedure.toggle()
-                            }
+                        AdminChangeSelectView(adminViewModel: adminViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProcedures) {
                         }
-                    }.padding(.horizontal, 8)
+                    }.padding(.horizontal, 14)
+                    .padding(.top, 2)
                 }
             }
         }

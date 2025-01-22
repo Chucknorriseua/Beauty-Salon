@@ -18,9 +18,10 @@ struct Client: Identifiable, Codable, Hashable {
     let date: Date
     var latitude: Double?
     var longitude: Double?
+    var shedule: [Shedule]
     
     static func clientModel() -> Client {
-        return Client(id: "", clientID: "", name: "", email: "", phone: "", date: Date(), latitude: 0.0, longitude: 0.0)
+        return Client(id: "", clientID: "", name: "", email: "", phone: "", date: Date(), latitude: 0.0, longitude: 0.0, shedule: [])
     }
     
     var clientDic: [String: Any] {
@@ -33,6 +34,7 @@ struct Client: Identifiable, Codable, Hashable {
         dic["date"] = self.date
         dic["latitude"] = self.latitude
         dic["longitude"] = self.longitude
+        dic["shedule"] = self.shedule.map {$0.shedule }
         return dic
     }
     

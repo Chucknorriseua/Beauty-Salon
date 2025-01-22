@@ -20,7 +20,7 @@ struct CustomTextField: View {
         Group {
             if title == "Password" && !showPassword {
                 SecureField(text: text) {
-                    Text(title)
+                    Text(LocalizedStringKey(title))
                         .monospaced()
                         .foregroundStyle(.white.opacity(0.5))
                         .fontWeight(.semibold)
@@ -28,7 +28,7 @@ struct CustomTextField: View {
                 }
             } else {
                 TextField(text: text) {
-                    Text(title)
+                    Text(LocalizedStringKey(title))
                         .monospaced()
                         .foregroundStyle(.white.opacity(0.5))
                         .fontWeight(.semibold)

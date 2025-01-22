@@ -42,7 +42,7 @@ final class SignInViewModel: ObservableObject {
             coordinator.popToRoot()
             
         case "Client":
-            let client = Client(id: id, clientID: id, name: fullName, email: email, phone: phone, date: Date(), latitude: 0.0, longitude: 0.0)
+            let client = Client(id: id, clientID: id, name: fullName, email: email, phone: phone, date: Date(), latitude: 0.0, longitude: 0.0, shedule: [])
             
             try await Client_DataBase.shared.setData_ClientFireBase(clientModel: client)
             coordinator.popToRoot()

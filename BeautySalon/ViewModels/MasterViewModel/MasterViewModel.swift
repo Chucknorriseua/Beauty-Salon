@@ -51,7 +51,7 @@ final class MasterViewModel: ObservableObject {
         await withTaskGroup(of: Void.self) {[weak self] group in
             guard let self else { return }
             group.addTask(priority: .high) { await self.fetchProfile_Master(id: self.masterModel.id) }
-            group.addTask { await Master_DataBase.shared.updateProfile_Master() }
+//            group.addTask { await Master_DataBase.shared.updateProfile_Master() }
         }
     }
 
@@ -127,6 +127,7 @@ final class MasterViewModel: ObservableObject {
         }
         
     }
+    @MainActor
     private func handleError(error: Error) async {
         isAlert = true
         errorMassage = error.localizedDescription

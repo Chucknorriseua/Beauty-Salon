@@ -21,38 +21,17 @@ final class AdminViewModel: ObservableObject {
     
     @Published var isAlert: Bool = false
     @Published var errorMassage: String = ""
+    @Published var totalCost: Double = 0.0
     
     @Published var adminProfile: Company_Model
     @Published var masterModel: MasterModel
+    @Published var shedule: Shedule
     
-    private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil) {
+    private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
+        self.shedule = shedule ?? Shedule.sheduleModel()
         
-    }
-    
-    @MainActor
-    func addNewProcedure(addProcedure: Procedure) async {
-        do {
-            _ = try await Admin_DataBase.shared.addProcedure(procedure: addProcedure)
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                if !procedure.contains(where: {$0.id == addProcedure.id}) {
-                    self.procedure.append(addProcedure)
-                }
-            }
-        } catch {
-            await handleError(error: error)
-        }
-    }
-    
-    @MainActor
-    func removeProcedure(selectedProcedure: [Procedure]) {
-        for procedure in selectedProcedure {
-            if let index = self.procedure.firstIndex(where: { $0.id == procedure.id }) {
-                self.procedure.remove(at: index)
-            }
-        }
     }
     
     //  MARK: Fetch profile admin
@@ -62,11 +41,12 @@ final class AdminViewModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.adminProfile = profile
+                self.procedure = adminProfile.procedure
             }
             await fethAllData()
             
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "fetch my profile")
         }
         
     }
@@ -75,13 +55,13 @@ final class AdminViewModel: ObservableObject {
         await withTaskGroup(of: Void.self) { [weak self] group in
             guard let self else { return }
             
-            group.addTask { await Admin_DataBase.shared.updateProfile_Admin() }
+            //            group.addTask { await Admin_DataBase.shared.updateProfile_Admin() }
             group.addTask { await self.get_AllAdded_Masters_InRomm() }
             group.addTask { await Admin_DataBase.shared.removeYesterdaysClient() }
-
+            
         }
     }
-
+    
     
     //  MARK: ADD Master it to room
     func add_MasterToRoom(masterID: String, master: MasterModel) async {
@@ -95,7 +75,22 @@ final class AdminViewModel: ObservableObject {
             }
             try await Admin_DataBase.shared.add_MasterToRoom(idMaster: masterID, master: master)
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "add master")
+        }
+    }
+    
+    @MainActor
+    func addNewProcedure(addProcedure: Procedure) async {
+        do {
+            _ = try await Admin_DataBase.shared.addProcedure(procedure: addProcedure)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                if !procedure.contains(where: {$0.id == addProcedure.id}) {
+                    self.procedure.append(addProcedure)
+                }
+            }
+        } catch {
+            await handleError(error: error, wheare: "add new procedure")
         }
     }
     
@@ -107,7 +102,7 @@ final class AdminViewModel: ObservableObject {
                 self.client = client
             }
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "fetch client")
         }
     }
     
@@ -117,7 +112,7 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: adminProfile)
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "save new profile")
         }
     }
     //  MARK: Fetch all profile master in to rooms
@@ -131,7 +126,7 @@ final class AdminViewModel: ObservableObject {
                 
             }
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "fetch all masters")
         }
         
     }
@@ -146,7 +141,7 @@ final class AdminViewModel: ObservableObject {
                 self.addMasterInRoom = master
             }
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "get all add masters")
         }
         
     }
@@ -156,27 +151,32 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.send_ShedulesTo_Master(idMaster: masterID, shedule: shedule)
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "send record master")
         }
     }
     
-    func getPagination_DataRecord(isLoading: Bool = false) async {
+    
+    func updateRecordsFromClient(record: Shedule, id: String) async {
+        
         do {
-            let records = try await Admin_DataBase.shared.fetch_ClientRecords(isLoad: isLoading)
-            
+            try await Admin_DataBase.shared.changeRecordFromClient(record: record, id: record.id)
+        } catch {
+            await handleError(error: error, wheare: "update record client")
+        }
+    }
+    
+    @MainActor
+    func fetchClientRecords() async {
+        do {
+            let records = try await Admin_DataBase.shared.fetch_ClientRecords()
+            let sortedDate = records.sorted(by: {$0.creationDate < $1.creationDate})
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                if isLoading {
-                    self.recordsClient = records
-                } else {
-                    let newRec = records.filter { newRec in
-                        !self.recordsClient.contains(where: {$0.id == newRec.id})
-                    }
-                    self.recordsClient.append(contentsOf: newRec)
-                }
+                self.recordsClient = sortedDate
             }
+            
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "get client records")
         }
     }
     
@@ -191,7 +191,7 @@ final class AdminViewModel: ObservableObject {
             try await Admin_DataBase.shared.removeRecordFireBase(id: record.id)
             
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "delete record")
         }
     }
     
@@ -205,7 +205,7 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.removeProcedureFireBase(procedureID: procedureID.id)
         } catch {
-            await handleError(error: error)
+            await handleError(error: error, wheare: "delete product")
         }
     }
     
@@ -221,7 +221,16 @@ final class AdminViewModel: ObservableObject {
         do {
             try await Admin_DataBase.shared.remove_MasterFromSalon(masterID: master.masterID)
         } catch {
-           await handleError(error: error)
+            await handleError(error: error, wheare: "delete")
+        }
+    }
+    
+    @MainActor
+    func removeProcedure(selectedProcedure: [Procedure]) {
+        for procedure in selectedProcedure {
+            if let index = self.procedure.firstIndex(where: { $0.id == procedure.id }) {
+                self.procedure.remove(at: index)
+            }
         }
     }
     
@@ -230,10 +239,10 @@ final class AdminViewModel: ObservableObject {
         allMasters.removeAll()
     }
     
-    
-    private func handleError(error: Error) async {
+    @MainActor
+    private func handleError(error: Error, wheare: String) async {
         isAlert = true
-        errorMassage = error.localizedDescription
+        errorMassage = "\(error.localizedDescription), \(wheare)"
         print("Error in task: \(error.localizedDescription)")
     }
 }

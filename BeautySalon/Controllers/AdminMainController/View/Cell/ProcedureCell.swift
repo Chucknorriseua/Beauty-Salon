@@ -10,7 +10,7 @@ import SwiftUI
 struct ProcedureCell: View {
     
     @State var procedure: Procedure
-    @ObservedObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel: AdminViewModel
     
     var body: some View {
         VStack {
@@ -31,8 +31,8 @@ struct ProcedureCell: View {
                 }.foregroundStyle(Color.white)
                 Spacer()
                 Button(action: {
-                    Task {
-                        await adminViewModel.deleteProcedure(procedureID: procedure)
+                    withAnimation(.easeOut(duration: 1)) {
+                        delete()
                     }
                 }, label: {
                     Image(systemName: "trash.circle.fill")
@@ -45,6 +45,11 @@ struct ProcedureCell: View {
         .clipShape(.rect(cornerRadius: 12))
         .padding(.horizontal, 4)
         
+    }
+    private func delete() {
+        Task {
+            await adminViewModel.deleteProcedure(procedureID: procedure)
+        }
     }
 }
 

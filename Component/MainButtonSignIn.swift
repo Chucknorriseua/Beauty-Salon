@@ -15,12 +15,13 @@ struct MainButtonSignIn: View {
     
     var body: some View {
         Button(action: {
-            action()
-            
+            withAnimation {
+                action()
+            }
         }, label: {
             HStack {
                 Image(systemName: image)
-                Text(title)
+                Text(LocalizedStringKey(title))
             }   .frame(width: UIScreen.main.bounds.width - 40, height: 30)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.white)
@@ -29,7 +30,7 @@ struct MainButtonSignIn: View {
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(color: .black.opacity(0.3), radius: 10, x: 5, y: 8)
                 .foregroundStyle(Color.red.opacity(0.8))
-                .font(.system(size: 18, weight: .heavy).bold())
+                .font(.system(size: 14, weight: .heavy))
         })
         .padding()
     }

@@ -15,13 +15,13 @@ enum TabbedItems: Int, CaseIterable{
     var title: String{
         switch self {
         case .home:
-            return "Home"
+            return "Home".localized
         case .client:
-            return "Masters"
+            return "Masters".localized
         case .info:
-            return "Client"
+            return "Client".localized
         case .settingProf:
-            return "Settings"
+            return "Settings".localized
         }
     }
     

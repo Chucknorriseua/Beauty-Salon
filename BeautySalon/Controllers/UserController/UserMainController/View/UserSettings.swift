@@ -48,7 +48,11 @@ struct UserSettings: View {
                         MainButtonSignIn(image: "person.crop.circle.fill", title: "Save", action: {
                             Task {
                                 await clientViewModel.save_UserProfile()
-                                NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)
+                                let titleEnter = String(
+                                    format: NSLocalizedString("saveSettings", comment: ""))
+                                let subTitle = String(
+                                    format: NSLocalizedString("saveSettingsTitle", comment: ""))
+                                NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
                                 dismiss()
                             }
                         })

@@ -23,8 +23,11 @@ struct AdminListMasterAddShedule: View {
                     .padding(.leading, 30)
                     .padding(.trailing, 30)
             }.background(Color.red, in: .rect(bottomLeadingRadius: 44, bottomTrailingRadius: 44))
-            
-            Text("Send record: \(selecetedRecord?.nameCurrent ?? "")")
+            let send = String(
+                format: NSLocalizedString("sendRecord", comment: ""),
+                selecetedRecord?.nameCurrent ?? ""
+            )
+            Text(send)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.yellow.opacity(0.8))
             Group {
@@ -37,7 +40,13 @@ struct AdminListMasterAddShedule: View {
                                     Task {
                                         await adminViewModel.sendCurrentMasterRecord(masterID: master.masterID, shedule: selected)
                                         await adminViewModel.deleteRecord(record: selected)
-                                        NotificationController.sharet.notify(title: "The record has been sent", subTitle: "The recording has been sent to the master: \(master.name) 🙍‍♀️", timeInterval: 1)
+                                        let titleEnter = String(
+                                            format: NSLocalizedString("sendRecordFormaster", comment: ""),
+                                            master.name)
+                                        let subTitle = String(
+                                            format: NSLocalizedString("sendRecordFormasterTitle", comment: ""),
+                                            master.name)
+                                        NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
                                     }
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

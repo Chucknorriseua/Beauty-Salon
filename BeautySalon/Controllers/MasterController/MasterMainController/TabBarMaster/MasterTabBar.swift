@@ -15,11 +15,11 @@ enum TabbedItemsMaster: Int, CaseIterable{
     var title: String{
         switch self {
         case .home:
-            return "Home"
+            return "Home".localized
         case .info:
-            return "Client"
+            return "Client".localized
         case .settingProf:
-            return "Settings"
+            return "Settings".localized
         }
     }
     
@@ -67,7 +67,7 @@ struct MasterTabBar: View {
                                 }
                             } label: {
                                 
-                            CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
                             }
                     }
                 }

@@ -53,6 +53,7 @@
 		BC2AE2962D35C5A900776FBC /* AdminSheduleFromClientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2AE2952D35C5A900776FBC /* AdminSheduleFromClientCell.swift */; };
 		BC3A26A62CD6A24D000A674C /* MasterUploadProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */; };
 		BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */; };
+		BC4AD3512D395ADD00B72EB1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC4AD34E2D395AD000B72EB1 /* Localizable.strings */; };
 		BC50AF482CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC50AF472CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift */; };
 		BC644B882C75025900B57117 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B872C75025900B57117 /* MainCoordinator.swift */; };
 		BC644B992C7612DB00B57117 /* CellUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644B982C7612DB00B57117 /* CellUser.swift */; };
@@ -69,6 +70,13 @@
 		BC644BC12C7754EC00B57117 /* MainButtonSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */; };
 		BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */; };
 		BC644BC72C78854800B57117 /* ShedulMasterHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */; };
+		BC68A7BA2D3A5E23007F4B24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC68A7BC2D3A5E23007F4B24 /* InfoPlist.strings */; };
+		BC68A7BF2D3A5E64007F4B24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC68A7C12D3A5E64007F4B24 /* InfoPlist.strings */; };
+		BC68A7C42D3A6042007F4B24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC68A7C62D3A6042007F4B24 /* InfoPlist.strings */; };
+		BC68A7C82D3AA70C007F4B24 /* AdminSheetRedactorShedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A7C72D3AA70B007F4B24 /* AdminSheetRedactorShedule.swift */; };
+		BC68A7CA2D3ACF31007F4B24 /* AdminChangeRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A7C92D3ACF31007F4B24 /* AdminChangeRecordsView.swift */; };
+		BC68A7CC2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A7CB2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift */; };
+		BC68A7CE2D3AEDE7007F4B24 /* AdminChangeSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC68A7CD2D3AEDE7007F4B24 /* AdminChangeSelectView.swift */; };
 		BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */; };
 		BC7723BB2CBE64200001650A /* TabBarButtonBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */; };
 		BC7C6F032D00984F000AAD03 /* ImageViewCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7C6F022D00984F000AAD03 /* ImageViewCustom.swift */; };
@@ -179,6 +187,9 @@
 		BC3A26A52CD6A24C000A674C /* MasterUploadProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterUploadProfile.swift; sourceTree = "<group>"; };
 		BC4659ED2CDB9E6A00E9ACD2 /* BeautySalonSubscribe.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = BeautySalonSubscribe.storekit; sourceTree = "<group>"; };
 		BC4659EE2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetStoreKitProductSelect.swift; sourceTree = "<group>"; };
+		BC4AD34D2D395AD000B72EB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BC4AD34F2D395AD300B72EB1 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BC4AD3502D395AD400B72EB1 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BC50AF472CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin_DataBaseProtocolExt.swift; sourceTree = "<group>"; };
 		BC644B872C75025900B57117 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		BC644B982C7612DB00B57117 /* CellUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellUser.swift; sourceTree = "<group>"; };
@@ -195,6 +206,13 @@
 		BC644BC02C7754EC00B57117 /* MainButtonSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonSignIn.swift; sourceTree = "<group>"; };
 		BC644BC22C7791AE00B57117 /* MasterSelectedCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterSelectedCompany.swift; sourceTree = "<group>"; };
 		BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulMasterHeader.swift; sourceTree = "<group>"; };
+		BC68A7BB2D3A5E23007F4B24 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC68A7C02D3A5E64007F4B24 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC68A7C52D3A6042007F4B24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC68A7C72D3AA70B007F4B24 /* AdminSheetRedactorShedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminSheetRedactorShedule.swift; sourceTree = "<group>"; };
+		BC68A7C92D3ACF31007F4B24 /* AdminChangeRecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminChangeRecordsView.swift; sourceTree = "<group>"; };
+		BC68A7CB2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminSelectNewProcedureView.swift; sourceTree = "<group>"; };
+		BC68A7CD2D3AEDE7007F4B24 /* AdminChangeSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminChangeSelectView.swift; sourceTree = "<group>"; };
 		BC720A492CD4E84C00D132CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC7723BA2CBE64200001650A /* TabBarButtonBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonBack.swift; sourceTree = "<group>"; };
 		BC7C6F022D00984F000AAD03 /* ImageViewCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCustom.swift; sourceTree = "<group>"; };
@@ -469,6 +487,10 @@
 		BCBC57FE2C6F43B100FB3E77 = {
 			isa = PBXGroup;
 			children = (
+				BC4AD34E2D395AD000B72EB1 /* Localizable.strings */,
+				BC68A7BC2D3A5E23007F4B24 /* InfoPlist.strings */,
+				BC68A7C62D3A6042007F4B24 /* InfoPlist.strings */,
+				BC68A7C12D3A5E64007F4B24 /* InfoPlist.strings */,
 				BC4659ED2CDB9E6A00E9ACD2 /* BeautySalonSubscribe.storekit */,
 				BCBC58AE2C73BA8F00FB3E77 /* Helpers */,
 				BCBC58692C70EE5300FB3E77 /* Extansion */,
@@ -712,6 +734,10 @@
 				BCDF9B802D341B9F0006A230 /* AdminSheetCreatPriceList.swift */,
 				BCDF9B7E2D34196E0006A230 /* AdminCreatePriceList.swift */,
 				BC0AD7072D367D30005D4B37 /* AdminMenuProcedureView.swift */,
+				BC68A7C72D3AA70B007F4B24 /* AdminSheetRedactorShedule.swift */,
+				BC68A7C92D3ACF31007F4B24 /* AdminChangeRecordsView.swift */,
+				BC68A7CB2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift */,
+				BC68A7CD2D3AEDE7007F4B24 /* AdminChangeSelectView.swift */,
 				BCBC587F2C73390600FB3E77 /* Cell */,
 			);
 			path = View;
@@ -834,6 +860,8 @@
 			knownRegions = (
 				en,
 				Base,
+				uk,
+				pl,
 			);
 			mainGroup = BCBC57FE2C6F43B100FB3E77;
 			packageReferences = (
@@ -856,8 +884,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCBC58122C6F43B400FB3E77 /* Preview Assets.xcassets in Resources */,
+				BC68A7C42D3A6042007F4B24 /* InfoPlist.strings in Resources */,
+				BC68A7BF2D3A5E64007F4B24 /* InfoPlist.strings in Resources */,
+				BC4AD3512D395ADD00B72EB1 /* Localizable.strings in Resources */,
 				BCBC580F2C6F43B400FB3E77 /* Assets.xcassets in Resources */,
 				BC720A4A2CD4E84C00D132CF /* GoogleService-Info.plist in Resources */,
+				BC68A7BA2D3A5E23007F4B24 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,6 +907,8 @@
 				BCBC58342C70CC5100FB3E77 /* Company_Model.swift in Sources */,
 				BC644BB72C766D6E00B57117 /* CalendarAddTask.swift in Sources */,
 				BC0537BA2C7F9745008EEA32 /* CoordinatorViewModel.swift in Sources */,
+				BC68A7CC2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift in Sources */,
+				BC68A7CA2D3ACF31007F4B24 /* AdminChangeRecordsView.swift in Sources */,
 				BCBC58AB2C73996B00FB3E77 /* AdminMainController.swift in Sources */,
 				BCBC58912C73411900FB3E77 /* SettingsAdminView.swift in Sources */,
 				BCBC58362C70CC5E00FB3E77 /* MasterModel.swift in Sources */,
@@ -930,6 +964,7 @@
 				BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */,
 				BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */,
 				BCBC58B82C7474E600FB3E77 /* Shedule.swift in Sources */,
+				BC68A7CE2D3AEDE7007F4B24 /* AdminChangeSelectView.swift in Sources */,
 				BC4659EF2CDBAEAF00E9ACD2 /* SheetStoreKitProductSelect.swift in Sources */,
 				BC2AE2922D35724600776FBC /* User_MenuProcedureView.swift in Sources */,
 				BCADDF9C2CAF07A50055F458 /* UserMainForSheduleController.swift in Sources */,
@@ -964,6 +999,7 @@
 				BCADDF982CAEDC900055F458 /* Client_DataBase.swift in Sources */,
 				BCBC58952C73471F00FB3E77 /* Admin_MainTabbedView.swift in Sources */,
 				BCBC58932C73413200FB3E77 /* GetAllUsersOfCompany.swift in Sources */,
+				BC68A7C82D3AA70C007F4B24 /* AdminSheetRedactorShedule.swift in Sources */,
 				BCEB7B972CA05E4A00A17F9E /* AddNewMasterCell.swift in Sources */,
 				BC28CFE92C91B8A8006F6A6A /* ExtentionsApp.swift in Sources */,
 				BC644BA62C7629CB00B57117 /* MasterTabBar.swift in Sources */,
@@ -976,6 +1012,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BC4AD34E2D395AD000B72EB1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC4AD34D2D395AD000B72EB1 /* en */,
+				BC4AD34F2D395AD300B72EB1 /* pl */,
+				BC4AD3502D395AD400B72EB1 /* uk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		BC68A7BC2D3A5E23007F4B24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC68A7BB2D3A5E23007F4B24 /* pl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BC68A7C12D3A5E64007F4B24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC68A7C02D3A5E64007F4B24 /* uk */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BC68A7C62D3A6042007F4B24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC68A7C52D3A6042007F4B24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		BCBC58132C6F43B400FB3E77 /* Debug */ = {

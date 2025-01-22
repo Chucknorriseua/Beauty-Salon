@@ -13,7 +13,7 @@ struct AdminReg_Desc_Password: View {
     @StateObject var adminViewModel: AdminViewModel
     @EnvironmentObject var coordinator: CoordinatorView
     
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var isLoader: Bool = false
     
     var body: some View {

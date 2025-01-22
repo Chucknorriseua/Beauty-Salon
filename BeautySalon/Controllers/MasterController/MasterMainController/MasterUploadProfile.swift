@@ -182,7 +182,7 @@ struct MasterUploadProfile: View {
                             }
                         }
                     }
-                    CustomButton(title: "Update") {
+                    CustomButton(title: "Update profile") {
                         Task {
                             await masterViewModel.save_Profile()
                             NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)

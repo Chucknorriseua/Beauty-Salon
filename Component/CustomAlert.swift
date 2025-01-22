@@ -26,12 +26,12 @@ struct CustomAlert: ViewModifier {
                     ZStack {
                   
                         VStack(spacing: 20) {
-                            Text(title)
+                            Text(LocalizedStringKey(title))
                                 .foregroundColor(Color.white.opacity(0.9))
                                 .font(.system(size: 22, weight: .bold))
                                 .padding(.top, 20)
                             
-                            Text(message)
+                            Text(LocalizedStringKey(message))
                                 .foregroundColor(.white)
                                 .font(.body)
                                 .multilineTextAlignment(.center)
@@ -45,7 +45,7 @@ struct CustomAlert: ViewModifier {
                                         isPresented = false
                                         
                                     }) {
-                                        Text("Cancel")
+                                        Text(LocalizedStringKey("Cancel"))
                                             .foregroundColor(.white)
                                             .frame(maxWidth: .infinity)
                                             .clipped()
@@ -59,7 +59,7 @@ struct CustomAlert: ViewModifier {
                                         onConfirm()
                                         isPresented = false
                                 }) {
-                                    Text("OK")
+                                    Text(LocalizedStringKey("OK"))
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .clipped()

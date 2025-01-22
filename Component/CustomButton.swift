@@ -17,7 +17,7 @@ struct CustomButton: View {
             action()
             
         }, label: {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .frame(maxWidth: .infinity, maxHeight: 32)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.white)
@@ -40,7 +40,7 @@ struct CustomButtonColor: View {
             action()
             
         }, label: {
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .frame(maxWidth: .infinity)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.black)

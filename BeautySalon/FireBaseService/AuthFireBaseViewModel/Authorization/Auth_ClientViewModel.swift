@@ -36,7 +36,7 @@ class Auth_ClientViewModel: ObservableObject {
         do {
            let result = try await Auth.auth().createUser(withEmail: email, password: password)
             let uid = result.user.uid
-            let client = Client(id: uid, clientID: uid, name: name, email: email, phone: phone, date: Date(), latitude: locationManager.userLatitude, longitude: locationManager.userLongitude)
+            let client = Client(id: uid, clientID: uid, name: name, email: email, phone: phone, date: Date(), latitude: locationManager.userLatitude, longitude: locationManager.userLongitude, shedule: [])
             try await Client_DataBase.shared.setData_ClientFireBase(clientModel: client)
         } catch {
             print("DEBUG: SING IN ERROR sign in Account as Client", error.localizedDescription)

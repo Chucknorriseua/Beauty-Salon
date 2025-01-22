@@ -10,11 +10,11 @@ import SwiftUI
 struct AdminSheduleFromClientCell: View {
     
     @State var recordModel: Shedule
-    @ObservedObject var viewModelAdmin: AdminViewModel
+    @StateObject var viewModelAdmin: AdminViewModel
     @State private var isShowAlert: Bool = false
     @State private var message: String = "Do you want to delete the record?"
-    @State private var isFlipped: Bool = false
     @Binding var isShowList: Bool
+    @Binding var isShowRedactorDate: Bool
     @Binding var selecetedRecord: Shedule?
     @State private var isShowInfo: Bool = false
     private let adaptiveColumn = [
@@ -96,33 +96,57 @@ struct AdminSheduleFromClientCell: View {
                                                     RoundedRectangle(cornerRadius: 16)
                                                         .stroke(Color.white, lineWidth: 1)
                                                 )
-                                            
                                         }
                                     }
+                                    let totalCost = String(
+                                        format: NSLocalizedString("totalcost", comment: ""),
+                                        calculatePriceProcedure(record: recordModel)
+                                    )
+                                    Text(totalCost)
+                                        .foregroundStyle(.white)
+                                        .fontWeight(.bold)
+                                        .fontDesign(.serif)
                                 }.padding(.horizontal, 8)
                             }
                             Spacer()
                             VStack {
-                                HStack(spacing: 80) {
+                                HStack(alignment: .firstTextBaseline, spacing: 40) {
                                     Button(action: {
-                                        isShowAlert = true
+                                        withAnimation {
+                                            isShowAlert = true
+                                        }
                                     }, label: {
                                         Image(systemName: "trash.circle.fill")
                                             .foregroundStyle(Color.red.opacity(0.9))
-                                            .font(.system(size: 32))
+                                            .font(.system(size: 28))
                                             .padding(.all, 6)
-                                    }).background(Color.white, in: .rect(cornerRadius: 32))
+                                    }).background(Color.white, in: Circle())
                                         .clipped()
                                     
                                     Button(action: {
-                                        isShowList = true
-                                        selecetedRecord = recordModel
+                                        withAnimation {
+                                            selecetedRecord = recordModel
+                                            isShowList = true
+                                        }
                                     }, label: {
                                         Image(systemName: "paperplane.circle.fill")
                                             .foregroundStyle(Color.white.opacity(0.9))
-                                            .font(.system(size: 32))
+                                            .font(.system(size: 28))
                                             .padding(.all, 6)
-                                    }).background(Color.blue.opacity(0.8), in: .rect(cornerRadius: 32))
+                                    }).background(Color.blue.opacity(0.8), in: Circle())
+                                        .clipped()
+                                    
+                                    Button(action: {
+                                        withAnimation {
+                                                selecetedRecord = recordModel
+                                                isShowRedactorDate = true
+                                        }
+                                    }, label: {
+                                        Image(systemName: "square.and.pencil")
+                                            .foregroundStyle(Color.white.opacity(0.9))
+                                            .font(.system(size: 24))
+                                            .padding(.all, 6)
+                                    }).background(Color.orange.opacity(0.8), in: Circle())
                                         .clipped()
                                 }
                                 HStack(spacing: -12) {
@@ -172,12 +196,32 @@ struct AdminSheduleFromClientCell: View {
                 } onCancel: {}
         })
     }
-    func format(_ date: Date) -> String {
+   private func format(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "  HH : mm,  dd MMMM"
         return formatter.string(from: date)
     }
+    
+    private func getCurrencySymbol() -> String {
+        let countryCode = Locale.current.region?.identifier ?? "US"
+        switch countryCode {
+        case "UA":
+            return "₴"
+        case "PL":
+            return "zł"
+        default:
+            return "$"
+        }
+    }
+    
+    func calculatePriceProcedure(record: Shedule) -> String {
+        let totalCost = record.procedure.reduce(0.0) { (result, item) -> Double in
+            return result + (Double(item.price) ?? 0.0)
+        }
+        let currencySymbol = getCurrencySymbol()
+        return "\(currencySymbol) \(String(format: "%.1f", totalCost))"
+    }
 }
 #Preview(body: {
-    AdminSheduleFromClientCell(recordModel: Shedule.sheduleModel(), viewModelAdmin: AdminViewModel.shared, isShowList: .constant(false), selecetedRecord: .constant(Shedule.sheduleModel()))
+    AdminSheduleFromClientCell(recordModel: Shedule.sheduleModel(), viewModelAdmin: AdminViewModel.shared, isShowList: .constant(false), isShowRedactorDate: .constant(false), selecetedRecord: .constant(Shedule.sheduleModel()))
 })

@@ -19,6 +19,7 @@ struct SettingsPhotoView: View {
     @State var isShowAlert: Bool = false
     @Binding var selectedImage: String?
     @Binding var isPressFullScreen: Bool
+    @Binding var isShowPhotoPicker: Bool
     
     var body: some View {
         
@@ -64,17 +65,7 @@ struct SettingsPhotoView: View {
             }.frame(height: geo.size.height * 0.66)
                 .padding(.leading, 6)
                 .background(.ultraThickMaterial.opacity(0.6))
-                .overlay(alignment: .top) {
-                    PhotosPicker(selection: $photoPickerItems, maxSelectionCount: 10, selectionBehavior: .ordered) {
-                        HStack {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundStyle(Color.white)
-                                .font(.system(size: 18))
-                        }.frame(width: geo.size.width * 0.14, height: geo.size.height * 0.1)
-                            .background(Color.gray.opacity(0.2),
-                                        in: .rect(bottomLeadingRadius: 22, bottomTrailingRadius: 22))
-                    }
-                }
+                .photosPicker(isPresented: $isShowPhotoPicker, selection: $photoPickerItems, maxSelectionCount: 10, selectionBehavior: .ordered)
         }
         .frame(height: 220)
         .padding(.leading, 8)

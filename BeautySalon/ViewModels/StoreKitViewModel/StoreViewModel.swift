@@ -19,20 +19,25 @@ final class StoreViewModel: ObservableObject {
     
     static var shared = StoreViewModel()
     
-    @Published private(set) var subscriptions: [Product] = []
+    @AppStorage ("useRole") var useRole: String = ""
+  
+    @Published private(set) var subscriptionsMaster: [Product] = []
+    @Published private(set) var subscriptionsAdmin: [Product] = []
     @Published private(set) var purchasedSubscriptions: [Product] = []
     @Published private(set) var subscriptionsGroupStatus: RenewalState?
     
-    private let productIds: [String] = ["subscription.yearly", "subscription.monthly"]
+    let masterProductIds: [String] = ["master.subscription.yearly", "master.subscription.monthly"]
+    let adminProductIds: [String] = ["admin.subscription.yearly", "admin.subscription.monthly"]
     
     var updateListenerTask: Task<Void, Error>? = nil
     
-    @AppStorage ("hasActiveSubscribe") private(set) var hasActiveSubscribe: Bool = false
+    @AppStorage ("hasActiveSubscribe") var hasActiveSubscribe: Bool = false
     
     var checkSubscribe: Bool {
-        Task {await updateCustomerProductStatus()} 
+        Task {
+            await updateCustomerProductStatus()
+        }
         return hasActiveSubscribe
-//        && !purchasedSubscriptions.isEmpty
     }
     
     init() {
@@ -40,15 +45,15 @@ final class StoreViewModel: ObservableObject {
         updateListenerTask = listenerForTransaction()
         
         Task {
-            await requestProduct()
-            
-            await updateCustomerProductStatus()
+            await requestProduct(role: useRole)
+//            await updateCustomerProductStatus()
         }
     }
     
     deinit {
         updateListenerTask?.cancel()
     }
+    
     
     func listenerForTransaction() -> Task<Void, Error> {
         return Task.detached {
@@ -65,10 +70,28 @@ final class StoreViewModel: ObservableObject {
     }
     
     @MainActor
-    func requestProduct() async  {
+    func restorePurchases() async {
         do {
-            subscriptions = try await Product.products(for: productIds)
-            print(subscriptions)
+            for await result in StoreKit.Transaction.currentEntitlements {
+                let transaction = try checkVerified(result)
+                await transaction.finish()
+            }
+            await updateCustomerProductStatus()
+        } catch {
+            print("Failed to restore purchases: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    func requestProduct(role: String) async  {
+        do {
+            if role == "Admin" {
+                subscriptionsAdmin = try await Product.products(for: adminProductIds)
+                print(subscriptionsAdmin)
+            } else if role == "Master" {
+                subscriptionsMaster = try await Product.products(for: masterProductIds)
+                print(subscriptionsMaster)
+            }
         } catch {
             print("Failed product request from app store server", error.localizedDescription)
         }
@@ -105,27 +128,37 @@ final class StoreViewModel: ObservableObject {
     
     @MainActor
     func updateCustomerProductStatus() async {
-
         var hasActive = false
-        
+        purchasedSubscriptions.removeAll()
+
         for await result in StoreKit.Transaction.currentEntitlements {
             do {
-                let transition = try checkVerified(result)
-                switch transition.productType {
+                let transaction = try checkVerified(result)
+
+                switch transaction.productType {
                 case .autoRenewable:
-                    if let subscription = subscriptions.first(where: {$0.id == transition.productID}) {
-                        purchasedSubscriptions.append(subscription)
+                    if let subscription = subscriptionsMaster.first(where: { $0.id == transaction.productID }) {
+                        if !purchasedSubscriptions.contains(where: { $0.id == subscription.id }) {
+                            purchasedSubscriptions.append(subscription)
+                        }
+                        hasActive = true
+                    } else if let subscription = subscriptionsAdmin.first(where: { $0.id == transaction.productID }) {
+                        if !purchasedSubscriptions.contains(where: { $0.id == subscription.id }) {
+                            purchasedSubscriptions.append(subscription)
+                        }
                         hasActive = true
                     }
+
                 default:
                     break
                 }
-                
-                await transition.finish()
+
+                await transaction.finish()
             } catch {
-                print("Failed updating product")
+                print("Failed updating product status: \(error.localizedDescription)")
             }
         }
+
         hasActiveSubscribe = hasActive
     }
 }

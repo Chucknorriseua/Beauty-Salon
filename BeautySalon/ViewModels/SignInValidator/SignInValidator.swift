@@ -14,6 +14,7 @@ class SignInValidator: ObservableObject {
     
     @AppStorage ("useRole") private var useRole: String = ""
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage ("isLaunchFirst") private var isLaunchFirst: Bool?
     
     @Published var signIn = SignInViewModel()
     
@@ -55,16 +56,17 @@ class SignInValidator: ObservableObject {
             } else {
                 isLoader = false
                 isPressAlarm = true
-                message = "Not correct password or email, Make sure you are using the correct account. "
+                message = "Not correct password or email, Make sure you are using the correct account."
             }
         } catch {
             message = error.localizedDescription
         }
         
     }
-    
-   private func checkSubscribeAdminProfile() async throws -> Bool {
-        if StoreViewModel.shared.checkSubscribe {
+
+    private func checkSubscribeAdminProfile() async throws -> Bool {
+
+        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.adminProductIds.contains($0.id) }) {
             await AdminViewModel.shared.fetchProfileAdmin()
             return true
         } else {
@@ -73,9 +75,10 @@ class SignInValidator: ObservableObject {
             return false
         }
     }
-    
+
     private func checkSubscribeMasterProfile() async throws -> Bool {
-        if  StoreViewModel.shared.checkSubscribe {
+
+        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.masterProductIds.contains($0.id) }) {
             await MasterViewModel.shared.getCompany()
             return true
         } else {
@@ -88,6 +91,12 @@ class SignInValidator: ObservableObject {
     func loadProfile(coordinator: CoordinatorView) async {
         self.isLoader = true
         defer {  self.isLoader = false }
+        
+        if isLaunchFirst == nil {
+            isLaunchFirst = false
+            return
+        }
+        
         if useRole == "Client" {
             _ = await self.checkRoleEntryInRoom(coordinator: coordinator)
         } else {

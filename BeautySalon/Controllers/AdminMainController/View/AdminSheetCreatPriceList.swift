@@ -25,6 +25,7 @@ struct AdminSheetCreatPriceList: View {
             VStack {
                 SettingsButton(text: $title, title: "Procedure name", width: .infinity)
                 SettingsButton(text: $price, title: "Price", width: .infinity)
+                    .keyboardType(.phonePad)
                 ZStack(alignment: .topLeading) {
                     if description.isEmpty {
                         Text("Description, limit your input to 160 characters.")

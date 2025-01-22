@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct Shedule: Identifiable, Codable, Hashable {
     
-    let id: String
+    var id: String
     var masterId: String
     var nameCurrent: String
     var taskService: String
@@ -51,12 +51,7 @@ struct Shedule: Identifiable, Codable, Hashable {
         model["creationDate"] = self.creationDate
         model["tint"] = self.tint
         model["timesTamp"] = self.timesTamp
-        model["procedure"] = self.procedure.map({ proc in
-            return ["id": proc.id,
-                    "title": proc.title,
-                    "price": proc.price,
-                    "description": proc.description]
-        })
+        model["procedure"] = self.procedure.map {$0.procedure }
         return model
     }
 }

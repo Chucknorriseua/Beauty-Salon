@@ -12,7 +12,7 @@ struct UserRegisters: View {
     @StateObject var authClientViewModel = Auth_ClientViewModel()
     @EnvironmentObject  var coordinator: CoordinatorView
   
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var isLoader: Bool = false
 
     @State private var isPressAlarm: Bool = false
@@ -27,7 +27,7 @@ struct UserRegisters: View {
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 
                 CustomTextField(text: $authClientViewModel.signInViewmodel.phone,
-                                title: "Phone - +(000) ",
+                                title: "Phone (+000)",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 .keyboardType(.phonePad)
@@ -37,7 +37,7 @@ struct UserRegisters: View {
                 }
                 
                 CustomTextField(text: $authClientViewModel.signInViewmodel.email,
-                                title: "Email - @gmail.com",
+                                title: "Email- @",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 .keyboardType(.emailAddress)
@@ -48,7 +48,7 @@ struct UserRegisters: View {
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 
-                CustomButton(title: "Register as Client") {
+                CustomButton(title: "Create") {
                     isLoader = true
                     Task {
                         let succec =  await authClientViewModel.saveAccount_Master()
@@ -89,7 +89,7 @@ struct UserRegisters: View {
 
 extension UserRegisters: isFormValid {
     var isFarmValid: Bool {
-        return authClientViewModel.signInViewmodel.email.contains("@gmail.com")
+        return authClientViewModel.signInViewmodel.email.contains("@")
         && authClientViewModel.signInViewmodel.password.count > 5
     }
     

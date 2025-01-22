@@ -19,6 +19,7 @@ final class ClientViewModel: ObservableObject {
     
     @Published var isAlert: Bool = false
     @Published var errorMassage: String = ""
+    @Published var totalCost: Double = 0.0
     
     @Published var adminProfile: Company_Model
     @Published var clientModel: Client
@@ -35,6 +36,7 @@ final class ClientViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             if !procedure.contains(where: {$0.id == addProcedure.id}) {
+                self.totalCost += Double(String(addProcedure.price)) ?? 0.0
                 self.procedure.append(addProcedure)
             }
         }
@@ -45,6 +47,7 @@ final class ClientViewModel: ObservableObject {
     func removeProcedure(selectedProcedure: [Procedure]) {
         for procedure in selectedProcedure {
             if let index = self.procedure.firstIndex(where: { $0.id == procedure.id }) {
+                self.totalCost -= Double(String(procedure.price)) ?? 0.0
                 self.procedure.remove(at: index)
             }
         }
@@ -118,7 +121,7 @@ final class ClientViewModel: ObservableObject {
             await handleError(error: error)
         }
     }
-    
+    @MainActor
     private func handleError(error: Error) async {
         isAlert = true
         errorMassage = error.localizedDescription

@@ -36,14 +36,14 @@ struct GoogleRegisterProfile: View {
                     if selectedProfile == "Admin" {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                         CustomTextField(text: $registerGoogle.nameCompany, title: "Name Company", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: $registerGoogle.phone, title: "Phone", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
+                        CustomTextField(text: $registerGoogle.phone, title: "Phone (+000)", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                             .keyboardType(.phonePad)
                             .textContentType(.telephoneNumber)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                         
                     } else if selectedProfile == "Master" || selectedProfile == "Client" {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: $registerGoogle.phone, title: "Phone", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
+                        CustomTextField(text: $registerGoogle.phone, title: "Phone (+000)", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                             .keyboardType(.phonePad)
                             .textContentType(.telephoneNumber)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
@@ -56,7 +56,7 @@ struct GoogleRegisterProfile: View {
             }
             .padding()
             
-            CustomButton(title: "Sing in") {
+            CustomButton(title: "Create") {
                 registerGoogle.rolePersone = selectedProfile
                 
                 Task {

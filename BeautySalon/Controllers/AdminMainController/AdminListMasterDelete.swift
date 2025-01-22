@@ -39,7 +39,7 @@ struct AdminListMasterDelete: View {
                     TabBarButtonBack {
                         dismiss()
                     }
-                    Text("Remove master")
+                    Text("My master")
                         .font(.system(size: 22, weight: .bold))
                         .foregroundStyle(Color.yellow.opacity(0.9))
                         .padding()

@@ -130,36 +130,51 @@ struct UserSend_SheduleForAdmin: View {
                        
                 }.padding(.trailing, 90)
                 HStack {
-                    
-                    MainButtonSignIn(image: "pencil.line", title: "Send record", action: {
-                        let procedure = clientViewModel.adminProfile.procedure.filter { proc in
-                            clientViewModel.procedure.contains(where: {$0.id == proc.id})
-                        }
-                        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: clientViewModel.clientModel.name, taskService: serviceRecord, phone: clientViewModel.clientModel.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
-                        
-                        Task {
-                            await clientViewModel.send_SheduleForAdmin(adminID: clientViewModel.adminProfile.adminID, record: sendRecord)
-                            NotificationController.sharet.notify(title: "You send record for \(clientViewModel.adminProfile.name)", subTitle: "your record has been sent to the admin, please wait for the admin to contact you", timeInterval: 1)
-                            clientViewModel.procedure.removeAll()
-                            dismiss()
-                        }
+                    let sendRecordsTotal = String(
+                        format: NSLocalizedString("sendRecords", comment: ""),
+                        clientViewModel.totalCost
+                    )
+                    MainButtonSignIn(image: "pencil.line", title: sendRecordsTotal, action: {
+                        sendRecords()
                     })
                 }
                 Spacer()
             }).frame(width: geo.size.width * 1, height: geo.size.height * 1)
+                .onDisappear {
+                    clientViewModel.totalCost = 0.0
+                    clientViewModel.procedure.removeAll()
+                }
                 .background(Color.init(hex: "#3e5b47").opacity(0.8))
                 .ignoresSafeArea(.all)
-                .overlay(alignment: .center) {
+                .overlay(alignment: .bottom) {
                     if isMenuProcedure {
                         VStack {
                             User_MenuProcedureView(clientViewModel: clientViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProceduresColor) {
-//                                withAnimation {
-//                                    isMenuProcedure.toggle()
-//                                }
                             }
                         }.padding(.horizontal, 8)
                     }
                 }
+        }
+    }
+    private func sendRecords() {
+        let model = clientViewModel.clientModel
+        
+        let procedure = clientViewModel.adminProfile.procedure.filter { proc in
+            clientViewModel.procedure.contains(where: {$0.id == proc.id})
+        }
+        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: model.name, taskService: serviceRecord, phone: model.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
+        
+        
+        Task {
+            let titleEnter = String(
+                format: NSLocalizedString("notification", comment: ""),
+                clientViewModel.adminProfile.name)
+            let subTitle = String(
+                format: NSLocalizedString("notifiTitle", comment: ""))
+            await clientViewModel.send_SheduleForAdmin(adminID: clientViewModel.adminProfile.adminID, record: sendRecord)
+            NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
+            clientViewModel.procedure.removeAll()
+            dismiss()
         }
     }
 }

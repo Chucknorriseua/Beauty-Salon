@@ -27,11 +27,39 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let phone = data?["phone"] as? String,
               let date = data?["date"] as? Timestamp,
               let latitude = data?["latitude"] as? Double,
+              let shedules = data?["shedule"] as? [[String: Any]],
               let longitude = data?["longitude"] as? Double else { throw NSError(domain: "Not correct create data", code: 0, userInfo: nil)  }
               let createTampDate = date.dateValue()
         
+        let shedule: [Shedule] = try shedules.compactMap { proce in
+            guard let id = proce["id"] as? String,
+                  let masterId = proce["masterId"] as? String,
+                  let nameCurrent = proce["nameCurrent"] as? String,
+                  let taskService = proce["taskService"] as? String,
+                  let phone = proce["phone"] as? String,
+                  let nameMaster = proce["nameMaster"] as? String,
+                  let comment = proce["comment"] as? String,
+                  let creationDate = proce["creationDate"] as? String,
+                  let tint = proce["tint"] as? String,
+                  let procedure = proce["procedure"] as? [[String: Any]],
+                  let timesTamp = proce["timesTamp"] as? Timestamp else {
+                throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+            }
+            let procedur: [Procedure] = try procedure.compactMap { proce in
+                guard let id = proce["id"] as? String,
+                      let title = proce["title"] as? String,
+                      let price = proce["price"] as? String,
+                      let description = proce["description"] as? String else {
+                    throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+                }
+                return Procedure(id: id, title: title, price: price, description: description)
+            }
+            return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
+                           nameMaster: nameMaster, comment: comment, creationDate: createTampDate, tint: tint, timesTamp: timesTamp, procedure: procedur)
+        }
+        
         return Client(id: id, clientID: clientID, name: name, email: email, phone: phone,
-                      date: createTampDate, latitude: latitude, longitude: longitude)
+                      date: createTampDate, latitude: latitude, longitude: longitude, shedule: shedule)
     }
     
      func convertDocumentToMater(_ document: DocumentSnapshot) throws -> MasterModel {

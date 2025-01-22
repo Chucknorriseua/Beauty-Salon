@@ -15,14 +15,16 @@ struct MasterSelectedCompany: View {
     @EnvironmentObject var coordinator: CoordinatorView
 
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage ("useRole") private var useRole: String = ""
     
     @State private var selectedAdmin: String? = nil
     @State private var searchText: String = ""
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
     @State private var selectedID: String? = nil
+    
     
     
     private var searchCompanyNearby: [Company_Model] {
@@ -54,7 +56,11 @@ struct MasterSelectedCompany: View {
                         Button {
                             withAnimation(.easeInOut(duration: 0.4)) {
                                 selectedAdmin = company.adminID
-                                isTitle = "Do you want to enter \(company.companyName) salon?".uppercased()
+                                let titleEnter = String(
+                                    format: NSLocalizedString("enter_salon_format", comment: ""),
+                                    company.companyName
+                                ).uppercased()
+                                isTitle = titleEnter
                             }
                         } label: {
                             CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {})
@@ -89,7 +95,12 @@ struct MasterSelectedCompany: View {
         .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
         .swipeBack(coordinator: coordinator)
         .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
-        .searchable(text: $searchText)
+        .overlay(content: {
+            if searchCompanyNearby.isEmpty {
+                ContentUnavailableView("Masters not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
+            }
+        })
+        .searchable(text: $searchText, prompt: "Search salon")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -103,7 +114,7 @@ struct MasterSelectedCompany: View {
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 TabBarButtonBack {
-                    coordinator.popToRoot()
+                    signOut()
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -148,5 +159,14 @@ struct MasterSelectedCompany: View {
                 }
             }
       
+    }
+    private func signOut() {
+        Task {
+            selectedAdminID = nil
+            useRole = ""
+            Auth_Master_ViewModel.shared.signOut()
+            try await GoogleSignInViewModel.shared.logOut()
+            coordinator.popToRoot()
+        }
     }
 }

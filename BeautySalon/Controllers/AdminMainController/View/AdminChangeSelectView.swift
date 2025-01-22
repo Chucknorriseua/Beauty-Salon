@@ -1,18 +1,18 @@
 //
-//  User_MenuProcedureView.swift
+//  AdminChangeSelectView.swift
 //  BeautySalon
 //
-//  Created by Евгений Полтавец on 13/01/2025.
+//  Created by Евгений Полтавец on 17/01/2025.
 //
 
 import SwiftUI
 
-struct User_MenuProcedureView: View {
+struct AdminChangeSelectView: View {
     
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 100))
     ]
-    @StateObject var clientViewModel: ClientViewModel
+    @StateObject var adminViewModel: AdminViewModel
     @Binding var addProcedure: Bool
     @Binding var selectedProcedure: [Procedure]
     let onSelected: () -> ()
@@ -26,11 +26,12 @@ struct User_MenuProcedureView: View {
                 .padding(.top, 6)
             ScrollView {
                 LazyVGrid(columns: adaptiveColumn, spacing: 4) {
-                    ForEach(clientViewModel.adminProfile.procedure, id: \.self) { item in
+                    ForEach(adminViewModel.adminProfile.procedure, id: \.self) { item in
                         Button(action: {
                             withAnimation(.easeOut(duration: 0.5)) {
-                                clientViewModel.addNewProcedure(addProcedure: item)
-                               
+                                Task {
+                                  await adminViewModel.addNewProcedure(addProcedure: item)
+                                }
                                     if selectedProcedure.contains(item) {
                                         selectedProcedure.removeAll {$0 == item}
                                     } else {
@@ -41,16 +42,12 @@ struct User_MenuProcedureView: View {
                             addProcedure = true
                             onSelected()
                         }, label: {
-                            VStack {
-                                Text(String(item.title))
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 12))
-                                Text(String(item.price))
-                                    .foregroundColor(.green.opacity(0.9))
-                                    .font(.system(size: 12, weight: .bold))
-                            }.frame(width: 110, height: 44, alignment: .center)
+                            Text(String(item.title))
+                                .frame(width: 110, height: 44, alignment: .center)
                                 .background(selectedProcedure.contains(item) ? Color.gray.opacity(0.2) : Color.init(hex: "#3e5b47").opacity(0.6))
                                 .cornerRadius(16)
+                                .foregroundColor(.white)
+                                .font(.system(size: 12))
                         })
                         
                     }

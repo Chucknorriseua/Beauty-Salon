@@ -11,35 +11,36 @@ struct GetAllUsersOfCompany: View {
     
     @ObservedObject var adminViewModel: AdminViewModel
     
-// MARK: Fetch all User Of Company
+    // MARK: Fetch all User Of Company
     var body: some View {
-        NavigationView(content: {
+        NavigationView {
+            
+            VStack {
+                Text("Clients for recording")
+                    .font(.system(.title, design: .serif, weight: .regular))
+                    .foregroundStyle(Color.yellow)
                 
-                VStack {
-                    Text("Clients for recording")
-                        .font(.system(.title, design: .serif, weight: .regular))
-                        .foregroundStyle(Color.yellow)
-                    
-                    ScrollView {
-                        LazyVStack(alignment: .center) {
-                            
-                            ForEach(adminViewModel.client, id:\.self) { user in
-                                CellUser(clientModel: user)
-
-                            }
-                            
-                        }.padding(.top, 30)
-                            .padding(.bottom, 50)
+                ScrollView {
+                    LazyVStack(alignment: .center) {
                         
-                    }.scrollIndicators(.hidden)
+                        ForEach(adminViewModel.client, id:\.self) { user in
+                            CellUser(clientModel: user)
+                            
+                        }
+                        
+                    }.padding(.top, 30)
+                        .padding(.bottom, 50)
                     
-                }
-                .createBackgrounfFon()
-           
-        }).onAppear(perform: {
-            Task {
-                await adminViewModel.fetchCurrentClient()
+                }.scrollIndicators(.hidden)
+                
             }
-        })
+            .createBackgrounfFon()
+            .onAppear(perform: {
+                Task {
+                    await adminViewModel.fetchCurrentClient()
+                }
+            })
+        }
+        
     }
 }

@@ -21,7 +21,7 @@ struct UserSelectedComapnyController: View {
     @State private var selectedID: String? = nil
     
     @State private var searchText: String = ""
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var isLoader: Bool = false
     @State private var isShowMenu: Bool = false
     
@@ -119,7 +119,12 @@ struct UserSelectedComapnyController: View {
                     }
                 }
 
-        }.searchable(text: $searchText)
+        }.searchable(text: $searchText, prompt: "Search salon")
+            .overlay(content: {
+                if searchCompanyNearby.isEmpty {
+                    ContentUnavailableView("Masters not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
+                }
+            })
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -171,8 +176,4 @@ struct UserSelectedComapnyController: View {
             }
     }
     
-}
-
-#Preview {
-    UserSelectedComapnyController(clientViewModel: ClientViewModel.shared)
 }

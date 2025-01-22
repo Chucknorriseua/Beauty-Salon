@@ -35,7 +35,7 @@ struct Main_Controller_Register: View {
         }
         .navigationBarTitleDisplayMode(.inline).toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Welcom in Beauty Salon")
+                Text("Create profile")
                     .foregroundStyle(Color.yellow.opacity(0.8))
                     .font(.system(size: 27, weight: .heavy).bold())
             }

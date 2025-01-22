@@ -15,7 +15,7 @@ struct AdminRegister: View {
     @State private var photoPickerItems: PhotosPickerItem? = nil
     @StateObject var authViewModel = Auth_ADMIN_Viewmodel()
     @State private var show: Bool = false
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var isLoader: Bool = false
     @State private var isPressAlarm: Bool = false
     @State private var messageAdmin: String = ""
@@ -57,7 +57,7 @@ struct AdminRegister: View {
                 }
                 
                 CustomTextField(text: $authViewModel.signInViewModel.email,
-                                title: "Email- @gmail.com", width: UIScreen.main.bounds.width - 20,
+                                title: "Email- @", width: UIScreen.main.bounds.width - 20,
                                 showPassword:  $authViewModel.signInViewModel.showPassword)
                 .keyboardType(.emailAddress)
                 .textContentType(.emailAddress)
@@ -118,7 +118,7 @@ struct AdminRegister: View {
 
 extension AdminRegister: isFormValid {
     var isFarmValid: Bool {
-        return authViewModel.signInViewModel.email.contains("@gmail.com")
+        return authViewModel.signInViewModel.email.contains("@")
         && authViewModel.signInViewModel.password.count > 5
     }
 }

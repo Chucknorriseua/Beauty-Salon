@@ -30,16 +30,21 @@ struct User_SelectProcedureCell: View {
                                     }
                                 }
                             }, label: {
-                                Text(item.title)
-                                    .frame(width: 100, height: 50, alignment: .center)
-                                    .background(Color(hex: "#3e5b47").opacity(0.6))
-                                    .clipShape(.rect(cornerRadius: 16))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .stroke(selectedProcedures.contains(item) ? Color.white : Color.clear, lineWidth: 2)
-                                    )
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 12))
+                                VStack {
+                                    Text(item.title)
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 12))
+                                    Text(String(item.price))
+                                        .foregroundColor(.green.opacity(0.9))
+                                        .font(.system(size: 12, weight: .bold))
+                                }
+                                .frame(width: 100, height: 50, alignment: .center)
+                                .background(Color(hex: "#3e5b47").opacity(0.6))
+                                .clipShape(.rect(cornerRadius: 16))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(selectedProcedures.contains(item) ? Color.white : Color.clear, lineWidth: 2)
+                                )
                             })
                         }.padding(.all, 4)
                     }

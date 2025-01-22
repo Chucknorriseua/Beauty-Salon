@@ -13,7 +13,7 @@ struct MasterRegister: View {
     @StateObject var authMaster = Auth_Master_ViewModel()
     @EnvironmentObject var coordinator: CoordinatorView
     @State private var photoPickerItems: PhotosPickerItem? = nil
-    @State private var loader: String = "Loader"
+    @State private var loader: String = "Loading"
     @State private var isLoader: Bool = false
     @State private var messageAdmin: String = "Not correct password or email, it may be that this email is already in use"
     
@@ -42,7 +42,7 @@ struct MasterRegister: View {
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 
                 CustomTextField(text: $authMaster.signInViewmodel.phone,
-                                title: "Phone(+000) ",
+                                title: "Phone (+000)",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 .keyboardType(.phonePad)
@@ -52,7 +52,7 @@ struct MasterRegister: View {
                 }
                 
                 CustomTextField(text: $authMaster.signInViewmodel.email,
-                                title: "Email",
+                                title: "Email- @",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 .keyboardType(.emailAddress)
@@ -63,7 +63,7 @@ struct MasterRegister: View {
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 
-                CustomButton(title: "Register as Master") {
+                CustomButton(title: "Create") {
                     Task {
                   _ = await authMaster.saveAccount_Master()
                         coordinator.popToRoot()
@@ -112,7 +112,7 @@ struct MasterRegister: View {
 }
 extension MasterRegister: isFormValid {
     var isFarmValid: Bool {
-        return authMaster.signInViewmodel.email.contains("@gmail.com")
+        return authMaster.signInViewmodel.email.contains("@")
         && authMaster.signInViewmodel.password.count > 5
     }
     

@@ -41,7 +41,8 @@ struct AddNewMaster: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical) {
+            VStack {
+                ScrollView(.vertical) {
                     LazyVStack {
                         ForEach(searchCompanyNearby, id: \.self) { master in
                             NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
@@ -51,9 +52,14 @@ struct AddNewMaster: View {
                         }
                     }
                     .padding(.top, 40)
+                }
             }.createBackgrounfFon()
-
-        }.searchable(text: $searchText)
+        }.searchable(text: $searchText, prompt: "Search masters")
+            .overlay(content: {
+                if searchCompanyNearby.isEmpty {
+                    ContentUnavailableView("Masters not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
+                }
+            })
             .foregroundStyle(Color.white)
             .tint(Color.yellow)
             .toolbar(content: {

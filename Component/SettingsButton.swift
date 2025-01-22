@@ -18,7 +18,7 @@ struct SettingsButton: View {
         Group {
             
             TextField(text: text) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .monospaced()
                     .foregroundStyle(Color(hex: "F3E3CE").opacity(0.4))
                     .fontWeight(.semibold)
@@ -30,4 +30,3 @@ struct SettingsButton: View {
         .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
     }
 }
-

@@ -108,25 +108,25 @@ final class Master_DataBase {
     
     // MARK:  /\_____________________________UPDATE-PUT-DATA-DELETE-MASTER___________________________________/\
     
-    func updateProfile_Master() async {
-        guard let uid = auth.currentUser?.uid else { return }
-        
-        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
-            
-            if let error = error {
-                print("Error", error.localizedDescription)
-            }
-            
-            guard let document = snap, document.exists else { return }
-            
-            if let data = try? document.data(as: MasterModel.self) {
-                
-                DispatchQueue.main.async {
-                    MasterViewModel.shared.masterModel = data
-                }
-            }
-        })
-    }
+//    func updateProfile_Master() async {
+//        guard let uid = auth.currentUser?.uid else { return }
+//        
+//        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
+//            
+//            if let error = error {
+//                print("Error", error.localizedDescription)
+//            }
+//            
+//            guard let document = snap, document.exists else { return }
+//            
+//            if let data = try? document.data(as: MasterModel.self) {
+//                
+//                DispatchQueue.main.async {
+//                    MasterViewModel.shared.masterModel = data
+//                }
+//            }
+//        })
+//    }
     
     // Put data on Storage
     

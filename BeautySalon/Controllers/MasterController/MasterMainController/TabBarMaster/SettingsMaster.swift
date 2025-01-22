@@ -19,9 +19,10 @@ struct SettingsMaster: View {
     @StateObject private var keyBoard = KeyboardResponder()
     
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?
-    @AppStorage ("useRole") private var useRole: String?
+    @AppStorage ("useRole") private var useRole: String = ""
     
     @State private var isPressAlarm: Bool = false
+    @State private var isShowprofilephoto: Bool = false
     @State private var isEditor: Bool = false
     @State private var photoPickerItems: PhotosPickerItem? = nil
     @Binding  var isPressFullScreen: Bool
@@ -58,7 +59,7 @@ struct SettingsMaster: View {
                                                                                 topTrailingRadius: 35))
                     
                     HStack {
-                        SettingsPhotoView(masterViewModel: masterViewModel, selectedImage: $selectedImage, isPressFullScreen: $isPressFullScreen)
+                        SettingsPhotoView(masterViewModel: masterViewModel, selectedImage: $selectedImage, isPressFullScreen: $isPressFullScreen, isShowPhotoPicker: $isShowprofilephoto)
                     }.padding(.bottom, -76)
                     
                     VStack(spacing: 10) {
@@ -71,7 +72,24 @@ struct SettingsMaster: View {
                                 .onChange(of: masterViewModel.masterModel.phone) { _, new in
                                     masterViewModel.masterModel.phone = formatPhoneNumber(new)
                                 }
-                      
+                            Button {
+                                isShowprofilephoto = true
+                            } label: {
+                                HStack {
+                                    Text("Upload photos of my work")
+                                        .font(.system(size: 18, weight: .bold))
+                                        .padding(.leading, 4)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .padding(.trailing, 4)
+                                    
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: 60)
+                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                .padding(.horizontal, 6)
+                            }
+
                         }.padding(.top, 6)
                         
                         ZStack(alignment: .topLeading) {
@@ -96,7 +114,11 @@ struct SettingsMaster: View {
                             Button(action: {
                                 Task {
                                     await masterViewModel.saveMaster_Profile()
-                                    NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)
+                                    let titleEnter = String(
+                                        format: NSLocalizedString("saveSettings", comment: ""))
+                                    let subTitle = String(
+                                        format: NSLocalizedString("saveSettingsTitle", comment: ""))
+                                    NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
                                 }
                             }, label: {
                                 Text("Save change")
@@ -141,8 +163,8 @@ struct SettingsMaster: View {
                 }
         }.ignoresSafeArea(.keyboard, edges: .all)
         
-            .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: "Are you sure you want to leave?",
-                         title: "Leave session", onConfirm: {
+            .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: "Are you sure want to exit?",
+                         title: "Leave Session", onConfirm: {
                 signOut()
             }, onCancel: {
                 
@@ -173,7 +195,7 @@ struct SettingsMaster: View {
     private func signOut() {
         Task {
             selectedAdminID = nil
-            useRole = nil
+            useRole = ""
             authViewModel.signOut()
             try await google.logOut()
             coordinator.popToRoot()

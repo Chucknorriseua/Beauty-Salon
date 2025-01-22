@@ -13,12 +13,9 @@ struct GetAllMastersInCompany: View {
 
     
     var body: some View {
-        
-        NavigationView(content: {
-            GeometryReader { geometry in
-                
+        NavigationView {
                 VStack {
-                    Text("All the company's masters")
+                    Text("Send schedule for master")
                         .font(.system(.title, design: .serif, weight: .regular))
                         .foregroundStyle(Color.yellow)
                     ScrollView {
@@ -39,7 +36,7 @@ struct GetAllMastersInCompany: View {
                     
                 }
                 .createBackgrounfFon()
-            }
-        })
+            
+        }
     }
 }

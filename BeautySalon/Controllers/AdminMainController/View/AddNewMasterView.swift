@@ -99,7 +99,11 @@ struct AddNewMasterView: View {
                         Task {
                             let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
                             await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
-                            NotificationController.sharet.notify(title: "You have added a master to your salon 💇‍♀️ 💅", subTitle: "now you can send him the schedule", timeInterval: 2)
+                            let titleEnter = String(
+                                format: NSLocalizedString("addMaster", comment: ""), addMasterInRoom.name)
+                            let subTitle = String(
+                                format: NSLocalizedString("addMasterTitle", comment: ""))
+                            NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 2)
                         }
                     }
                 }

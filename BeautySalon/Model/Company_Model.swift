@@ -39,12 +39,7 @@ struct Company_Model: Identifiable, Codable, Hashable {
         model["phone"] = self.phone
         model["description"] = self.description
         model["image"] = self.image
-        model["procedure"] = self.procedure.map({ proc in
-            return ["id": proc.id,
-                    "title": proc.title,
-                    "price": proc.price,
-                    "description": proc.description]
-        })
+        model["procedure"] = self.procedure.map {$0.procedure}
         model["latitude"] = self.latitude
         model["longitude"] = self.longitude
         model["categories"] = self.categories
