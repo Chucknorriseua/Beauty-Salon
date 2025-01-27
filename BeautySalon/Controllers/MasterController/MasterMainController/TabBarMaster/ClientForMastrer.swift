@@ -10,7 +10,8 @@ import SwiftUI
 struct ClientForMastrer: View {
     
     
- @StateObject var masterViewModel: MasterViewModel
+    @StateObject var masterViewModel: MasterViewModel
+    @StateObject var VmCalendar: MasterCalendarViewModel
     
 // MARK: Fetch all User Of Company
     var body: some View {
@@ -24,19 +25,21 @@ struct ClientForMastrer: View {
                     ScrollView {
                         LazyVStack(alignment: .center) {
                             
-                            ForEach(masterViewModel.client, id:\.self) { user in
+                            ForEach(VmCalendar.client, id:\.self) { user in
                                 CellUser(clientModel: user)
                             }
                             
                         }.padding(.top, 30)
                         
                     }.scrollIndicators(.hidden)
-                    
+                        .refreshable {
+                            Task {
+                                await VmCalendar.fetchCurrentClient()
+                            }
+                        }
                 }
                 .createBackgrounfFon()
            
-        }).onAppear {
-            Task { await masterViewModel.fetchCurrentClient() }
-        }
+        })
     }
 }

@@ -99,8 +99,10 @@
 "The login was incorrect, perhaps the admin did not add you to the salon as a master" = "Login był nieprawidłowy, być może administrator nie dodał cię do salonu jako mistrza";
 "Loading" = "Załadunek";
 "Nails" = "Paznokcie";
-"Hair Style" = "Styl włosów";
+"Barber Shop" = "Zakład fryzjerski";
 "Massage" = "Masaż";
+"At home or away" = "W domu lub na wyjeździe";
+"" = "";
 "Another" = "Inny";
 "Email" = "Poczta";
 "Email- @" = "Poczta- @";
@@ -127,3 +129,10 @@
 "You are trying to log in as an administrator without this subscription, or try renewing your subscription that you previously purchased." = "Próbujesz zalogować się jako administrator bez tej subskrypcji, lub spróbować odnowić zakupioną wcześniej subskrypcję.";
 "Restore Purchases" = "Przywrócenie zakupów";
 "totalcost" = "koszt całkowity: %@";
+"Nail master not found..." = "Nail Master nie został znaleziony...";
+"Please try again." = "Spróbuj ponownie.";
+"Salon not found..." = "Salonu nie znaleziono...";
+"" = "";
+"" = "";
+"" = "";
+"" = "";

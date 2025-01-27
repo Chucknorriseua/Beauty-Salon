@@ -1,16 +1,16 @@
 //
-//  ProcedureCell.swift
+//  MasterProcedureCell.swift
 //  BeautySalon
 //
-//  Created by Евгений Полтавец on 12/01/2025.
+//  Created by Евгений Полтавец on 25/01/2025.
 //
 
 import SwiftUI
 
-struct ProcedureCell: View {
+struct MasterProcedureCell: View {
     
     @State var procedure: Procedure
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var masterVM: MasterViewModel
     
     var body: some View {
         VStack {
@@ -32,7 +32,7 @@ struct ProcedureCell: View {
                 Spacer()
                 Button(action: {
                     Task {
-                        await adminViewModel.deleteCreateProcedure(procedureID: procedure)
+                        await masterVM.deleteCreateProcedure(procedureID: procedure)
                     }
                 }, label: {
                     Image(systemName: "trash.circle.fill")
@@ -57,8 +57,4 @@ struct ProcedureCell: View {
         .padding(.horizontal, 4)
         
     }
-}
-
-#Preview {
-    ProcedureCell(procedure: Procedure.procedureModel(), adminViewModel: AdminViewModel.shared)
 }

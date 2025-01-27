@@ -44,11 +44,11 @@ struct User_MenuProcedureView: View {
                             VStack {
                                 Text(String(item.title))
                                     .foregroundColor(.white)
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 12, weight: .heavy))
                                 Text(String(item.price))
                                     .foregroundColor(.green.opacity(0.9))
                                     .font(.system(size: 12, weight: .bold))
-                            }.frame(width: 110, height: 44, alignment: .center)
+                            }.frame(width: 110, height: 60, alignment: .center)
                                 .background(selectedProcedure.contains(item) ? Color.gray.opacity(0.2) : Color.init(hex: "#3e5b47").opacity(0.6))
                                 .cornerRadius(16)
                         })
@@ -56,7 +56,7 @@ struct User_MenuProcedureView: View {
                     }
                 }
             }
-        }.frame(maxWidth: .infinity, maxHeight: 220)
+        }.frame(maxWidth: .infinity, maxHeight: 280)
             .background(.regularMaterial)
             .clipShape(.rect(cornerRadius: 16))
       

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 import CoreLocation
 
 struct AddNewMaster: View {
@@ -45,7 +44,7 @@ struct AddNewMaster: View {
                 ScrollView(.vertical) {
                     LazyVStack {
                         ForEach(searchCompanyNearby, id: \.self) { master in
-                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, isShowPricelist: false, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
                                 
                                 AddNewMasterCell(addMasterInRoom: master)
                             }
@@ -53,11 +52,14 @@ struct AddNewMaster: View {
                     }
                     .padding(.top, 40)
                 }
+                .refreshable {
+                    Task { await adminModelView.fetchAllMastersFireBase() }
+                }
             }.createBackgrounfFon()
         }.searchable(text: $searchText, prompt: "Search masters")
             .overlay(content: {
                 if searchCompanyNearby.isEmpty {
-                    ContentUnavailableView("Masters not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
+                    ContentUnavailableView("Nail master not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
                 }
             })
             .foregroundStyle(Color.white)

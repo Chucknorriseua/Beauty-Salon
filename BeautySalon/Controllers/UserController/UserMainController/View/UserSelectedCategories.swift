@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Categories: String, Identifiable, CaseIterable {
-    case nail, hairStyle, massage, another
+    case nail, massage, barberShop, housecall, another
 
     var id: String {
         self.rawValue
@@ -17,8 +17,9 @@ enum Categories: String, Identifiable, CaseIterable {
     var displayName: String {
         switch self {
         case .nail: return "Nails".localized
-        case .hairStyle: return "Hair Style".localized
+        case .barberShop: return "Barber Shop".localized
         case .massage: return "Massage".localized
+        case .housecall: return "At home or away".localized
         case .another: return "Another".localized
         }
     }
@@ -35,7 +36,7 @@ struct UserSelectedCategories: View {
     var body: some View {
         VStack(spacing: 0) {
             if isShowCategories {
-                VStack {
+                ScrollView {
                     VStack {
                         ForEach(Categories.allCases, id: \.id) { category in
                             Button {
@@ -44,17 +45,18 @@ struct UserSelectedCategories: View {
                             } label: {
                                 VStack {
                                     Text(category.displayName.localized)
-                                }.frame(width: 140, height: 40)
+                                }.frame(maxWidth: 220, maxHeight: 44)
                                     .fontWeight(.bold)
                                     .fontDesign(.monospaced)
                                     .foregroundStyle(Color.white)
+                                    .padding(.all, 8)
                                     .background(.ultraThinMaterial.opacity(0.8))
                                     .clipShape(RoundedRectangle(cornerRadius: 24))
                             }
                         }
                     }
                     .padding()
-                }
+                }.scrollIndicators(.hidden)
             } else {
                 VStack {
                     Text("Settings search")
@@ -121,8 +123,19 @@ struct UserSelectedCategories: View {
                 }
             }
             Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 230 : 180)
+        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 260 : 200)
             .background(.regularMaterial)
+            .overlay(
+                RoundedRectangle(cornerRadius: 24)
+                    .stroke(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.gray]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ),
+                        lineWidth: 4
+                    )
+            )
             .clipShape(RoundedRectangle(cornerRadius: 24))
             .padding(.horizontal)
             .overlay(alignment: .topLeading) {
@@ -135,12 +148,10 @@ struct UserSelectedCategories: View {
                         HStack {
                             Image(systemName: "chevron.left")
                                 .padding(.trailing, 4)
-                            Text("Back")
                                 .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
-                                .padding(.leading, 4)
-                        }.frame(maxWidth: 80, maxHeight: 30)
-                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                        }.frame(maxWidth: 40, maxHeight: 40)
+                            .background(.ultraThinMaterial.opacity(0.7))
+                            .clipShape(Circle())
                             .padding(.horizontal, 4)
                     }.padding(.leading, 18)
                         .padding(.top, 10)

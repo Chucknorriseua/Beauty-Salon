@@ -152,6 +152,7 @@ struct UserSend_SheduleForAdmin: View {
                             User_MenuProcedureView(clientViewModel: clientViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProceduresColor) {
                             }
                         }.padding(.horizontal, 8)
+                            .padding(.bottom, 20)
                     }
                 }
         }

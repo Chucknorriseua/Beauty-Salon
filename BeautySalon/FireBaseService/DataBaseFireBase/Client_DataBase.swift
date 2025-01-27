@@ -38,6 +38,9 @@ final class Client_DataBase {
         return db.collection("BeautySalon")
     }
     
+    private var master: CollectionReference {
+        return db.collection("Master")
+    }
     
     func setData_ClientFireBase(clientModel: Client) async throws {
         guard let uid = auth.currentUser?.uid else { return }
@@ -95,6 +98,17 @@ final class Client_DataBase {
         }
     }
     
+    func fetchHomeCallMasters() async throws -> [MasterModel] {
+        
+        let snapShot = try await master.getDocuments()
+        let masters: [MasterModel] = try snapShot.documents.compactMap { document in
+            return try Admin_DataBase.shared.convertDocumentToMater(document)
+        }
+        let masterHousecall = masters.filter {$0.categories == "housecall"}
+        return masterHousecall
+
+    }
+
     func updateLocationCompany(company: Client) async {
         guard let uid = auth.currentUser?.uid else { return }
         guard let latitude = company.latitude, let longitudes = company.longitude else { return }

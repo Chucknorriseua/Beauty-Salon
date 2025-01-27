@@ -30,7 +30,7 @@
 "Name" = "Name";
 "Master: " = "Master: ";
 "from client" = "from client";
-"Wishes: " = "WWishes: ";
+"Wishes: " = "Wishes: ";
 "Procedure: " = "Procedure: ";
 "Find a Master" = "Find a Master";
 "Back" = "Back";
@@ -97,7 +97,9 @@
 "The login was incorrect, perhaps the admin did not add you to the salon as a master" = "The login was incorrect, perhaps the admin did not add you to the salon as a master";
 "Loading" = "Loading";
 "Nails" = "Nails";
-"Hair Style" = "Hair Style";
+"Barber Shop" = "Barber Shop";
+"At home or away" = "At home or away";
+"" = "";
 "Massage" = "Massage";
 "Another" = "Another";
 "NSUserTrackingUsageDescription" = "Beaty Salon requires locations so it can offer nearby points of location";
@@ -127,3 +129,10 @@
 "You are trying to log in as an master without this subscription, or try renewing your subscription that you previously purchased." = "You are trying to log in as an master without this subscription, or try renewing your subscription that you previously purchased.";
 "Restore Purchases" = "Restore Purchases";
 "totalcost" = "total cost: %@";
+"Nail master not found..." = "Nail master not found...";
+"Please try again." = "Please try again.";
+"Salon not found..." = "Salon not found...";
+"" = "";
+"" = "";
+"" = "";
+"" = "";

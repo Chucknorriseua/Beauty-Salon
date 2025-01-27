@@ -13,6 +13,7 @@ struct CoordinatorViewModel: View {
     @StateObject private var google = GoogleSignInViewModel()
     @StateObject private var storeKitView = StoreViewModel()
     
+    
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             coordinator.Adminbuild(page: .main)

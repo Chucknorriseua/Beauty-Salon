@@ -14,8 +14,10 @@ struct AdminMainController: View {
     @State private var selecetedRecord: Shedule? = nil
     @State private var isShowListMaster: Bool = false
     @State private var isShowRedactor: Bool = false
+    @State private var isShowDelete: Bool = false
     @State private var isRefreshID: Bool = false
     @State private var refreshID = UUID()
+    @State private var message: String = "Do you want to delete the record?"
     
     var body: some View {
         NavigationView {
@@ -28,7 +30,7 @@ struct AdminMainController: View {
                                 VStack {
                                     
                                     AdminSheduleFromClientCell(recordModel: record, viewModelAdmin: admimViewModel,
-                                                               isShowList: $isShowListMaster, isShowRedactorDate: $isShowRedactor, selecetedRecord: $selecetedRecord).onTapGesture(perform: {
+                                                               isShowAlert: $isShowDelete, isShowList: $isShowListMaster, isShowRedactorDate: $isShowRedactor, selecetedRecord: $selecetedRecord).onTapGesture(perform: {
                                         selecetedRecord = record
                                     })
                                        .transition(.opacity)
@@ -48,7 +50,6 @@ struct AdminMainController: View {
                             }
                         }
                         
-                        
                     }.scrollIndicators(.hidden)
                         .id(refreshID)
                         .refreshable {
@@ -64,8 +65,19 @@ struct AdminMainController: View {
                             }
                         }
                     
-                }
+                }.disabled(isShowDelete)
             }.createBackgrounfFon()
+                .overlay(alignment: .center, content: {
+                    ZStack {}
+                        .customAlert(isPresented: $isShowDelete, hideCancel: true, message: message, title: "") {
+                            Task {
+                                if let record = selecetedRecord {
+                                    await admimViewModel.deleteRecord(record: record)
+                                }
+                            }
+                        } onCancel: {}
+                })
+            
                 .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {

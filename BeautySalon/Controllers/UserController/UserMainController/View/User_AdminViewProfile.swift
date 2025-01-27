@@ -10,7 +10,7 @@ import SwiftUI
 
 struct User_AdminViewProfile: View {
     
-    @ObservedObject var clientViewModel: ClientViewModel
+    @StateObject var clientViewModel: ClientViewModel
     @State private var isPriseList: Bool = false
     
     var body: some View {
@@ -66,7 +66,3 @@ struct User_AdminViewProfile: View {
             .padding(.bottom, 8)
     }
 }
-
-#Preview(body: {
-    User_AdminViewProfile(clientViewModel: ClientViewModel.shared)
-})

@@ -49,7 +49,8 @@ struct ShedulCell: View {
                                         LazyVGrid(columns: adaptiveColumn, spacing: 8) {
                                             ForEach(task.procedure, id: \.self) { item in
                                                 Text(item.title)
-                                                    .frame(width: 100, height: 50, alignment: .center)
+                                                    .font(.system(size: 12, weight: .heavy))
+                                                    .frame(width: 110, height: 60, alignment: .center)
                                                     .clipShape(.rect(cornerRadius: 16))
                                                     .overlay(
                                                         RoundedRectangle(cornerRadius: 16)
@@ -87,6 +88,17 @@ struct ShedulCell: View {
                     
                 }.frame(maxWidth: .infinity, maxHeight: isProcedure ? 420 : 180)
                     .background(task.tinColor)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.mint, .yellow]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ),
+                                lineWidth: 2
+                            )
+                    )
                     .clipShape(.rect(cornerRadius: 22))
                     .padding(.horizontal, 8)
             }

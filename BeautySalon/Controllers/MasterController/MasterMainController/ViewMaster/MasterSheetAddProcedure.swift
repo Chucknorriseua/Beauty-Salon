@@ -1,16 +1,16 @@
 //
-//  AdminSheetCreatPriceList.swift
+//  MasterSheetAddProcedure.swift
 //  BeautySalon
 //
-//  Created by Евгений Полтавец on 12/01/2025.
+//  Created by Евгений Полтавец on 25/01/2025.
 //
 
 import SwiftUI
 
-struct AdminSheetCreatPriceList: View {
+struct MasterSheetAddProcedure: View {
     
     
-    @StateObject var adminViewModel = AdminViewModel()
+    @StateObject var masterVM: MasterViewModel
     @Environment (\.dismiss) var dismiss
     
     @State private var title: String = ""
@@ -42,7 +42,7 @@ struct AdminSheetCreatPriceList: View {
                 CustomButton(title: "Create") {
                     Task {
                         let produced = Procedure(id: UUID().uuidString, title: title, price: price, description: description)
-                        await adminViewModel.addNewProcedureFirebase(addProcedure: produced)
+                        await masterVM.addNewProcedureFirebase(addProcedure: produced)
                         dismiss()
                     }
                 }
@@ -50,8 +50,4 @@ struct AdminSheetCreatPriceList: View {
             Spacer()
         }.background(Color.init(hex: "#3e5b47").opacity(0.8))
     }
-}
-
-#Preview {
-    AdminSheetCreatPriceList(adminViewModel: AdminViewModel.shared)
 }

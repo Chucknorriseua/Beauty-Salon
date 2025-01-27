@@ -11,7 +11,7 @@ struct AdminChangeRecordsView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 80))
     ]
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
     
     var body: some View {
         VStack {
@@ -38,7 +38,7 @@ struct AdminChangeRecordsView: View {
                                             .stroke(adminViewModel.procedure.contains(item) ? Color.white : Color.clear, lineWidth: 2)
                                     )
                                     .foregroundColor(.white)
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 12, weight: .heavy))
                             })
                         }.padding(.all, 2)
                     }

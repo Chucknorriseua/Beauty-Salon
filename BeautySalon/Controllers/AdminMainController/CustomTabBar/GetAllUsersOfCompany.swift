@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GetAllUsersOfCompany: View {
     
-    @ObservedObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
     
     // MARK: Fetch all User Of Company
     var body: some View {
@@ -35,11 +35,11 @@ struct GetAllUsersOfCompany: View {
                 
             }
             .createBackgrounfFon()
-            .onAppear(perform: {
+            .refreshable {
                 Task {
                     await adminViewModel.fetchCurrentClient()
                 }
-            })
+            }
         }
         
     }

@@ -17,6 +17,7 @@ final class AdminViewModel: ObservableObject {
     @Published private(set) var recordsClient: [Shedule] = []
     @Published private(set) var addMasterInRoom: [MasterModel] = []
     @Published private(set) var client: [Client] = []
+    @Published private(set) var createProcedure: [Procedure] = []
     @Published var procedure: [Procedure] = []
     
     @Published var isAlert: Bool = false
@@ -27,11 +28,13 @@ final class AdminViewModel: ObservableObject {
     @Published var masterModel: MasterModel
     @Published var shedule: Shedule
     
-    private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
+     init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
         self.shedule = shedule ?? Shedule.sheduleModel()
-        
+        Task {
+            await fetchProfileAdmin()
+        }
     }
     
     //  MARK: Fetch profile admin
@@ -42,9 +45,26 @@ final class AdminViewModel: ObservableObject {
                 guard let self else { return }
                 self.adminProfile = profile
                 self.procedure = adminProfile.procedure
+                self.createProcedure = adminProfile.procedure
             }
             await fethAllData()
-            
+        } catch {
+            print("error fetchProfileAdmin", error.localizedDescription)
+//            await handleError(error: error, wheare: "fetch my profile")
+        }
+        
+    }
+    
+    //  MARK: Fetch profile admin
+    func refreshProfileAdmin() async {
+        do {
+            let profile = try await Admin_DataBase.shared.fetchAdmiProfile()
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.adminProfile = profile
+                self.procedure = adminProfile.procedure
+                self.createProcedure = adminProfile.procedure
+            }
         } catch {
             await handleError(error: error, wheare: "fetch my profile")
         }
@@ -54,11 +74,11 @@ final class AdminViewModel: ObservableObject {
     private func fethAllData() async {
         await withTaskGroup(of: Void.self) { [weak self] group in
             guard let self else { return }
-            
-            //            group.addTask { await Admin_DataBase.shared.updateProfile_Admin() }
+
             group.addTask { await self.get_AllAdded_Masters_InRomm() }
             group.addTask { await Admin_DataBase.shared.removeYesterdaysClient() }
-            
+            group.addTask { await self.fetchClientRecords() }
+            group.addTask { await self.fetchCurrentClient() }
         }
     }
     
@@ -81,12 +101,23 @@ final class AdminViewModel: ObservableObject {
     
     @MainActor
     func addNewProcedure(addProcedure: Procedure) async {
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            if !procedure.contains(where: {$0.id == addProcedure.id}) {
+                self.procedure.append(addProcedure)
+                //                self.createProcedure.append(addProcedure)
+            }
+        }
+    }
+    
+    @MainActor
+    func addNewProcedureFirebase(addProcedure: Procedure) async {
         do {
             _ = try await Admin_DataBase.shared.addProcedure(procedure: addProcedure)
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 if !procedure.contains(where: {$0.id == addProcedure.id}) {
-                    self.procedure.append(addProcedure)
+                    self.createProcedure.append(addProcedure)
                 }
             }
         } catch {
@@ -116,14 +147,13 @@ final class AdminViewModel: ObservableObject {
         }
     }
     //  MARK: Fetch all profile master in to rooms
+    @MainActor
     func fetchAllMastersFireBase() async {
         do {
-            
             let master = try await Admin_DataBase.shared.fetch_All_MastersOn_FireBase()
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.allMasters = master
-                
             }
         } catch {
             await handleError(error: error, wheare: "fetch all masters")
@@ -132,7 +162,7 @@ final class AdminViewModel: ObservableObject {
     }
     
     //  MARK: Fetch all profile master in to rooms
-    private func get_AllAdded_Masters_InRomm() async {
+     func get_AllAdded_Masters_InRomm() async {
         do {
             
             let master = try await Admin_DataBase.shared.getAll_Added_Masters()
@@ -174,7 +204,6 @@ final class AdminViewModel: ObservableObject {
                 guard let self else { return }
                 self.recordsClient = sortedDate
             }
-            
         } catch {
             await handleError(error: error, wheare: "get client records")
         }
@@ -200,6 +229,15 @@ final class AdminViewModel: ObservableObject {
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.procedure.remove(at: index)
+            }
+        }
+    }
+    
+    func deleteCreateProcedure(procedureID: Procedure) async {
+        if let index = createProcedure.firstIndex(where: {$0.id == procedureID.id}) {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.createProcedure.remove(at: index)
             }
         }
         do {

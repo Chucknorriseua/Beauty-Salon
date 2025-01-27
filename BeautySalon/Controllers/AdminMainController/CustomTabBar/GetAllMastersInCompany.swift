@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GetAllMastersInCompany: View {
     
-    @ObservedObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
 
     
     var body: some View {
@@ -32,8 +32,11 @@ struct GetAllMastersInCompany: View {
                             
                         }.padding(.top, 40)
                     }.scrollIndicators(.hidden)
-                        
-                    
+                        .refreshable {
+                            Task {
+                                await adminViewModel.get_AllAdded_Masters_InRomm()
+                            }
+                        }
                 }
                 .createBackgrounfFon()
             

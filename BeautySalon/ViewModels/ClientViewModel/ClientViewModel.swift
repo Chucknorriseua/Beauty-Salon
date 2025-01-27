@@ -15,6 +15,7 @@ final class ClientViewModel: ObservableObject {
     
     @Published private(set) var comapny: [Company_Model] = []
     @Published private(set) var mastersInRoom: [MasterModel] = []
+    @Published private(set) var homeCall: [MasterModel] = []
     @Published var procedure: [Procedure] = []
     
     @Published var isAlert: Bool = false
@@ -26,9 +27,12 @@ final class ClientViewModel: ObservableObject {
     
     @Published var currentDate: Date = Date()
     
-    private init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
+  private init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.clientModel = clientModel ?? Client.clientModel()
+        Task {
+            await fetchAll_Comapny()
+        }
     }
     
     @MainActor
@@ -61,8 +65,11 @@ final class ClientViewModel: ObservableObject {
                 self.comapny = comapnies
             }
             await fetch_ProfileClient()
+            await fetchHomeCallMaster()
+            
         } catch {
-            await handleError(error: error)
+            print("error fetchAll_Comapny", error.localizedDescription)
+//            await handleError(error: error)
         }
     }
     
@@ -85,6 +92,7 @@ final class ClientViewModel: ObservableObject {
                 guard let self else { return }
                 self.adminProfile = admin
             }
+            await fetchAllMasters_FromAdmin()
         } catch {
             await handleError(error: error)
         }
@@ -97,6 +105,18 @@ final class ClientViewModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.mastersInRoom = masters
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    func fetchHomeCallMaster() async {
+        do {
+            let masters = try await Client_DataBase.shared.fetchHomeCallMasters()
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.homeCall = masters
             }
         } catch {
             await handleError(error: error)

@@ -18,7 +18,7 @@ final class MasterCalendarViewModel: ObservableObject {
     @Published var isPresentedNewTask: Bool = false
     @Published var createWeek: Bool = false
     @Published private(set) var productTask: [Shedule] = [] 
-    
+    @Published private(set) var client: [Client] = []
 
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
@@ -49,6 +49,7 @@ final class MasterCalendarViewModel: ObservableObject {
         return productTask.filter({Calendar.current.isDate($0.creationDate, inSameDayAs: date)})
     }
     
+    @MainActor
     func getSheduleMaster() async {
         let adminID = company.adminID
         do {
@@ -58,10 +59,24 @@ final class MasterCalendarViewModel: ObservableObject {
                 guard let strongSelf = self else { return }
                 strongSelf.productTask = sortedDate
             }
+            await fetchCurrentClient()
         } catch {
             isAlert = true
             errorMassage = error.localizedDescription
             print("DEBUG: ERROR getSheduleMaster....", error.localizedDescription)
+        }
+    }
+    
+    func fetchCurrentClient() async {
+        let adminID = company.adminID
+        do {
+            let client = try await Master_DataBase.shared.fetch_CurrentClient_FromAdmin(adminID: adminID)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.client = client
+            }
+        } catch {
+            print("fetchCurrentClient", error.localizedDescription)
         }
     }
     

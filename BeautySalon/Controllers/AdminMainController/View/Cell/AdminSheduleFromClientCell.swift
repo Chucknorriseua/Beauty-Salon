@@ -11,12 +11,13 @@ struct AdminSheduleFromClientCell: View {
     
     @State var recordModel: Shedule
     @StateObject var viewModelAdmin: AdminViewModel
-    @State private var isShowAlert: Bool = false
-    @State private var message: String = "Do you want to delete the record?"
+    @Binding var isShowAlert: Bool
+  
     @Binding var isShowList: Bool
     @Binding var isShowRedactorDate: Bool
     @Binding var selecetedRecord: Shedule?
     @State private var isShowInfo: Bool = false
+    @State private var isAnimateGradient: Bool = false
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 90))
     ]
@@ -90,7 +91,7 @@ struct AdminSheduleFromClientCell: View {
                                     LazyVGrid(columns: adaptiveColumn, spacing: 8) {
                                         ForEach(recordModel.procedure, id: \.self) { item in
                                             Text(item.title)
-                                                .frame(width: 100, height: 50, alignment: .center)
+                                                .frame(width: 110, height: 60, alignment: .center)
                                                 .clipShape(.rect(cornerRadius: 16))
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 16)
@@ -138,8 +139,8 @@ struct AdminSheduleFromClientCell: View {
                                     
                                     Button(action: {
                                         withAnimation {
-                                                selecetedRecord = recordModel
-                                                isShowRedactorDate = true
+                                            selecetedRecord = recordModel
+                                            isShowRedactorDate = true
                                         }
                                     }, label: {
                                         Image(systemName: "square.and.pencil")
@@ -181,20 +182,22 @@ struct AdminSheduleFromClientCell: View {
                 }
             })
         }
-        .frame(maxWidth: .infinity, maxHeight: !isShowInfo ? 140 : 500)
+        .frame(maxWidth: .infinity, maxHeight: !isShowInfo ? 140 : 600)
         .background(.regularMaterial)
-//        .background(Color.init(hex: "#C0C0C0").opacity(0.8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22)
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.gray]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    lineWidth: 6
+                )
+        )
         .foregroundStyle(Color.yellow)
         .clipShape(.rect(cornerRadius: 24))
         .padding(.horizontal, 8)
-        .overlay(alignment: .center, content: {
-            ZStack {}
-                .customAlert(isPresented: $isShowAlert, hideCancel: true, message: message, title: "") {
-                    Task {
-                        await viewModelAdmin.deleteRecord(record: recordModel)
-                    }
-                } onCancel: {}
-        })
     }
    private func format(_ date: Date) -> String {
         let formatter = DateFormatter()
@@ -219,9 +222,10 @@ struct AdminSheduleFromClientCell: View {
             return result + (Double(item.price) ?? 0.0)
         }
         let currencySymbol = getCurrencySymbol()
-        return "\(currencySymbol) \(String(format: "%.1f", totalCost))"
+        return "\(String(format: "%.1f", totalCost)) \(currencySymbol)"
     }
 }
+
 #Preview(body: {
-    AdminSheduleFromClientCell(recordModel: Shedule.sheduleModel(), viewModelAdmin: AdminViewModel.shared, isShowList: .constant(false), isShowRedactorDate: .constant(false), selecetedRecord: .constant(Shedule.sheduleModel()))
+    AdminSheduleFromClientCell(recordModel: Shedule.sheduleModel(), viewModelAdmin: AdminViewModel.shared, isShowAlert: .constant(true), isShowList: .constant(true), isShowRedactorDate: .constant(true), selecetedRecord: .constant(Shedule.sheduleModel()))
 })

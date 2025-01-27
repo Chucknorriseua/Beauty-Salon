@@ -84,6 +84,11 @@
 		BC7D521C2CC6B113009036E2 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7D521B2CC6B112009036E2 /* ImageCache.swift */; };
 		BC8BC91C2D01CFDF00E37759 /* SignInValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8BC91B2D01CFDF00E37759 /* SignInValidator.swift */; };
 		BC971F582C9C2E100046A625 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC971F572C9C2E100046A625 /* SettingsButton.swift */; };
+		BC9A302F2D44C12C0088AD1E /* MasterSelectCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A302E2D44C12C0088AD1E /* MasterSelectCategoriesView.swift */; };
+		BC9A30312D44E9380088AD1E /* User_MasterPriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A30302D44E9380088AD1E /* User_MasterPriceList.swift */; };
+		BC9A30332D44EA5D0088AD1E /* MasterCreatPriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A30322D44EA5D0088AD1E /* MasterCreatPriceList.swift */; };
+		BC9A30352D44EAE20088AD1E /* MasterProcedureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A30342D44EAE20088AD1E /* MasterProcedureCell.swift */; };
+		BC9A30372D44EB330088AD1E /* MasterSheetAddProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9A30362D44EB330088AD1E /* MasterSheetAddProcedure.swift */; };
 		BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF952CAEDA0F0055F458 /* Auth_ClientViewModel.swift */; };
 		BCADDF982CAEDC900055F458 /* Client_DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF972CAEDC900055F458 /* Client_DataBase.swift */; };
 		BCADDF9A2CAF05EA0055F458 /* ClientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCADDF992CAF05EA0055F458 /* ClientViewModel.swift */; };
@@ -119,7 +124,6 @@
 		BCBC58AB2C73996B00FB3E77 /* AdminMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58AA2C73996B00FB3E77 /* AdminMainController.swift */; };
 		BCBC58B02C73BAAC00FB3E77 /* View+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58AF2C73BAAC00FB3E77 /* View+ext.swift */; };
 		BCBC58B22C73BAB800FB3E77 /* Date+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58B12C73BAB800FB3E77 /* Date+ext.swift */; };
-		BCBC58B42C73BACD00FB3E77 /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58B32C73BACD00FB3E77 /* OffsetKey.swift */; };
 		BCBC58B62C746B4000FB3E77 /* AdminViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58B52C746B4000FB3E77 /* AdminViewModel.swift */; };
 		BCBC58B82C7474E600FB3E77 /* Shedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBC58B72C7474E600FB3E77 /* Shedule.swift */; };
 		BCCD5F102CB45A75007976F9 /* CellListMasterDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCCD5F0F2CB45A75007976F9 /* CellListMasterDelete.swift */; };
@@ -143,7 +147,6 @@
 		BCEE1E792CB3084A003C6933 /* UserSend_SheduleForAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */; };
 		BCF178AC2C7B336400135D81 /* Auth_ADMIN_Viewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF178AB2C7B336400135D81 /* Auth_ADMIN_Viewmodel.swift */; };
 		BCF178B62C7B792100135D81 /* Admin_DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF178B52C7B792100135D81 /* Admin_DataBase.swift */; };
-		BCF178B82C7E0A0800135D81 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF178B72C7E0A0800135D81 /* ImageSize.swift */; };
 		BCF28C622CB00059007BDB24 /* User_MasterInToRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C612CB00059007BDB24 /* User_MasterInToRoomCell.swift */; };
 		BCF28C642CB005A4007BDB24 /* UserMainSelectedMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */; };
 		BCF28C662CB00CDA007BDB24 /* User_AdminViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */; };
@@ -220,6 +223,11 @@
 		BC7D521B2CC6B112009036E2 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		BC8BC91B2D01CFDF00E37759 /* SignInValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInValidator.swift; sourceTree = "<group>"; };
 		BC971F572C9C2E100046A625 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
+		BC9A302E2D44C12C0088AD1E /* MasterSelectCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterSelectCategoriesView.swift; sourceTree = "<group>"; };
+		BC9A30302D44E9380088AD1E /* User_MasterPriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_MasterPriceList.swift; sourceTree = "<group>"; };
+		BC9A30322D44EA5D0088AD1E /* MasterCreatPriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterCreatPriceList.swift; sourceTree = "<group>"; };
+		BC9A30342D44EAE20088AD1E /* MasterProcedureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterProcedureCell.swift; sourceTree = "<group>"; };
+		BC9A30362D44EB330088AD1E /* MasterSheetAddProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterSheetAddProcedure.swift; sourceTree = "<group>"; };
 		BCADDF952CAEDA0F0055F458 /* Auth_ClientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth_ClientViewModel.swift; sourceTree = "<group>"; };
 		BCADDF972CAEDC900055F458 /* Client_DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client_DataBase.swift; sourceTree = "<group>"; };
 		BCADDF992CAF05EA0055F458 /* ClientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientViewModel.swift; sourceTree = "<group>"; };
@@ -256,7 +264,6 @@
 		BCBC58AA2C73996B00FB3E77 /* AdminMainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminMainController.swift; sourceTree = "<group>"; };
 		BCBC58AF2C73BAAC00FB3E77 /* View+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ext.swift"; sourceTree = "<group>"; };
 		BCBC58B12C73BAB800FB3E77 /* Date+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ext.swift"; sourceTree = "<group>"; };
-		BCBC58B32C73BACD00FB3E77 /* OffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetKey.swift; sourceTree = "<group>"; };
 		BCBC58B52C746B4000FB3E77 /* AdminViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminViewModel.swift; sourceTree = "<group>"; };
 		BCBC58B72C7474E600FB3E77 /* Shedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shedule.swift; sourceTree = "<group>"; };
 		BCCD5F0F2CB45A75007976F9 /* CellListMasterDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellListMasterDelete.swift; sourceTree = "<group>"; };
@@ -278,7 +285,6 @@
 		BCEE1E782CB3084A003C6933 /* UserSend_SheduleForAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSend_SheduleForAdmin.swift; sourceTree = "<group>"; };
 		BCF178AB2C7B336400135D81 /* Auth_ADMIN_Viewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth_ADMIN_Viewmodel.swift; sourceTree = "<group>"; };
 		BCF178B52C7B792100135D81 /* Admin_DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin_DataBase.swift; sourceTree = "<group>"; };
-		BCF178B72C7E0A0800135D81 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		BCF28C612CB00059007BDB24 /* User_MasterInToRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_MasterInToRoomCell.swift; sourceTree = "<group>"; };
 		BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMainSelectedMaster.swift; sourceTree = "<group>"; };
 		BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User_AdminViewProfile.swift; sourceTree = "<group>"; };
@@ -399,6 +405,9 @@
 				BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */,
 				BC644BC62C78854800B57117 /* ShedulMasterHeader.swift */,
 				BC0A50232C8F08F200CBDCFD /* SettingsPhotoView.swift */,
+				BC9A302E2D44C12C0088AD1E /* MasterSelectCategoriesView.swift */,
+				BC9A30322D44EA5D0088AD1E /* MasterCreatPriceList.swift */,
+				BC9A30362D44EB330088AD1E /* MasterSheetAddProcedure.swift */,
 				BC644B9F2C76261D00B57117 /* Cell */,
 			);
 			path = ViewMaster;
@@ -409,6 +418,7 @@
 			children = (
 				BC644BA92C762CEF00B57117 /* CompanyAllCell.swift */,
 				BC22B4EE2C9B20240034B45A /* ShedulCell.swift */,
+				BC9A30342D44EAE20088AD1E /* MasterProcedureCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -432,6 +442,7 @@
 				BCF28C632CB005A4007BDB24 /* UserMainSelectedMaster.swift */,
 				BCF28C652CB00CDA007BDB24 /* User_AdminViewProfile.swift */,
 				BCDF9B782D33F3D50006A230 /* User_PriceList.swift */,
+				BC9A30302D44E9380088AD1E /* User_MasterPriceList.swift */,
 				BC2AE2912D35724600776FBC /* User_MenuProcedureView.swift */,
 				BC644BA82C762CD100B57117 /* Cell */,
 			);
@@ -766,8 +777,6 @@
 		BCBC58AE2C73BA8F00FB3E77 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				BCBC58B32C73BACD00FB3E77 /* OffsetKey.swift */,
-				BCF178B72C7E0A0800135D81 /* ImageSize.swift */,
 				BC28CFEE2C9467FF006F6A6A /* PhoneNumber.swift */,
 			);
 			path = Helpers;
@@ -923,7 +932,6 @@
 				BCDF9B792D33F3D50006A230 /* User_PriceList.swift in Sources */,
 				BCD7760E2CC4309D00307013 /* GoogleRegisterProfile.swift in Sources */,
 				BC0AD70A2D367FCC005D4B37 /* AdminProcedureCell.swift in Sources */,
-				BCF178B82C7E0A0800135D81 /* ImageSize.swift in Sources */,
 				BCBC58302C70C50F00FB3E77 /* MasterMainController.swift in Sources */,
 				BCEB7B952C9EDA9D00A17F9E /* AdminReg_Desc_Password.swift in Sources */,
 				BCF178AC2C7B336400135D81 /* Auth_ADMIN_Viewmodel.swift in Sources */,
@@ -942,7 +950,6 @@
 				BCBC58632C70D8E000FB3E77 /* AdminAddForMasterShedule.swift in Sources */,
 				BC28CFEB2C91BFB5006F6A6A /* CustomAlert.swift in Sources */,
 				BCD776092CC3ED1700307013 /* GoogleSignInViewModel.swift in Sources */,
-				BCBC58B42C73BACD00FB3E77 /* OffsetKey.swift in Sources */,
 				BC644BAA2C762CEF00B57117 /* CompanyAllCell.swift in Sources */,
 				BCBC589E2C735AF300FB3E77 /* Main_Controller_Register.swift in Sources */,
 				BCDF9B812D341B9F0006A230 /* AdminSheetCreatPriceList.swift in Sources */,
@@ -960,6 +967,7 @@
 				BCD990392C96FFE500E91229 /* KeyboardResponder.swift in Sources */,
 				BCADDF962CAEDA0F0055F458 /* Auth_ClientViewModel.swift in Sources */,
 				BCF178B62C7B792100135D81 /* Admin_DataBase.swift in Sources */,
+				BC9A30312D44E9380088AD1E /* User_MasterPriceList.swift in Sources */,
 				BC7C6F032D00984F000AAD03 /* ImageViewCustom.swift in Sources */,
 				BC644B9D2C7620CC00B57117 /* AdminListMasterDelete.swift in Sources */,
 				BCB1E62A2CC572B9007E2151 /* LocationManager.swift in Sources */,
@@ -971,7 +979,9 @@
 				BCBC58B02C73BAAC00FB3E77 /* View+ext.swift in Sources */,
 				BC22B4EF2C9B20240034B45A /* ShedulCell.swift in Sources */,
 				BC644B882C75025900B57117 /* MainCoordinator.swift in Sources */,
+				BC9A30332D44EA5D0088AD1E /* MasterCreatPriceList.swift in Sources */,
 				BCD8DE022CEF38F500EBBF88 /* PhoneFormatter.swift in Sources */,
+				BC9A302F2D44C12C0088AD1E /* MasterSelectCategoriesView.swift in Sources */,
 				BC50AF482CBD608F00DCDDD8 /* Admin_DataBaseProtocolExt.swift in Sources */,
 				BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */,
 				BCB8886E2D3190AF0085C895 /* AddNewMasterView.swift in Sources */,
@@ -979,6 +989,7 @@
 				BCDF9B7F2D34196E0006A230 /* AdminCreatePriceList.swift in Sources */,
 				BC644BB32C76663000B57117 /* WeekView.swift in Sources */,
 				BC644BC32C7791AE00B57117 /* MasterSelectedCompany.swift in Sources */,
+				BC9A30372D44EB330088AD1E /* MasterSheetAddProcedure.swift in Sources */,
 				BC24B52A2CD95ECB009F2257 /* StoreViewModel.swift in Sources */,
 				BCF28C662CB00CDA007BDB24 /* User_AdminViewProfile.swift in Sources */,
 				BC3A26A62CD6A24D000A674C /* MasterUploadProfile.swift in Sources */,
@@ -996,6 +1007,7 @@
 				BC644BB52C76665200B57117 /* Admin_CalendarViewModel.swift in Sources */,
 				BCAE0A0F2CB829D8004F41E2 /* NotificationController.swift in Sources */,
 				BC7723BB2CBE64200001650A /* TabBarButtonBack.swift in Sources */,
+				BC9A30352D44EAE20088AD1E /* MasterProcedureCell.swift in Sources */,
 				BCADDF982CAEDC900055F458 /* Client_DataBase.swift in Sources */,
 				BCBC58952C73471F00FB3E77 /* Admin_MainTabbedView.swift in Sources */,
 				BCBC58932C73413200FB3E77 /* GetAllUsersOfCompany.swift in Sources */,

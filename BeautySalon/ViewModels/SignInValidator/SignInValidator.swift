@@ -50,7 +50,6 @@ class SignInValidator: ObservableObject {
                 useRole = "Master"
                 coordinator.push(page: .Master_Select_Company)
             } else if try await Auth_ClientViewModel.shared.signIn(email: email, password: signIn.password) {
-                await ClientViewModel.shared.fetchAll_Comapny()
                 useRole = "Client"
                 coordinator.push(page: .User_Main)
             } else {
@@ -67,7 +66,6 @@ class SignInValidator: ObservableObject {
     private func checkSubscribeAdminProfile() async throws -> Bool {
 
         if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.adminProductIds.contains($0.id) }) {
-            await AdminViewModel.shared.fetchProfileAdmin()
             return true
         } else {
             isLoader = false
@@ -79,7 +77,6 @@ class SignInValidator: ObservableObject {
     private func checkSubscribeMasterProfile() async throws -> Bool {
 
         if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.masterProductIds.contains($0.id) }) {
-            await MasterViewModel.shared.getCompany()
             return true
         } else {
             isLoader = false
@@ -114,22 +111,18 @@ class SignInValidator: ObservableObject {
             defer {
                 hasActive = true
             }
-            await AdminViewModel.shared.fetchProfileAdmin()
             if  Auth_ADMIN_Viewmodel.shared.auth.currentUser != nil {
                 coordinator.push(page: .Admin_main)
             }
         } else if useRole == "Master" {
-            await MasterViewModel.shared.getCompany()
             if  Auth_Master_ViewModel.shared.auth.currentUser != nil {
                 if let saveAdmin = selectedAdminID {
          
                     MasterCalendarViewModel.shared.company.adminID = saveAdmin
-                    MasterViewModel.shared.admin.adminID = saveAdmin
                     coordinator.push(page: .Master_Main)
                 }
             }
         } else if useRole == "Client" {
-            await ClientViewModel.shared.fetchAll_Comapny()
             if  Auth_ClientViewModel.shared.auth.currentUser != nil {
                 coordinator.push(page: .User_Main)
             }

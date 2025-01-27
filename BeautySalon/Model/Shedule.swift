@@ -28,14 +28,14 @@ struct Shedule: Identifiable, Codable, Hashable {
     
     var tinColor: Color {
         switch tint {
-        case "Color": return .white.opacity(0.5)
-        case "Color1": return .blue.opacity(0.2)
-        case "Color2": return .red.opacity(0.2)
-        case "Color3": return .green.opacity(0.3)
-        case "Color4": return .pink.opacity(0.3)
-        case "Color5": return .orange.opacity(0.2)
+        case "Color": return .mint.opacity(0.4)
+        case "Color1": return .blue.opacity(0.4)
+        case "Color2": return .red.opacity(0.4)
+        case "Color3": return .green.opacity(0.4)
+        case "Color4": return .pink.opacity(0.4)
+        case "Color5": return .orange.opacity(0.4)
         default:
-            return .white
+            return .mint
         }
     }
     

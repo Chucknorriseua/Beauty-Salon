@@ -12,8 +12,8 @@ struct CalendarAddTask: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject var adminCalendarViewModel: Admin_CalendarViewModel
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminCalendarViewModel = Admin_CalendarViewModel()
+    @StateObject var adminViewModel = AdminViewModel()
     
     @State private var taskTitle: String = ""
     @State private var taskService: String = ""
@@ -149,25 +149,23 @@ struct CalendarAddTask: View {
                 }
                 Spacer()
             })
+            .onAppear {
+                adminViewModel.procedure.removeAll()
+            }
             .onDisappear {
                 adminViewModel.procedure.removeAll()
             }
             .frame(width: geo.size.width * 1)
             .background(Color.init(hex: "#3e5b47").opacity(0.8))
-            .overlay(alignment: .top) {
+            .overlay(alignment: .bottom) {
                 if isMenuProcedure {
                     VStack {
                         AdminChangeSelectView(adminViewModel: adminViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProcedures) {
                         }
                     }.padding(.horizontal, 14)
-                    .padding(.top, 2)
                 }
             }
         }
     }
-}
-
-#Preview {
-    CalendarAddTask(adminCalendarViewModel: Admin_CalendarViewModel.shared, adminViewModel: AdminViewModel.shared, masterModel: MasterModel.masterModel())
 }
 

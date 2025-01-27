@@ -39,7 +39,7 @@ struct AdminProcedureCell: View {
                                             .stroke(selectedProcedures.contains(item) ? Color.white : Color.clear, lineWidth: 2)
                                     )
                                     .foregroundColor(.white)
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 12, weight: .heavy))
                             })
                         }.padding(.all, 4)
                     }

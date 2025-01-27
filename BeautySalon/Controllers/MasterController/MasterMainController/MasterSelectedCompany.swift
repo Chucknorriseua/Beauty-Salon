@@ -10,7 +10,7 @@ import CoreLocation
 
 struct MasterSelectedCompany: View {
     
-    @StateObject var masterViewModel: MasterViewModel
+    @StateObject var masterViewModel = MasterViewModel.shared
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject var coordinator: CoordinatorView
 
@@ -23,7 +23,6 @@ struct MasterSelectedCompany: View {
     @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
-    @State private var selectedID: String? = nil
     
     
     
@@ -53,23 +52,27 @@ struct MasterSelectedCompany: View {
                 LazyVStack {
                     
                     ForEach(searchCompanyNearby, id:\.self) { company in
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                selectedAdmin = company.adminID
-                                let titleEnter = String(
-                                    format: NSLocalizedString("enter_salon_format", comment: ""),
-                                    company.companyName
-                                ).uppercased()
-                                isTitle = titleEnter
+                        ZStack {
+                            
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.4)) {
+                                    selectedAdmin = company.adminID
+                                    let titleEnter = String(
+                                        format: NSLocalizedString("enter_salon_format", comment: ""),
+                                        company.companyName
+                                    ).uppercased()
+                                    isTitle = titleEnter
+                                }
+                            } label: {
+                                CompanyAllCell(companyModel: company, isShow: selectedAdmin == company.id, onToggle: {})
                             }
-                        } label: {
-                            CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {})
-                        }
-                        .customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
+                        }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
                             if !newValue { selectedAdmin = nil }
                         }), hideCancel: true, message: message, title: isTitle) {
                             
-                            Task { await enterToSalon(company: company)}
+                            Task {
+                                await enterToSalon(company: company)
+                            }
                             
                         } onCancel: {
                             selectedAdmin = nil
@@ -89,6 +92,7 @@ struct MasterSelectedCompany: View {
                 }.scrollTargetLayout()
                 
             }.scrollIndicators(.hidden)
+            
     
         }
         .createBackgrounfFon()
@@ -97,7 +101,7 @@ struct MasterSelectedCompany: View {
         .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
         .overlay(content: {
             if searchCompanyNearby.isEmpty {
-                ContentUnavailableView("Masters not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
+                ContentUnavailableView("Salon not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
             }
         })
         .searchable(text: $searchText, prompt: "Search salon")
@@ -144,7 +148,6 @@ struct MasterSelectedCompany: View {
                     
                     selectedAdmin = nil
                     MasterCalendarViewModel.shared.company.adminID = company.adminID
-                    masterViewModel.admin.adminID = company.adminID
                     selectedAdminID = company.adminID
                     coordinator.push(page: .Master_Main)
                     isLoader = false

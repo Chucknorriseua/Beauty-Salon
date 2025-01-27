@@ -72,13 +72,24 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let phone = data?["phone"] as? String,
               let image = data?["image"] as? String,
               let imageUrl = data?["imagesUrl"] as? [String],
+              let categories = data?["categories"] as? String,
+              let procedure = data?["procedure"] as? [[String: Any]],
               let latitude = data?["latitude"] as? Double,
               let longitude = data?["longitude"] as? Double else {
             throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
         }
+         let procedur: [Procedure] = try procedure.compactMap { proce in
+             guard let id = proce["id"] as? String,
+                   let title = proce["title"] as? String,
+                   let price = proce["price"] as? String,
+                   let description = proce["description"] as? String else {
+                 throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+             }
+             return Procedure(id: id, title: title, price: price, description: description)
+         }
         return MasterModel(id: id, masterID: masterID, name: name, email: email,
                            phone: phone, description: desc, image: image,
-                           imagesUrl: imageUrl, latitude: latitude, longitude: longitude)
+                           imagesUrl: imageUrl, categories: categories, procedure: procedur, latitude: latitude, longitude: longitude)
     }
     
      func convertDocumentToShedule(_ document: DocumentSnapshot) throws -> Shedule {

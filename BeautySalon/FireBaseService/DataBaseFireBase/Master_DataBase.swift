@@ -51,6 +51,11 @@ final class Master_DataBase {
         try await mainFS.document(adminId).collection("Masters").document(uid).setData(master.master_ModelFB)
     }
     
+    func addProcedure(procedure: Procedure) async throws {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        try await masterFs.document(uid).updateData(["procedure": FieldValue.arrayUnion([procedure.procedure])])
+        }
+    
     // MARK:  /\_____________________________FETCH-DATA-MASTER___________________________________/\
     func fecth_Data_Master_FB() async throws -> MasterModel {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
@@ -94,10 +99,11 @@ final class Master_DataBase {
     func fetch_CurrentClient_FromAdmin(adminID: String) async throws -> [Client] {
         do {
             let snapShot = try await mainFS.document(adminID).collection("Client").getDocuments()
-            print("snapShot", snapShot)
+       
             let client: [Client] = try snapShot.documents.compactMap { doc in
                 return try Admin_DataBase.shared.convertDocumentToClient(doc)
             }
+
             return client
         } catch {
             print("DEBUG: Error fetch_CurrentClient_FromAdmin", error.localizedDescription)
@@ -133,7 +139,10 @@ final class Master_DataBase {
     func uploadImageToStorage(path: String, imageData: Data) async -> URL? {
         do {
             guard let image = UIImage(data: imageData) else { return nil}
-            guard let imageSize = image.jpegData(compressionQuality: 0.1) else { return nil}
+            let targetSize = CGSize(width: 1920, height: 1080)
+            let resizedImage = image.resizeImageUpload(image: image, targetSize: targetSize)
+            
+            guard let imageSize = resizedImage.jpegData(compressionQuality: 0.3) else { return nil}
             
             let store = storage.reference().child(path)
             
@@ -205,31 +214,59 @@ final class Master_DataBase {
             print("DEBUG: Error updateImage_ArrayCurrentIndex", error.localizedDescription)
         }
     }
+    
+    func maxUploadImage(id: String, newImagesCount: Int) async -> Bool {
+        do {
+            let master = try await masterFs.document(id).getDocument()
+            
+            if let existingImages = master.data()?["imagesUrl"] as? [String] {
+                let totalImages = existingImages.count + newImagesCount
+
+                if totalImages > 20 {
+                    print("You can upload a maximum of 20 images. Already uploaded: \(existingImages.count)")
+                    return false
+                }
+            }
+        } catch {
+            print("Error checking image count:", error.localizedDescription)
+        }
+        return true
+    }
+    
     //    Load and upload image array URL image FB
     @MainActor
     func uploadMultipleImages(id: String, imageData: [Data]) async {
+        let canUpload = await maxUploadImage(id: id, newImagesCount: imageData.count)
+        if !canUpload {
+            return
+        }
+        let imagesToUpload = Array(imageData.prefix(20))
         var urls: [URL] = []
         
         await withTaskGroup(of: URL?.self) { [weak self] group in
             guard let self else { return }
             
-            for data in imageData {
+            for data in imagesToUpload {
                 group.addTask {
                     guard let image = UIImage(data: data) else { return nil }
                     
-                    var compressionQuality: CGFloat = 0.5
-                    var compressedImageData = image.jpegData(compressionQuality: compressionQuality)
+                    let targetSize = CGSize(width: 1920, height: 1080)
+                    let resizedImage = image.resizeImageUpload(image: image, targetSize: targetSize)
+                    
+                    var compressionQuality: CGFloat = 0.3
+                    var compressedImageData = resizedImage.jpegData(compressionQuality: compressionQuality)
                     
                     while let data = compressedImageData, data.count > 1 * 1024 * 1024 {
                         compressionQuality -= 0.1
                         if compressionQuality < 0.1 {
                             break
                         }
-                        compressedImageData = image.jpegData(compressionQuality: compressionQuality)
+                        compressedImageData = resizedImage.jpegData(compressionQuality: compressionQuality)
                     }
                     
                     guard let imageData = compressedImageData else { return nil }
                     
+                    // Загрузка сжатого изображения
                     return await self.addImage_ArrayURL_Storage(imageData: imageData)
                 }
             }
@@ -239,8 +276,6 @@ final class Master_DataBase {
                 }
             }
         }
-        
-        // Обновляем URL, если есть
         if !urls.isEmpty {
             await updateImage_URLS_FireBase_Master(id: id, urls: urls)
         }
@@ -262,6 +297,20 @@ final class Master_DataBase {
     func deleteImageFromFirebase(imageURL: String) async throws {
         let store = storage.reference(forURL: imageURL)
         try await store.delete()
+    }
+    
+    func removeProcedureFireBase(procedureID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = masterFs.document(uid)
+
+        let snapshot = try await record.getDocument()
+        guard let data = snapshot.data(),
+              var procedures = data["procedure"] as? [[String: Any]] else { return }
+        procedures.removeAll { procedure in
+            guard let id = procedure["id"] as? String else { return false }
+            return id == procedureID
+        }
+        try await record.updateData(["procedure": procedures])
     }
     
     func deinitListener() {

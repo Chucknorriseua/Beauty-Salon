@@ -12,7 +12,7 @@ struct AdminSelectNewProcedureView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 100))
     ]
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
     @Binding var addProcedure: Bool
     let onSelected: () -> ()
     
@@ -46,7 +46,7 @@ struct AdminSelectNewProcedureView: View {
                                 .background(adminViewModel.procedure.contains(item) ? Color.gray.opacity(0.2) : Color.init(hex: "#3e5b47").opacity(0.6))
                                 .cornerRadius(16)
                                 .foregroundColor(.white)
-                                .font(.system(size: 12))
+                                .font(.system(size: 12, weight: .heavy))
                         })
                         
                     }

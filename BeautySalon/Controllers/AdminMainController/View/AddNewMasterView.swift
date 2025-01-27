@@ -14,6 +14,8 @@ struct AddNewMasterView: View {
     @State private var selectedImage: String? = nil
     @State private var isPressFullScreen: Bool = false
     @State var isShowButtonAdd: Bool = false
+    @State private var isShowProcedure: Bool = false
+    @State var isShowPricelist: Bool = false
     @State var addMasterInRoom: MasterModel
     
     var body: some View {
@@ -21,7 +23,7 @@ struct AddNewMasterView: View {
             
             VStack {
                 VStack(alignment: .center, spacing: 10) {
-                    VStack {}
+                    Color.clear
                         .createImageView(model: addMasterInRoom.image ?? "", width: geo.size.width * 0.8,
                                          height: geo.size.height * 0.44)
                     VStack(spacing: 10) {
@@ -97,7 +99,7 @@ struct AddNewMasterView: View {
                 if isShowButtonAdd {
                     CustomButton(title: "Add") {
                         Task {
-                            let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
+                            let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, categories: addMasterInRoom.categories, procedure: [], latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
                             await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
                             let titleEnter = String(
                                 format: NSLocalizedString("addMaster", comment: ""), addMasterInRoom.name)
@@ -108,6 +110,10 @@ struct AddNewMasterView: View {
                     }
                 }
             }.createBackgrounfFon()
+                .sheet(isPresented: $isShowProcedure, content: {
+                    User_MasterPriceList(masterPrice: addMasterInRoom)
+                        .presentationDetents([.height(600)])
+                })
                 .swipeBackDismiss(dismiss: dismiss)
                 .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImage ?? "", isShowTrash: false, deleteImage: {})
                 .ignoresSafeArea(.all)
@@ -127,6 +133,26 @@ struct AddNewMasterView: View {
                             })
                         } else {
                             Text("")
+                        }
+                    }
+            })
+            
+                .toolbar(content: {
+                    if isShowPricelist {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            if !isShowProcedure && !isPressFullScreen {
+                                Button(action: {
+                                    isShowProcedure = true
+                                }, label: {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "list.bullet.circle")
+                                            .font(.system(size: 28))
+                                            .foregroundStyle(Color.yellow)
+                                    }
+                                })
+                            } else {
+                                Text("")
+                            }
                         }
                     }
             })

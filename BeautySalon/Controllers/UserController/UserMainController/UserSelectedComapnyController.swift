@@ -10,8 +10,9 @@ import CoreLocation
 
 struct UserSelectedComapnyController: View {
     
-    @StateObject var clientViewModel: ClientViewModel
+    @StateObject var clientViewModel = ClientViewModel.shared
     @StateObject var locationManager = LocationManager()
+    @StateObject var auth = Auth_ClientViewModel()
     @EnvironmentObject var coordinator: CoordinatorView
     @EnvironmentObject var google: GoogleSignInViewModel
     @Environment (\.dismiss) var dismiss
@@ -57,46 +58,57 @@ struct UserSelectedComapnyController: View {
             VStack {
                 ScrollView {
                     LazyVStack {
-                        
-                        ForEach(searchCompanyNearby, id:\.self) { company  in
-                            NavigationLink(destination: UserMainForSheduleController(clientViewModel:
-                                                                                        clientViewModel).navigationBarBackButtonHidden(true)) {   
-                                CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {
-                                    withAnimation {
-                                        if selectedID == company.id {
-                                            selectedID = nil
-                                        } else {
-                                            selectedID = company.id
-                                        }
-                                    }
-
-                                })
-                                .padding(.bottom, 30)
-                                    .onTapGesture {
-                                        isLoader = true
-                                        Task {
-                                            clientViewModel.adminProfile.adminID = company.adminID
-                                            await clientViewModel.fetchCurrent_AdminSalon(adminId: company.adminID)
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                                
-                                                coordinator.push(page: .User_SheduleAdmin)
-                                                isLoader = false
+                        if selectedCategory == .housecall {
+                            VStack {
+                                ForEach(clientViewModel.homeCall, id:\.self) { master in
+                                    NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, isShowPricelist: true, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                                        AddNewMasterCell(addMasterInRoom: master)
+                                    }.padding(.bottom, 12)
+                                }
+                            }.padding(.top, 30)
+                        } else {
+                            ForEach(searchCompanyNearby, id:\.self) { company  in
+                                NavigationLink(destination: UserMainForSheduleController(clientViewModel:
+                                                                                            clientViewModel).navigationBarBackButtonHidden(true)) {
+                                    CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {
+                                        withAnimation {
+                                            if selectedID == company.id {
+                                                selectedID = nil
+                                            } else {
+                                                selectedID = company.id
                                             }
                                         }
+
+                                    })
+                                    .padding(.bottom, 30)
+                                        .onTapGesture {
+                                            isLoader = true
+                                            Task {
+                                                clientViewModel.adminProfile.adminID = company.adminID
+                                                await clientViewModel.fetchCurrent_AdminSalon(adminId: company.adminID)
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                                    coordinator.push(page: .User_SheduleAdmin)
+                                                    isLoader = false
+                                                }
+                                            }
+                                        }
+            
+                                }.id(company)
+                                    .disabled(isShowMenu)
+                                    .scrollTransition(.animated) { content, phase in
+                                            content
+                                                .opacity(phase.isIdentity ? 1 : 0)
+                                                .offset(y: phase.isIdentity ? 0 : 40)
+                                        
                                     }
-        
-                            }.id(company)
-                                .disabled(isShowMenu)
-                                .scrollTransition(.animated) { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            .offset(y: phase.isIdentity ? 0 : 40)
-                                    
-                                }
-                            
+                                
+                            }
                         }
                     }.scrollTargetLayout()
                 
+                }
+                if searchCompanyNearby.isEmpty && clientViewModel.homeCall.isEmpty {
+                    ContentUnavailableView("Salon not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
                 }
             }.scrollIndicators(.hidden)
                 .scrollContentBackground(.hidden)
@@ -120,11 +132,7 @@ struct UserSelectedComapnyController: View {
                 }
 
         }.searchable(text: $searchText, prompt: "Search salon")
-            .overlay(content: {
-                if searchCompanyNearby.isEmpty {
-                    ContentUnavailableView("Masters not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
-                }
-            })
+       
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -141,7 +149,7 @@ struct UserSelectedComapnyController: View {
                         Task {
                             useRole = nil
                             try await google.logOut()
-                            Auth_ClientViewModel.shared.signOutClient()
+                            auth.signOutClient()
                             coordinator.popToRoot()
                         }
                     }
@@ -166,9 +174,9 @@ struct UserSelectedComapnyController: View {
             .onAppear {
                 locationManager.isUpdateLocation = true
                 locationManager.startUpdate()
-                Task {
-                await clientViewModel.fetchAll_Comapny()
-                }
+//                Task {
+//                await clientViewModel.fetchAll_Comapny()
+//                }
             }
             .onDisappear {
                 locationManager.isUpdateLocation = false

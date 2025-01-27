@@ -55,3 +55,19 @@ extension View {
         self.modifier(ImageViewCustom(model: model, width: width, height: height))
     }
 }
+
+extension UIImage {
+    func resizeImageUpload(image: UIImage, targetSize: CGSize) -> UIImage {
+        let aspectWidth = targetSize.width / image.size.width
+        let aspectHeight = targetSize.height / image.size.height
+        let aspectRatio = min(aspectWidth, aspectHeight)
+        
+        let newSize = CGSize(width: image.size.width * aspectRatio, height: image.size.height * aspectRatio)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+}

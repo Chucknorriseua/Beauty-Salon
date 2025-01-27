@@ -52,14 +52,10 @@ struct SettingsPhotoView: View {
                                        }
                                
                             }.id(image)
-                                .scrollTransition(.interactive, axis: .horizontal) { content, phase in
-                                    content
-                                        .opacity(phase.isIdentity ? 1 : 0)
-                                        .offset(y: phase.isIdentity ? 0 : 50)
-                                }
+                       
                         }
                     }.padding(.top, 15)
-                        .scrollTargetLayout()
+                     
                 }.scrollIndicators(.hidden)
                 
             }.frame(height: geo.size.height * 0.66)

@@ -88,7 +88,18 @@ struct CompanyAllCell: View {
                                 }
                             }
                             .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.6)
-                            .background(.regularMaterial.opacity(0.3))
+                            .background(.regularMaterial.opacity(0.5))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 22)
+                                    .stroke(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [.yellow, .gray]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        ),
+                                        lineWidth: 4
+                                    )
+                            )
                             .clipShape(.rect(cornerRadius: 22))
                             .overlay(alignment: .bottomTrailing) {
                                 
@@ -159,7 +170,4 @@ struct CompanyAllCell: View {
         mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving
                                           ])
     }
-}
-#Preview {
-    CompanyAllCell(companyModel: Company_Model.companyModel(), isShow: false, onToggle: {})
 }

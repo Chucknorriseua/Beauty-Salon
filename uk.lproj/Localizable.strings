@@ -99,7 +99,9 @@
 "The login was incorrect, perhaps the admin did not add you to the salon as a master" = "Логін був невірним, можливо, адміністратор не додав вас до салону як майстра";
 "Loading" = "Завантаження";
 "Nails" = "Нігті";
-"Hair Style" = "Зачіска";
+"Barber Shop" = "Перукарня";
+"At home or away" = "Вдома або з виїздом";
+"" = "";
 "Massage" = "Массаж";
 "Another" = "Іншe";
 "Email" = "Пошта";
@@ -127,3 +129,10 @@
 "You are trying to log in as an administrator without this subscription, or try renewing your subscription that you previously purchased." = "Ви намагаєтеся увійти як адміністратор без підписки майстра, або спробуйте поновити підписку, яку ви придбали раніше.";
 "Restore Purchases" = "Відновити покупки";
 "totalcost" = "загальна сума: %@";
+"Nail master not found..." = "Майстра не знайдено...";
+"Please try again." = "Будь ласка, спробуйте ще раз.";
+"Salon not found..." = "Салон не знайдено...";
+"" = "";
+"" = "";
+"" = "";
+"" = "";

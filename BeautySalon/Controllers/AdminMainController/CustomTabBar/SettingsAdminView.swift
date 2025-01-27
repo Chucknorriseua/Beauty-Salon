@@ -12,7 +12,7 @@ struct SettingsAdminView: View {
     
     @StateObject private var authViewModel = Auth_ADMIN_Viewmodel()
     @StateObject private var locationManager = LocationManager()
-    @StateObject  var adminViewModel: AdminViewModel
+    @StateObject  var adminViewModel = AdminViewModel()
     @StateObject private var keyBoard = KeyboardResponder()
     
     @EnvironmentObject var coordinator: CoordinatorView
@@ -283,6 +283,7 @@ struct SettingsAdminView: View {
                                 
                                 if let url = await Admin_DataBase.shared.upDatedImage_URL_Firebase_Admin(imageData: data) {
                                     await Admin_DataBase.shared.uploadImageFireBase_Admin(id: uid, url: url)
+                                    await adminViewModel.refreshProfileAdmin()
                                     
                                 }
                             }

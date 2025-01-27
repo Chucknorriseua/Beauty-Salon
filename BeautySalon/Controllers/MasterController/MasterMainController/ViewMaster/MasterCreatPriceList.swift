@@ -1,35 +1,35 @@
 //
-//  AdminCreatePriceList.swift
+//  MasterCreatPriceList.swift
 //  BeautySalon
 //
-//  Created by Евгений Полтавец on 12/01/2025.
+//  Created by Евгений Полтавец on 25/01/2025.
 //
 
 import SwiftUI
 
-struct AdminCreatePriceList: View {
+struct MasterCreatPriceList: View {
     
    
     @EnvironmentObject var coordinator: CoordinatorView
-    @StateObject var adminViewModel = AdminViewModel.shared
+    @StateObject var masterVM = MasterViewModel.shared
     @State private var isShowSheet: Bool = false
     
     var body: some View {
         VStack {
             ScrollView {
                 LazyVStack {
-                    ForEach(adminViewModel.createProcedure, id:\.self) { proced in
-                        ProcedureCell(procedure: proced, adminViewModel: adminViewModel)
+                    ForEach(masterVM.createProcedure, id:\.self) { proced in
+                        MasterProcedureCell(procedure: proced, masterVM: masterVM)
                     }
                 }.padding(.top, 10)
-                    .animation(.easeInOut(duration: 1), value: adminViewModel.createProcedure)
+                    .animation(.easeInOut(duration: 1), value: masterVM.createProcedure)
             }
         }.createBackgrounfFon()
             .onDisappear {
-                Task { await adminViewModel.refreshProfileAdmin()}
+//                Task { await masterVM.refreshProfileAdmin()}
             }
             .sheet(isPresented: $isShowSheet, content: {
-                AdminSheetCreatPriceList(adminViewModel: adminViewModel)
+                MasterSheetAddProcedure(masterVM: masterVM)
                     .presentationDetents([.height(380)])
 //                    .interactiveDismissDisabled()
             })

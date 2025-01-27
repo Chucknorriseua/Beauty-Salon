@@ -36,7 +36,7 @@ final class SignInViewModel: ObservableObject {
             
         case "Master":
             let master = MasterModel(id: id, masterID: id, name: fullName, email:
-                                        email, phone: phone, description: textEditorDescrt, image: "", imagesUrl: [], latitude: 0.0, longitude: 0.0)
+                                        email, phone: phone, description: textEditorDescrt, image: "", imagesUrl: [], categories: "", procedure: [], latitude: 0.0, longitude: 0.0)
             
             try await Master_DataBase.shared.setData_For_Master_FB(master: master)
             coordinator.popToRoot()

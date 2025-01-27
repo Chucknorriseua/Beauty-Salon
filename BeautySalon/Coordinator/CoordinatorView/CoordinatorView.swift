@@ -14,7 +14,7 @@ enum PageAll: String, Identifiable {
 // MARK: ADMIN VIEW CONTROLLER
     case Admin_Register, Admin_main, Admin_Desc_Pass, Admin_CreatPriseList
 // MARK: MASTER VIEW CONTROLLER
-    case Master_Register, Master_Main, Master_Select_Company, Master_upDateProfile
+    case Master_Register, Master_Main, Master_Select_Company, Master_upDateProfile, Master_CreatePriceList
 //MARK: USER VIEW CONTROLLER
     case User_Register, User_Main, User_Settings, User_SheduleAdmin
     
@@ -57,34 +57,37 @@ final class CoordinatorView: ObservableObject {
                 case .Admin_Register:
                     AdminRegister()
                 case .Admin_main:
-                    Admin_MainTabbedView(adminViewModel: AdminViewModel.shared)
+                    Admin_MainTabbedView()
                 case .Admin_Desc_Pass:
-                    AdminReg_Desc_Password(adminViewModel: AdminViewModel.shared)
+                    AdminReg_Desc_Password()
                 case .Admin_CreatPriseList:
-                    AdminCreatePriceList(adminViewModel: AdminViewModel.shared)
+                    AdminCreatePriceList()
                     
                     //                MARK: MASTER CONTROLLER----------------------------------------
                 case .Master_Register:
                     MasterRegister()
                 case .Master_Main:
-                    MasterTabBar(masterViewModel: MasterViewModel.shared, VmCalendar: MasterCalendarViewModel.shared)
+                    MasterTabBar()
                 case .Master_Select_Company:
-                    MasterSelectedCompany(masterViewModel: MasterViewModel.shared)
+                    MasterSelectedCompany()
                 case .Master_upDateProfile:
-                    MasterUploadProfile(masterViewModel: MasterViewModel.shared)
+                    MasterUploadProfile()
+                case .Master_CreatePriceList:
+                    MasterCreatPriceList()
                     
                     //                MARK: USER CONTROLLER----------------------------------------
                 case .User_Register:
                     UserRegisters()
                 case .User_Main:
-                    UserSelectedComapnyController(clientViewModel: ClientViewModel.shared)
+                    UserSelectedComapnyController()
                 case .User_Settings:
-                    UserSettings(clientViewModel: ClientViewModel.shared)
+                    UserSettings()
                 case .User_SheduleAdmin:
-                    UserMainForSheduleController(clientViewModel: ClientViewModel.shared)
+                    UserMainForSheduleController()
                     
                 case .google:
                     GoogleRegisterProfile()
+             
                 }
             }.navigationBarBackButtonHidden(true)
                

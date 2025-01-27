@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TasksForSelectedDate: View {
     
-    @ObservedObject var viewModel: Admin_CalendarViewModel
+    @ObservedObject var viewModel = Admin_CalendarViewModel()
     @State var masterModel: MasterModel
     @State private var isProcedure: Bool = false
     @State private var selectedProcedure: String? = nil
@@ -49,7 +49,7 @@ struct TasksForSelectedDate: View {
                                     LazyVGrid(columns: adaptiveColumn, spacing: 8) {
                                         ForEach(task.procedure, id: \.self) { item in
                                             Text(item.title)
-                                                .frame(width: 100, height: 50, alignment: .center)
+                                                .frame(width: 110, height: 60, alignment: .center)
                                                 .clipShape(.rect(cornerRadius: 16))
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 16)
@@ -86,6 +86,18 @@ struct TasksForSelectedDate: View {
                     
                 }.frame(maxWidth: .infinity, maxHeight: isProcedure ? 420 : 180)
                     .background(task.tinColor)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.mint, .yellow]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                ),
+                                lineWidth: 2
+                            )
+                    )
+                    .foregroundColor(.white)
                     .clipShape(.rect(cornerRadius: 22))
                     .padding(.horizontal, 8)
                     .overlay(alignment: .topTrailing) {

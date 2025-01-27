@@ -33,7 +33,7 @@ struct User_SelectProcedureCell: View {
                                 VStack {
                                     Text(item.title)
                                         .foregroundColor(.white)
-                                        .font(.system(size: 12))
+                                        .font(.system(size: 12, weight: .heavy))
                                     Text(String(item.price))
                                         .foregroundColor(.green.opacity(0.9))
                                         .font(.system(size: 12, weight: .bold))

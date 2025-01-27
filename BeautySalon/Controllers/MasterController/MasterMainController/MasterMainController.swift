@@ -13,34 +13,35 @@ struct MasterMainController: View {
     @StateObject var VmCalendar: MasterCalendarViewModel
  
     var body: some View {
-        GeometryReader { geo in
-            
-            VStack {
+        NavigationView(content: {
+            GeometryReader { geo in
+                
                 VStack {
+                    VStack {
+                        
+                        ShedulMasterHeader(masterCalendarViewModel: VmCalendar)
+                    }.padding(.bottom, -20)
                     
-                    ShedulMasterHeader(masterCalendarViewModel: VmCalendar)
-                }.padding(.bottom, -20)
+                    ScrollView {
+                        
+                        ShedulCell(masterViewModel: VmCalendar, currentDate: VmCalendar.currentDate)
+                        
+                    }
+                    .scrollIndicators(.hidden)
+                    
+                }.createBackgrounfFon()
+                    .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 
-                ScrollView {
-                    
-                    ShedulCell(masterViewModel: VmCalendar, currentDate: VmCalendar.currentDate)
-                    
-                }
-                .scrollIndicators(.hidden)
-                
-            }.createBackgrounfFon()
-                .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
-            .refreshable {
-                await VmCalendar.getSheduleMaster()
             }
-            
-        }.onAppear {
+        }).onAppear {
        
             VmCalendar.setupWeeks()
             Task {
-                    
               await VmCalendar.getSheduleMaster()
             }
+        }
+        .refreshable {
+            await VmCalendar.getSheduleMaster()
         }
     }
 }

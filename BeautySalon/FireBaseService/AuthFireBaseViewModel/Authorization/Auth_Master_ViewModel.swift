@@ -65,7 +65,7 @@ class Auth_Master_ViewModel: ObservableObject {
                                      phone: phone,
                                      description: "",
                                      image: dowloadURL?.absoluteString ?? "",
-                                     imagesUrl: [], latitude: locationManager.userLatitude,
+                                     imagesUrl: [], categories: "", procedure: [], latitude: locationManager.userLatitude,
                                      longitude: locationManager.userLongitude)
             
             try await Master_DataBase.shared.setData_For_Master_FB(master: master)

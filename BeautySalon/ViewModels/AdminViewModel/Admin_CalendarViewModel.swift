@@ -24,7 +24,7 @@ final class Admin_CalendarViewModel: ObservableObject {
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
     
-    private init(shedules: Shedule? = nil) {
+    init(shedules: Shedule? = nil) {
         self.shedules = shedules ?? Shedule.sheduleModel()
     }
     

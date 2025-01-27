@@ -19,6 +19,9 @@ struct BeautyMastersApp: App {
     
     init() {
         FirebaseApp.configure()
+//        let settings = FirestoreSettings()
+//        settings.isPersistenceEnabled = true
+//        Firestore.firestore().settings = settings
         
     }
 
@@ -42,15 +45,17 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         notification.requestAuthorization()
         notification.notificationCenter.delegate = self
         
-        let cache = SDImageCache(namespace: "tiny")
-          cache.config.maxMemoryCost = 100 * 1024 * 1024 // 100MB memory
-          cache.config.maxDiskSize = 50 * 1024 * 1024 // 50MB disk
-          SDImageCachesManager.shared.addCache(cache)
+        let cache = SDImageCache.shared
+        cache.config.maxMemoryCost = 50 * 1024 * 1024 // 50 MB
+        cache.config.maxDiskSize = 200 * 1024 * 1024 // 200 MB
+        cache.config.shouldCacheImagesInMemory = true
+        cache.config.diskCacheReadingOptions = .mappedIfSafe
+        
           SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
-
+          SDImageCachesManager.shared.addCache(cache)
 //          SDImageLoadersManager.shared.addLoader(SDImagePhotosLoader.shared)
           SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
-        
+          cache.clearMemory()
         return true
     }
     
@@ -62,6 +67,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         notification.notificationCenter.setBadgeCount(0) { error in
             if let error = error {
                 print("applicationDidBecomeActive: ", error.localizedDescription)

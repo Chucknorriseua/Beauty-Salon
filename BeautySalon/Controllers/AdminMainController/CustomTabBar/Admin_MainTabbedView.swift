@@ -42,7 +42,7 @@ enum TabbedItems: Int, CaseIterable{
 struct Admin_MainTabbedView: View {
     
     @State private var selectedTab = 0
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel.shared
 
     
     var body: some View {

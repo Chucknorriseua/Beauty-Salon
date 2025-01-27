@@ -10,7 +10,7 @@ import SwiftUI
 struct UserMainForSheduleController: View {
     
     @EnvironmentObject var coordinator: CoordinatorView
-    @StateObject  var clientViewModel: ClientViewModel
+    @StateObject  var clientViewModel = ClientViewModel.shared
     @State private var isShowSheet: Bool = false
     @State private var isSignUp: Bool = false
    
@@ -69,9 +69,7 @@ struct UserMainForSheduleController: View {
                 })
                 .foregroundStyle(Color.white)
                 .tint(.yellow)
-                .task {
-                    await clientViewModel.fetchAllMasters_FromAdmin()
-                }
+   
         }.refreshable {
             Task {
                 await clientViewModel.fetchAllMasters_FromAdmin()

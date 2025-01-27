@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct AdminSheetRedactorShedule: View {
     
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
     @Environment (\.dismiss) private var dismiss
     @State private var selectedProcedures: [Procedure] = []
     @State private var isMenuProcedure: Bool = false
@@ -75,7 +75,7 @@ struct AdminSheetRedactorShedule: View {
                             VStack {
                                 DatePicker("", selection: $createNewDate, displayedComponents: [.hourAndMinute, .date])
                                     .datePickerStyle(.compact)
-                            }.padding(.trailing, 110)
+                            }.padding(.trailing, 90)
                         }
                         CustomButton(title: "Save change") {
                             let sendRecord = Shedule(id: record.id, masterId: record.masterId, nameCurrent: record.nameCurrent, taskService: record.taskService, phone: record.phone, nameMaster: masterName, comment: record.comment, creationDate: createNewDate, tint: record.tint, timesTamp: Timestamp(date: Date()), procedure: adminViewModel.procedure)
@@ -100,8 +100,7 @@ struct AdminSheetRedactorShedule: View {
                                 isMenuProcedure.toggle()
                             }
                         }
-                    }.padding(.horizontal, 14)
-                        .padding(.bottom, 30)
+                    }.padding(.horizontal, 6)
                 }
             }.onAppear {
                 masterName = record.nameMaster
@@ -116,7 +115,6 @@ struct AdminSheetRedactorShedule: View {
         adminViewModel.procedure.removeAll()
         if let procedure = selecetedRecord?.procedure {
             adminViewModel.procedure.append(contentsOf: procedure)
-            print("RECORD: ", selecetedRecord?.nameMaster ?? "")
         }
     }
     

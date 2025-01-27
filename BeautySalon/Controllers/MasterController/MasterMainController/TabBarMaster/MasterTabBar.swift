@@ -38,8 +38,8 @@ enum TabbedItemsMaster: Int, CaseIterable{
 struct MasterTabBar: View {
     
     @State private var selectedTab = 0
-    @StateObject var masterViewModel: MasterViewModel
-    @StateObject var VmCalendar: MasterCalendarViewModel
+    @StateObject var masterViewModel = MasterViewModel.shared
+    @StateObject var VmCalendar = MasterCalendarViewModel.shared
     @State private var isPressFullScreen: Bool = false
     
     var body: some View {
@@ -50,7 +50,7 @@ struct MasterTabBar: View {
                 case 0:
                     MasterMainController(masterViewModel: masterViewModel, VmCalendar: VmCalendar)
                 case 1:
-                    ClientForMastrer(masterViewModel: MasterViewModel.shared)
+                    ClientForMastrer(masterViewModel: masterViewModel, VmCalendar: VmCalendar)
                 case 2:
                     SettingsMaster(masterViewModel: masterViewModel, isPressFullScreen: $isPressFullScreen)
                 default:
@@ -98,7 +98,7 @@ extension MasterTabBar{
             }
             Spacer()
         }
-        .frame(width: isActive ? 120 : 60, height: 60)
+        .frame(width: isActive ? 140 : 60, height: 60)
         .background(isActive ? .white.opacity(0.6) : .clear)
         .cornerRadius(30)
     }

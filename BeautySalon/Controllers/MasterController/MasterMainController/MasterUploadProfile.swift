@@ -12,7 +12,7 @@ import PhotosUI
 struct MasterUploadProfile: View {
     
     
-    @StateObject var masterViewModel: MasterViewModel
+    @StateObject var masterViewModel = MasterViewModel.shared
     @StateObject private var authViewModel = Auth_Master_ViewModel()
     @StateObject private var locationManager = LocationManager()
     
@@ -24,8 +24,10 @@ struct MasterUploadProfile: View {
     @State private var isPressFullScreen: Bool = false
     @State private var selectedImages: String? = nil
     @State private var isLocationAlarm: Bool = false
+    @State private var selectedCategory: Categories = .nail
     @State private var isShowInfo: Bool = false
     @State private var isChangeProfilePhoto: Bool = false
+    @State private var isShowCategories: Bool = false
     
     @State private var massage: String = ""
     @State private var title: String = ""
@@ -86,6 +88,26 @@ struct MasterUploadProfile: View {
                                     .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
                                     
                                 }
+                                
+                                Button {
+                                    withAnimation(.snappy(duration: 0.5)) {
+                                        coordinator.push(page: .Master_CreatePriceList)
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Price list")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    
+                                }
                                 Button {
                                     withAnimation(.snappy(duration: 0.5)) {
                                         isChangeProfilePhoto.toggle()
@@ -119,7 +141,7 @@ struct MasterUploadProfile: View {
                                     .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
                                     .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
                                 }
-                            }.padding(.bottom, 40)
+                            }.padding(.bottom, 0)
                         } else {
                             VStack {
                                 SettingsButton(text: $masterViewModel.masterModel.name, title: "Name", width: geo.size.width * 1)
@@ -157,9 +179,31 @@ struct MasterUploadProfile: View {
                                     TextEditor(text: $masterViewModel.masterModel.description)
                                         .scrollContentBackground(.hidden)
                                     
-                                }.frame(height: 140)
+                                }.frame(height: 120)
                                     .foregroundStyle(Color(hex: "F3E3CE"))
                                     .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                Button {
+                                    withAnimation(.snappy(duration: 0.5)) {
+                                        isShowCategories.toggle()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text("Select categories")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .padding(.leading, 4)
+                                        Text("\(selectedCategory.displayName)")
+                                            .foregroundStyle(Color.yellow)
+                                            .font(.system(size: 18, weight: .bold))
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                    }.padding(.horizontal, 6)
+                                    .frame(maxWidth: .infinity, maxHeight: 44)
+                                    .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    
+                                }
+                                
                                 Button {
                                     withAnimation(.snappy(duration: 0.5)) {
                                         isShowInfo.toggle()
@@ -183,6 +227,7 @@ struct MasterUploadProfile: View {
                         }
                     }
                     CustomButton(title: "Update profile") {
+                        masterViewModel.masterModel.categories = selectedCategory.rawValue
                         Task {
                             await masterViewModel.save_Profile()
                             NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)
@@ -191,7 +236,28 @@ struct MasterUploadProfile: View {
                     
                 }.padding(.horizontal, 8)
             }.createBackgrounfFon()
+                .onAppear {
+                    if let savedCategory = Categories(rawValue: masterViewModel.masterModel.categories) {
+                        selectedCategory = savedCategory
+                    }
+                }
+                .overlay {
+                    if isShowCategories {
+                        Color.clear
+                            .ignoresSafeArea()
+                            .overlay(alignment: .center) {
+                                ZStack {
+                                    MasterSelectCategoriesView(selectedCategory: $selectedCategory, isShowCategories: $isShowCategories) {
+                                        withAnimation {
+                                            isShowCategories.toggle()
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
                 .photosPicker(isPresented: $isChangeProfilePhoto, selection: $photoPickerItems, matching: .images)
+       
             
         })
         .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})

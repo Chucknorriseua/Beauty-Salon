@@ -13,8 +13,8 @@ final class MasterViewModel: ObservableObject {
     
     static let shared = MasterViewModel()
     
-    @Published  private(set) var company: [Company_Model] = []
-    @Published  private(set) var client: [Client] = []
+    @Published private(set) var company: [Company_Model] = []
+    @Published var createProcedure: [Procedure] = []
     
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
@@ -25,10 +25,42 @@ final class MasterViewModel: ObservableObject {
     
     var auth = Auth.auth()
     
-    private init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
+   private init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
         self.sheduleModel = sheduleModel ?? Shedule.sheduleModel()
         self.admin = admin ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
+        Task {
+            await getCompany()
+        }
+    }
+    
+    @MainActor
+    func addNewProcedureFirebase(addProcedure: Procedure) async {
+        do {
+            _ = try await Master_DataBase.shared.addProcedure(procedure: addProcedure)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                if !createProcedure.contains(where: {$0.id == addProcedure.id}) {
+                    self.createProcedure.append(addProcedure)
+                }
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    func deleteCreateProcedure(procedureID: Procedure) async {
+        if let index = createProcedure.firstIndex(where: {$0.id == procedureID.id}) {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.createProcedure.remove(at: index)
+            }
+        }
+        do {
+            try await Master_DataBase.shared.removeProcedureFireBase(procedureID: procedureID.id)
+        } catch {
+            await handleError(error: error)
+        }
     }
     
     //  MARK: Get All comapny
@@ -40,18 +72,11 @@ final class MasterViewModel: ObservableObject {
                 guard let self else { return }
                 self.company = fetchAllCompany
             }
-            await fetchAllData()
-            
+            await fetchProfile_Master(id: masterModel.id)
+   
         } catch {
-            await handleError(error: error)
-        }
-    }
-    
-   private func fetchAllData() async {
-        await withTaskGroup(of: Void.self) {[weak self] group in
-            guard let self else { return }
-            group.addTask(priority: .high) { await self.fetchProfile_Master(id: self.masterModel.id) }
-//            group.addTask { await Master_DataBase.shared.updateProfile_Master() }
+            print("error getCompany", error.localizedDescription)
+//            await handleError(error: error)
         }
     }
 
@@ -59,27 +84,17 @@ final class MasterViewModel: ObservableObject {
     func fetchProfile_Master(id: String) async {
         do {
             let master = try await Master_DataBase.shared.fecth_Data_Master_FB()
-            //            this may be out of DispatchQueue
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.masterModel = master
+                self.createProcedure = masterModel.procedure
+                print("MASTER:", master)
             }
         } catch {
             await handleError(error: error)
         }
     }
     
-    func fetchCurrentClient() async {
-        do {
-            let client = try await Master_DataBase.shared.fetch_CurrentClient_FromAdmin(adminID: admin.adminID)
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                self.client = client
-            }
-        } catch {
-            await handleError(error: error)
-        }
-    }
     //  MARK: Save profile master
     func saveMaster_Profile() async {
         do {

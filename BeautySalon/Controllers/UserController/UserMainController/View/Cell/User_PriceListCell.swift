@@ -33,6 +33,17 @@ struct User_PriceListCell: View {
                 .padding(.leading, 4)
         }
         .background(.ultraThinMaterial.opacity(0.6))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.gray]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    lineWidth: 6
+                )
+        )
         .clipShape(.rect(cornerRadius: 12))
         .padding(.horizontal, 8)
     }

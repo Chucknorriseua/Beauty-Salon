@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarMainController: View {
     
-    @StateObject var viewModel: Admin_CalendarViewModel
+    @StateObject var viewModel = Admin_CalendarViewModel()
     @StateObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel
     

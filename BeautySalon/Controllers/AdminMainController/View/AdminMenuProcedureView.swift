@@ -12,7 +12,7 @@ struct AdminMenuProcedureView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 100))
     ]
-    @StateObject var adminViewModel: AdminViewModel
+    @StateObject var adminViewModel = AdminViewModel()
     @Binding var addProcedure: Bool
     let onSelected: () -> ()
     

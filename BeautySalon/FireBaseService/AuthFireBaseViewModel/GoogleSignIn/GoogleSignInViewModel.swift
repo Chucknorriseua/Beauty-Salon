@@ -96,20 +96,11 @@ final class GoogleSignInViewModel: ObservableObject {
      func goConntrollerProfile(coordinator: CoordinatorView) {
         switch self.idProfile {
         case "Admin":
-            Task {
-               await AdminViewModel.shared.fetchProfileAdmin()
-                coordinator.push(page: .Admin_main)
-            }
+            coordinator.push(page: .Admin_main)
         case "Master":
-            Task {
-             await MasterViewModel.shared.getCompany()
-                 coordinator.push(page: .Master_Select_Company)
-            }
+            coordinator.push(page: .Master_Select_Company)
         case "Client":
-            Task {
-            await ClientViewModel.shared.fetchAll_Comapny()
-                 coordinator.push(page: .User_Main)
-            }
+            coordinator.push(page: .User_Main)
         default: break
         }
     }

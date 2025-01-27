@@ -102,6 +102,17 @@ struct SheetStoreKitProductSelect: View {
                                     .padding(.vertical, 14)
                             }
                             .background(.ultraThinMaterial.opacity(0.8))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [.yellow, .mint]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        ),
+                                        lineWidth: 4
+                                    )
+                            )
                             .clipShape(.rect(cornerRadius: 16))
                             
                         }
@@ -115,7 +126,8 @@ struct SheetStoreKitProductSelect: View {
                 }
                 Spacer()
             }.padding(.top, 18)
-        }.background(Color.init(hex: "#3e5b47").opacity(0.8))
+        }
+        .background(.ultraThinMaterial)
         
     }
     func buy(_ product: Product) async {
