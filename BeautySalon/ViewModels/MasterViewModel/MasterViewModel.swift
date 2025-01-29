@@ -79,18 +79,6 @@ final class MasterViewModel: ObservableObject {
 //            await handleError(error: error)
         }
     }
-
-    func fetchCurrent_AdminSalon(adminId: String) async {
-        do {
-            guard let admin = try await Client_DataBase.shared.fetchAdmiProfile(adminId: adminId) else { return}
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                self.admin = admin
-            }
-        } catch {
-            print("fetchCurrent_AdminSalon", error.localizedDescription)
-        }
-    }
     
     //  MARK: Fetch profile master
     func fetchProfile_Master(id: String) async {
