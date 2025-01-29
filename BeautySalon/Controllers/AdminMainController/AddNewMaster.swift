@@ -73,15 +73,13 @@ struct AddNewMaster: View {
                             dismiss()
                         }} else {Text("")}
                 }
-            })
-            .navigationBarBackButtonHidden(true)
-            .toolbar(content: {
-                ToolbarItem(placement: .principal) {
+               ToolbarItem(placement: .navigation) {
                     Text("Find a Master")
                         .foregroundStyle(isShowDetails ? Color.clear : Color.yellow.opacity(0.8))
                         .font(.system(size: 24, weight: .heavy).bold())
                 }
             })
+
             .onAppear {
                 Task {
                     await adminModelView.fetchAllMastersFireBase()
