@@ -25,7 +25,7 @@ final class MasterViewModel: ObservableObject {
     
     var auth = Auth.auth()
     
-   private init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
+   init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
         self.sheduleModel = sheduleModel ?? Shedule.sheduleModel()
         self.admin = admin ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()

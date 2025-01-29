@@ -14,7 +14,7 @@ struct SettingsPhotoView: View {
     
     @State private var photoPickerItems: [PhotosPickerItem] = []
     
-    @StateObject var masterViewModel: MasterViewModel
+    @ObservedObject var masterViewModel: MasterViewModel
     @StateObject var authViewModel = Auth_Master_ViewModel()
     @State var isShowAlert: Bool = false
     @Binding var selectedImage: String?

@@ -11,7 +11,7 @@ struct AdminChangeRecordsView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 80))
     ]
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     
     var body: some View {
         VStack {

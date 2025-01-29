@@ -10,8 +10,8 @@ import SwiftUI
 struct ClientForMastrer: View {
     
     
-    @StateObject var masterViewModel: MasterViewModel
-    @StateObject var VmCalendar: MasterCalendarViewModel
+    @ObservedObject var masterViewModel: MasterViewModel
+    @ObservedObject var VmCalendar: MasterCalendarViewModel
     
 // MARK: Fetch all User Of Company
     var body: some View {

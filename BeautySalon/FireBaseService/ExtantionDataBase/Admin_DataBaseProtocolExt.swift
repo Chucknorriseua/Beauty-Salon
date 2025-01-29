@@ -39,7 +39,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
                   let phone = proce["phone"] as? String,
                   let nameMaster = proce["nameMaster"] as? String,
                   let comment = proce["comment"] as? String,
-                  let creationDate = proce["creationDate"] as? String,
+//                  let creationDate = proce["creationDate"] as? String,
                   let tint = proce["tint"] as? String,
                   let procedure = proce["procedure"] as? [[String: Any]],
                   let timesTamp = proce["timesTamp"] as? Timestamp else {

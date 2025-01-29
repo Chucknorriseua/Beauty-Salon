@@ -42,13 +42,13 @@ enum TabbedItems: Int, CaseIterable{
 struct Admin_MainTabbedView: View {
     
     @State private var selectedTab = 0
-    @StateObject var adminViewModel = AdminViewModel.shared
+    @StateObject var adminViewModel = AdminViewModel()
 
     
     var body: some View {
         
         ZStack(alignment: .bottom){
-            VStack {
+            NavigationView {
                 
                 switch selectedTab {
                 case 0:

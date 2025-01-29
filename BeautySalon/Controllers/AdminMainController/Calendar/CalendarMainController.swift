@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CalendarMainController: View {
     
-    @StateObject var viewModel = Admin_CalendarViewModel()
-    @StateObject var adminViewModel: AdminViewModel
+    @ObservedObject var viewModel: Admin_CalendarViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel
     
     var body: some View {

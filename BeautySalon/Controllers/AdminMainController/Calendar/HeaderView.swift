@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HeaderView: View {
     
-    @ObservedObject var viewModel = Admin_CalendarViewModel()
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var viewModel: Admin_CalendarViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     @Environment(\.dismiss) var dismiss
     @State var masterModel: MasterModel
     

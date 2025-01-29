@@ -10,7 +10,7 @@ import SwiftUI
 struct ProcedureCell: View {
     
     @State var procedure: Procedure
-    @StateObject var adminViewModel: AdminViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     
     var body: some View {
         VStack {

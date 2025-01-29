@@ -10,7 +10,7 @@ import SwiftUI
 struct MasterProcedureCell: View {
     
     @State var procedure: Procedure
-    @StateObject var masterVM: MasterViewModel
+    @ObservedObject var masterVM: MasterViewModel
     
     var body: some View {
         VStack {

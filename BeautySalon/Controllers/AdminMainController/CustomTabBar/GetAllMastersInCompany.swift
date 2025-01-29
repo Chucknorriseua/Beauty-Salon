@@ -9,11 +9,11 @@ import SwiftUI
 
 struct GetAllMastersInCompany: View {
     
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
 
     
     var body: some View {
-        NavigationView {
+        VStack {
                 VStack {
                     Text("Send schedule for master")
                         .font(.system(.title, design: .serif, weight: .regular))

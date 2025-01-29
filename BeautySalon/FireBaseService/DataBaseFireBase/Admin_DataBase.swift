@@ -26,9 +26,6 @@ final class Admin_DataBase {
     
     private let db = Firestore.firestore()
     
-    private var lastDocument: DocumentSnapshot? = nil
-    
-    private var pageSize: Int = 8
     
     private let storage = Storage.storage().reference()
     
@@ -101,7 +98,6 @@ final class Admin_DataBase {
     
 //  fetch All Masters in current company
     func fetch_All_MastersOn_FireBase() async throws -> [MasterModel] {
-        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
         do {
             let snapShot = try await masterFs.getDocuments()
             let masters: [MasterModel] = try snapShot.documents.compactMap {[weak self] document in
@@ -247,7 +243,7 @@ final class Admin_DataBase {
         guard let uid = auth.currentUser?.uid else { return nil }
         
         guard let imageData = UIImage(data: imageData) else { return nil}
-        let targetSize = CGSize(width: 1920, height: 1080)
+        let targetSize = CGSize(width: 900, height: 900)
         let resizedImage = imageData.resizeImageUpload(image: imageData, targetSize: targetSize)
         guard let image = resizedImage.jpegData(compressionQuality: 0.3) else { return nil}
         do {

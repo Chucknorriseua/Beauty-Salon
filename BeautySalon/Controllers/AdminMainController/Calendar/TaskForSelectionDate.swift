@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TasksForSelectedDate: View {
     
-    @ObservedObject var viewModel = Admin_CalendarViewModel()
+    @ObservedObject var viewModel: Admin_CalendarViewModel
     @State var masterModel: MasterModel
     @State private var isProcedure: Bool = false
     @State private var selectedProcedure: String? = nil

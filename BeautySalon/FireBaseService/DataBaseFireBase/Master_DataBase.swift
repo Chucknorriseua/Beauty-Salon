@@ -139,7 +139,7 @@ final class Master_DataBase {
     func uploadImageToStorage(path: String, imageData: Data) async -> URL? {
         do {
             guard let image = UIImage(data: imageData) else { return nil}
-            let targetSize = CGSize(width: 1920, height: 1080)
+            let targetSize = CGSize(width: 900, height: 900)
             let resizedImage = image.resizeImageUpload(image: image, targetSize: targetSize)
             
             guard let imageSize = resizedImage.jpegData(compressionQuality: 0.3) else { return nil}
@@ -250,7 +250,7 @@ final class Master_DataBase {
                 group.addTask {
                     guard let image = UIImage(data: data) else { return nil }
                     
-                    let targetSize = CGSize(width: 1920, height: 1080)
+                    let targetSize = CGSize(width: 900, height: 900)
                     let resizedImage = image.resizeImageUpload(image: image, targetSize: targetSize)
                     
                     var compressionQuality: CGFloat = 0.3

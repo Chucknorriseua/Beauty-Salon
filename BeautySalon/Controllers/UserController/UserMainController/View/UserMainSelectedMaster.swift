@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserMainSelectedMaster: View {
     
-    @StateObject var clientViewModel: ClientViewModel
+    @ObservedObject var clientViewModel: ClientViewModel
     
     var body: some View {
         GeometryReader { geo in

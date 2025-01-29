@@ -12,7 +12,7 @@ struct AdminChangeSelectView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 100))
     ]
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     @Binding var addProcedure: Bool
     @Binding var selectedProcedure: [Procedure]
     let onSelected: () -> ()

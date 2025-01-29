@@ -26,7 +26,7 @@ final class MasterCalendarViewModel: ObservableObject {
     @Published var company: Company_Model
     @Published var shedule: Shedule
     
-    private init(shedule: Shedule? = nil, company: Company_Model? = nil) {
+    init(shedule: Shedule? = nil, company: Company_Model? = nil) {
         self.shedule = shedule ?? Shedule.sheduleModel()
         self.company = company ?? Company_Model.companyModel()
     }

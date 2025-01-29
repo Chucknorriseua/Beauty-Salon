@@ -12,8 +12,8 @@ struct CalendarAddTask: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject var adminCalendarViewModel = Admin_CalendarViewModel()
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminCalendarViewModel: Admin_CalendarViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     
     @State private var taskTitle: String = ""
     @State private var taskService: String = ""

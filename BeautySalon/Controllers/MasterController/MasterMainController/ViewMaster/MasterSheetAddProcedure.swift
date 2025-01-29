@@ -10,7 +10,7 @@ import SwiftUI
 struct MasterSheetAddProcedure: View {
     
     
-    @StateObject var masterVM: MasterViewModel
+    @ObservedObject var masterVM: MasterViewModel
     @Environment (\.dismiss) var dismiss
     
     @State private var title: String = ""

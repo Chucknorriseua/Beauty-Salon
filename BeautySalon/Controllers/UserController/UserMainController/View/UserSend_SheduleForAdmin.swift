@@ -12,7 +12,7 @@ struct UserSend_SheduleForAdmin: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject var clientViewModel: ClientViewModel
+    @ObservedObject var clientViewModel: ClientViewModel
     
     @State private var serviceRecord: String = ""
     @State private var phoneRecord: String = ""

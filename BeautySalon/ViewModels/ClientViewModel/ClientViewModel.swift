@@ -27,7 +27,7 @@ final class ClientViewModel: ObservableObject {
     
     @Published var currentDate: Date = Date()
     
-  private init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
+   init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.clientModel = clientModel ?? Client.clientModel()
         Task {

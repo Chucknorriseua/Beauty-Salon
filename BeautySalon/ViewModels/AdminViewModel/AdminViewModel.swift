@@ -28,7 +28,7 @@ final class AdminViewModel: ObservableObject {
     @Published var masterModel: MasterModel
     @Published var shedule: Shedule
     
-     init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
+    init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
         self.shedule = shedule ?? Shedule.sheduleModel()

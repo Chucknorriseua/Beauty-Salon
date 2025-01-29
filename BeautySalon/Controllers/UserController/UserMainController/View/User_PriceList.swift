@@ -10,7 +10,7 @@ import SwiftUI
 
 struct User_PriceList: View {
     
-    @StateObject var clientViewModel: ClientViewModel
+    @ObservedObject var clientViewModel: ClientViewModel
     
     var body: some View {
         GeometryReader { geo in

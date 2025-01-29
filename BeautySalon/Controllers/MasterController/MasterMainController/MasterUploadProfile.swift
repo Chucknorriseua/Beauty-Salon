@@ -12,7 +12,7 @@ import PhotosUI
 struct MasterUploadProfile: View {
     
     
-    @StateObject var masterViewModel = MasterViewModel.shared
+    @ObservedObject var masterViewModel = MasterViewModel()
     @StateObject private var authViewModel = Auth_Master_ViewModel()
     @StateObject private var locationManager = LocationManager()
     

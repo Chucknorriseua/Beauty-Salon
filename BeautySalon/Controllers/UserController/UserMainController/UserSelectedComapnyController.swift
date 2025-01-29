@@ -10,7 +10,7 @@ import CoreLocation
 
 struct UserSelectedComapnyController: View {
     
-    @StateObject var clientViewModel = ClientViewModel.shared
+    @StateObject var clientViewModel = ClientViewModel()
     @StateObject var locationManager = LocationManager()
     @StateObject var auth = Auth_ClientViewModel()
     @EnvironmentObject var coordinator: CoordinatorView

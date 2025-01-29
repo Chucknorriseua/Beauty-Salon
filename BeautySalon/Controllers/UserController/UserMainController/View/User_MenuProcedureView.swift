@@ -12,7 +12,7 @@ struct User_MenuProcedureView: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 100))
     ]
-    @StateObject var clientViewModel: ClientViewModel
+    @ObservedObject var clientViewModel: ClientViewModel
     @Binding var addProcedure: Bool
     @Binding var selectedProcedure: [Procedure]
     let onSelected: () -> ()

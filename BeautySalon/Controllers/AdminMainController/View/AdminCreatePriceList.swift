@@ -10,8 +10,8 @@ import SwiftUI
 struct AdminCreatePriceList: View {
     
    
-    @EnvironmentObject var coordinator: CoordinatorView
-    @StateObject var adminViewModel = AdminViewModel.shared
+    @Environment (\.dismiss) var dismiss
+    @ObservedObject var adminViewModel = AdminViewModel()
     @State private var isShowSheet: Bool = false
     
     var body: some View {
@@ -36,7 +36,7 @@ struct AdminCreatePriceList: View {
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
                     TabBarButtonBack {
-                        coordinator.pop()
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {

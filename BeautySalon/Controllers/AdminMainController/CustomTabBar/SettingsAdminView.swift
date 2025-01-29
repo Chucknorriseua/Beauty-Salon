@@ -12,7 +12,7 @@ struct SettingsAdminView: View {
     
     @StateObject private var authViewModel = Auth_ADMIN_Viewmodel()
     @StateObject private var locationManager = LocationManager()
-    @StateObject  var adminViewModel = AdminViewModel()
+    @ObservedObject  var adminViewModel: AdminViewModel
     @StateObject private var keyBoard = KeyboardResponder()
     
     @EnvironmentObject var coordinator: CoordinatorView
@@ -33,7 +33,7 @@ struct SettingsAdminView: View {
     
     
     var body: some View {
-        NavigationView {
+        VStack {
             
             GeometryReader(content: { geometry in
                 ScrollView {
@@ -90,11 +90,7 @@ struct SettingsAdminView: View {
                                                 .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
                                                 .padding(.horizontal, 4)
                                         }
-                                        Button {
-                                            withAnimation(.snappy(duration: 0.5)) {
-                                                coordinator.push(page: .Admin_CreatPriseList)
-                                            }
-                                        } label: {
+                                        NavigationLink(destination: AdminCreatePriceList(adminViewModel: adminViewModel).navigationBarBackButtonHidden(true)) {
                                             HStack {
                                                 Text("Create service")
                                                     .font(.system(size: 18, weight: .bold))

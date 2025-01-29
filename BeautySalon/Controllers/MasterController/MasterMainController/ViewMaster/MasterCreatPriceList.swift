@@ -11,7 +11,7 @@ struct MasterCreatPriceList: View {
     
    
     @EnvironmentObject var coordinator: CoordinatorView
-    @StateObject var masterVM = MasterViewModel.shared
+    @ObservedObject var masterVM = MasterViewModel()
     @State private var isShowSheet: Bool = false
     
     var body: some View {

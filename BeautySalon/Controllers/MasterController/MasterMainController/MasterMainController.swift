@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MasterMainController: View {
     
-    @StateObject var masterViewModel: MasterViewModel
-    @StateObject var VmCalendar: MasterCalendarViewModel
+    @ObservedObject var masterViewModel: MasterViewModel
+    @ObservedObject var VmCalendar: MasterCalendarViewModel
  
     var body: some View {
         NavigationView(content: {

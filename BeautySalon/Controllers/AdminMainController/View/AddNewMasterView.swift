@@ -74,7 +74,6 @@ struct AddNewMasterView: View {
                                 }
                                 
                             }.scrollTargetLayout()
-                            
                         }.scrollIndicators(.hidden)
                             .padding(.leading, 4)
                             .padding(.trailing, 4)
@@ -158,7 +157,4 @@ struct AddNewMasterView: View {
             })
         }
     }
-}
-#Preview {
-    AddNewMasterView(addMasterInRoom: MasterModel.masterModel())
 }

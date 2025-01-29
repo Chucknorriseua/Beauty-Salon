@@ -11,7 +11,7 @@ struct AdminAddForMasterShedule: View {
     
     @Environment (\.dismiss) var dismiss
     
-    @StateObject var adminViewModel: AdminViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel
     
     var body: some View {

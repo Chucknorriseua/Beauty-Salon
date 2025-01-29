@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminSheetCreatPriceList: View {
     
     
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel = AdminViewModel()
     @Environment (\.dismiss) var dismiss
     
     @State private var title: String = ""
@@ -50,8 +50,4 @@ struct AdminSheetCreatPriceList: View {
             Spacer()
         }.background(Color.init(hex: "#3e5b47").opacity(0.8))
     }
-}
-
-#Preview {
-    AdminSheetCreatPriceList(adminViewModel: AdminViewModel.shared)
 }

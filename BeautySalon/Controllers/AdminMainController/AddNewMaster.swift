@@ -12,8 +12,8 @@ struct AddNewMaster: View {
 
     @State private var searchText: String = ""
     @State private var isShowDetails: Bool = false
-    @State private var selected: MasterModel? = nil
-    @ObservedObject var adminModelView: AdminViewModel
+
+    @StateObject var adminModelView = AdminViewModel()
     @StateObject private var locationManager = LocationManager()
     
     @Environment(\.dismiss) private var dismiss
@@ -55,8 +55,10 @@ struct AddNewMaster: View {
                 .refreshable {
                     Task { await adminModelView.fetchAllMastersFireBase() }
                 }
-            }.createBackgrounfFon()
-        }.searchable(text: $searchText, prompt: "Search masters")
+            }
+            .createBackgrounfFon()
+        }
+        .searchable(text: $searchText, prompt: "Search masters")
             .overlay(content: {
                 if searchCompanyNearby.isEmpty {
                     ContentUnavailableView("Nail master not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
@@ -80,9 +82,11 @@ struct AddNewMaster: View {
                         .font(.system(size: 24, weight: .heavy).bold())
                 }
             })
-            .task({
-                await adminModelView.fetchAllMastersFireBase()
-            })
+//            .onAppear {
+//                Task {
+//                    await adminModelView.fetchAllMastersFireBase()
+//                }
+//            }
             .onDisappear {
                 adminModelView.clearMemory()
             }

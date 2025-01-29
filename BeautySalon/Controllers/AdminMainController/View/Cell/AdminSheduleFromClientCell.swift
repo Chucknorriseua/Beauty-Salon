@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminSheduleFromClientCell: View {
     
     @State var recordModel: Shedule
-    @StateObject var viewModelAdmin: AdminViewModel
+    @ObservedObject var viewModelAdmin: AdminViewModel
     @Binding var isShowAlert: Bool
   
     @Binding var isShowList: Bool

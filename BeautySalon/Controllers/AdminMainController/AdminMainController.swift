@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdminMainController: View {
     
-    @StateObject var admimViewModel: AdminViewModel
+    @ObservedObject var admimViewModel: AdminViewModel
     
     @State private var selecetedRecord: Shedule? = nil
     @State private var isShowListMaster: Bool = false
@@ -20,7 +20,7 @@ struct AdminMainController: View {
     @State private var message: String = "Do you want to delete the record?"
     
     var body: some View {
-        NavigationView {
+        VStack {
             
             VStack {
                 VStack {

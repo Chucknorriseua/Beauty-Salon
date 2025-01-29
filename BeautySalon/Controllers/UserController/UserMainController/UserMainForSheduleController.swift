@@ -10,7 +10,7 @@ import SwiftUI
 struct UserMainForSheduleController: View {
     
     @EnvironmentObject var coordinator: CoordinatorView
-    @StateObject  var clientViewModel = ClientViewModel.shared
+    @StateObject  var clientViewModel = ClientViewModel()
     @State private var isShowSheet: Bool = false
     @State private var isSignUp: Bool = false
    

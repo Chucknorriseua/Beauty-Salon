@@ -10,7 +10,7 @@ import CoreLocation
 
 struct MasterSelectedCompany: View {
     
-    @StateObject var masterViewModel = MasterViewModel.shared
+    @StateObject private var masterViewModel = MasterViewModel()
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject var coordinator: CoordinatorView
 

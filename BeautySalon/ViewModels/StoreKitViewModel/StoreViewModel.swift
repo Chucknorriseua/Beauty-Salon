@@ -34,9 +34,6 @@ final class StoreViewModel: ObservableObject {
     @AppStorage ("hasActiveSubscribe") var hasActiveSubscribe: Bool = false
     
     var checkSubscribe: Bool {
-        Task {
-            await updateCustomerProductStatus()
-        }
         return hasActiveSubscribe
     }
     
@@ -46,7 +43,7 @@ final class StoreViewModel: ObservableObject {
         
         Task {
             await requestProduct(role: useRole)
-//            await updateCustomerProductStatus()
+            await updateCustomerProductStatus()
         }
     }
     

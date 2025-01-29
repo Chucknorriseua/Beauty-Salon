@@ -10,7 +10,7 @@ import SwiftUI
 
 struct User_AdminViewProfile: View {
     
-    @StateObject var clientViewModel: ClientViewModel
+    @ObservedObject var clientViewModel: ClientViewModel
     @State private var isPriseList: Bool = false
     
     var body: some View {

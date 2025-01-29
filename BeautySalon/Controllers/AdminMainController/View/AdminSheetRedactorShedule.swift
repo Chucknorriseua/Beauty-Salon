@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct AdminSheetRedactorShedule: View {
     
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     @Environment (\.dismiss) private var dismiss
     @State private var selectedProcedures: [Procedure] = []
     @State private var isMenuProcedure: Bool = false

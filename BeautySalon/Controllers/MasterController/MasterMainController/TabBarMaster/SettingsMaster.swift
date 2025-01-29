@@ -15,7 +15,7 @@ struct SettingsMaster: View {
     @StateObject var authViewModel = Auth_Master_ViewModel()
     @EnvironmentObject var coordinator: CoordinatorView
     @EnvironmentObject var google: GoogleSignInViewModel
-    @StateObject var masterViewModel: MasterViewModel
+    @ObservedObject var masterViewModel: MasterViewModel
     @StateObject private var keyBoard = KeyboardResponder()
     
     @AppStorage ("selectedAdmin") private var selectedAdminID: String?

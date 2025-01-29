@@ -11,7 +11,7 @@ struct AdminProcedureCell: View {
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 86))
     ]
-    @StateObject var adminViewModel: AdminViewModel
+    @ObservedObject var adminViewModel: AdminViewModel
     @Binding var selectedProcedures: [Procedure]
     
     var body: some View {

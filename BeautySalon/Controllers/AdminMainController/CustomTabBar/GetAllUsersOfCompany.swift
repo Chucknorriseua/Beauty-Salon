@@ -9,11 +9,11 @@ import SwiftUI
 
 struct GetAllUsersOfCompany: View {
     
-    @StateObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     
     // MARK: Fetch all User Of Company
     var body: some View {
-        NavigationView {
+        VStack {
             
             VStack {
                 Text("Clients for recording")
