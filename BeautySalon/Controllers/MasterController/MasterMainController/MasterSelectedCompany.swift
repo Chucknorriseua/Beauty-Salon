@@ -10,7 +10,7 @@ import CoreLocation
 
 struct MasterSelectedCompany: View {
     
-    @StateObject private var masterViewModel = MasterViewModel()
+    @StateObject var masterViewModel = MasterViewModel()
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject var coordinator: CoordinatorView
 
@@ -147,11 +147,13 @@ struct MasterSelectedCompany: View {
                 withAnimation {
                     
                     selectedAdmin = nil
+                    masterViewModel.admin.adminID = company.adminID
                     MasterCalendarViewModel.shared.company.adminID = company.adminID
                     selectedAdminID = company.adminID
                     coordinator.push(page: .Master_Main)
                     isLoader = false
                 }
+            
             } else {
                 isLoader = false
                 withAnimation {

@@ -39,7 +39,7 @@ struct MasterTabBar: View {
     
     @State private var selectedTab = 0
     @StateObject var masterViewModel = MasterViewModel()
-    @StateObject var VmCalendar = MasterCalendarViewModel.shared
+    @StateObject var VmCalendar = MasterCalendarViewModel()
     @State private var isPressFullScreen: Bool = false
     
     var body: some View {

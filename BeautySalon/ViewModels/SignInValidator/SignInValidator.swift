@@ -117,7 +117,7 @@ class SignInValidator: ObservableObject {
         } else if useRole == "Master" {
             if  Auth_Master_ViewModel.shared.auth.currentUser != nil {
                 if let saveAdmin = selectedAdminID {
-         
+                    await MasterViewModel.shared.fetchCurrent_AdminSalon(adminId: saveAdmin)
                     MasterCalendarViewModel.shared.company.adminID = saveAdmin
                     coordinator.push(page: .Master_Main)
                 }

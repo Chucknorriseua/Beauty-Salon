@@ -65,7 +65,7 @@ final class CoordinatorView: ObservableObject {
                 case .Master_Register:
                     MasterRegister()
                 case .Master_Main:
-                    MasterTabBar()
+                    MasterTabBar(masterViewModel: MasterViewModel.shared, VmCalendar: MasterCalendarViewModel.shared)
                 case .Master_Select_Company:
                     MasterSelectedCompany()
                 case .Master_upDateProfile:
@@ -77,11 +77,11 @@ final class CoordinatorView: ObservableObject {
                 case .User_Register:
                     UserRegisters()
                 case .User_Main:
-                    UserSelectedComapnyController()
+                    UserSelectedComapnyController(clientViewModel: ClientViewModel.shared)
                 case .User_Settings:
                     UserSettings()
                 case .User_SheduleAdmin:
-                    UserMainForSheduleController()
+                    UserMainForSheduleController(clientViewModel: ClientViewModel.shared)
                     
                 case .google:
                     GoogleRegisterProfile()

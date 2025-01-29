@@ -82,11 +82,11 @@ struct AddNewMaster: View {
                         .font(.system(size: 24, weight: .heavy).bold())
                 }
             })
-//            .onAppear {
-//                Task {
-//                    await adminModelView.fetchAllMastersFireBase()
-//                }
-//            }
+            .onAppear {
+                Task {
+                    await adminModelView.fetchAllMastersFireBase()
+                }
+            }
             .onDisappear {
                 adminModelView.clearMemory()
             }

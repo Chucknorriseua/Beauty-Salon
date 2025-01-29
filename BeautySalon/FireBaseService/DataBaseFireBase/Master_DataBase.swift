@@ -82,6 +82,17 @@ final class Master_DataBase {
         }
     }
     
+    func fetchAdmiProfile(adminId: String) async throws -> Company_Model? {
+        do {
+            let snapShot = try await mainFS.document(adminId).getDocument(as: Company_Model.self)
+            return snapShot
+        } catch {
+            print("DEBUG: Error fetch profile as admin...", error.localizedDescription)
+            throw error
+        }
+        
+    }
+    
     //  MARK: Fetch all comapny with Fire Base BeautySalon/Company.... name admin and company
     func fetchAllCompany() async throws -> [Company_Model] {
         do {
