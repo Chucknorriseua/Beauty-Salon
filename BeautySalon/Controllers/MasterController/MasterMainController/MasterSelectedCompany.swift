@@ -147,7 +147,7 @@ struct MasterSelectedCompany: View {
                 withAnimation {
                     
                     selectedAdmin = nil
-                    masterViewModel.admin.adminID = company.adminID
+                    MasterCalendarViewModel.shared.admin.adminID = company.adminID
                     MasterCalendarViewModel.shared.company.adminID = company.adminID
                     selectedAdminID = company.adminID
                     coordinator.push(page: .Master_Main)
