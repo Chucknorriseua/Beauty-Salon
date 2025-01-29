@@ -81,11 +81,11 @@ struct AdminMainController: View {
                 .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
-                        NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel)) {
+                        NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel).navigationBarBackButtonHidden(true)) {
                             
                             Image(systemName: "person.crop.circle.fill.badge.plus")
                                 .font(.system(size: 28))
-                            .foregroundStyle(Color.white) }.navigationBarBackButtonHidden(true)
+                            .foregroundStyle(Color.white) }
                     }
                 })
                 .foregroundStyle(Color.white)
