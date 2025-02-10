@@ -11,7 +11,7 @@ struct AdminCreatePriceList: View {
     
    
     @Environment (\.dismiss) var dismiss
-    @ObservedObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     @State private var isShowSheet: Bool = false
     
     var body: some View {

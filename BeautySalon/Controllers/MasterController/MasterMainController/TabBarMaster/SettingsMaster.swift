@@ -179,7 +179,7 @@ struct SettingsMaster: View {
                                 
                                 if let url = await Master_DataBase.shared.uploadImage_URLAvatar_Storage_Master(imageData: data) {
                                     await Master_DataBase.shared.updateImageFireBase_Master(id: uid, url: url)
-                                    await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
+                                    await masterViewModel.fetchProfile_Master()
                                 }
                             }
                         }

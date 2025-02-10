@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
 
 
 final class AdminViewModel: ObservableObject {
@@ -25,10 +24,10 @@ final class AdminViewModel: ObservableObject {
     @Published var totalCost: Double = 0.0
     
     @Published var adminProfile: Company_Model
-    @Published var masterModel: MasterModel
-    @Published var shedule: Shedule
+    @Published private var masterModel: MasterModel
+    @Published private var shedule: Shedule
     
-    init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
+   private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
         self.shedule = shedule ?? Shedule.sheduleModel()
@@ -48,6 +47,7 @@ final class AdminViewModel: ObservableObject {
                 self.createProcedure = adminProfile.procedure
             }
             await fethAllData()
+ 
         } catch {
             print("error fetchProfileAdmin", error.localizedDescription)
 //            await handleError(error: error, wheare: "fetch my profile")
@@ -79,6 +79,7 @@ final class AdminViewModel: ObservableObject {
             group.addTask { await Admin_DataBase.shared.removeYesterdaysClient() }
             group.addTask { await self.fetchClientRecords() }
             group.addTask { await self.fetchCurrentClient() }
+      
         }
     }
     
@@ -105,7 +106,7 @@ final class AdminViewModel: ObservableObject {
             guard let self else { return }
             if !procedure.contains(where: {$0.id == addProcedure.id}) {
                 self.procedure.append(addProcedure)
-                //                self.createProcedure.append(addProcedure)
+         
             }
         }
     }
@@ -147,7 +148,7 @@ final class AdminViewModel: ObservableObject {
         }
     }
     //  MARK: Fetch all profile master in to rooms
-    @MainActor
+    
     func fetchAllMastersFireBase() async {
         do {
             let master = try await Admin_DataBase.shared.fetch_All_MastersOn_FireBase()
@@ -195,7 +196,7 @@ final class AdminViewModel: ObservableObject {
         }
     }
     
-    @MainActor
+ 
     func fetchClientRecords() async {
         do {
             let records = try await Admin_DataBase.shared.fetch_ClientRecords()
@@ -283,4 +284,5 @@ final class AdminViewModel: ObservableObject {
         errorMassage = "\(error.localizedDescription), \(wheare)"
         print("Error in task: \(error.localizedDescription)")
     }
+
 }

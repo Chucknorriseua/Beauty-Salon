@@ -50,6 +50,7 @@ struct AdminSheduleFromClientCell: View {
                                 VStack {
                                     Text("\(recordModel.nameCurrent)")
                                         .foregroundStyle(Color.white)
+                                        .underline(color: .white.opacity(0.5))
                                         .font(.title2)
                                     Text("from client")
                                         .font(.system(size: 12))
@@ -86,7 +87,7 @@ struct AdminSheduleFromClientCell: View {
                                     Text(recordModel.taskService)
                                         .foregroundStyle(Color.white)
                                     Spacer()
-                                }.padding(.leading, 4)
+                                }.padding(.leading, 2)
                                 VStack {
                                     LazyVGrid(columns: adaptiveColumn, spacing: 8) {
                                         ForEach(recordModel.procedure, id: \.self) { item in
@@ -107,6 +108,7 @@ struct AdminSheduleFromClientCell: View {
                                         .foregroundStyle(.white)
                                         .fontWeight(.bold)
                                         .fontDesign(.serif)
+                                        .underline(color: .white.opacity(0.5))
                                 }.padding(.horizontal, 8)
                             }
                             Spacer()

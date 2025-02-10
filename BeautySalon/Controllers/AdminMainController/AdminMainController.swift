@@ -20,7 +20,7 @@ struct AdminMainController: View {
     @State private var message: String = "Do you want to delete the record?"
     
     var body: some View {
-        VStack {
+        NavigationView {
             
             VStack {
                 VStack {
@@ -44,11 +44,6 @@ struct AdminMainController: View {
                         }
                         .padding(.top, 18)
                         .padding(.bottom, 60)
-                        .onAppear {
-                            Task {
-                                await admimViewModel.fetchClientRecords()
-                            }
-                        }
                         
                     }.scrollIndicators(.hidden)
                         .id(refreshID)
@@ -81,22 +76,24 @@ struct AdminMainController: View {
                 .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
-                        NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel)) {
+                        NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel).navigationBarBackButtonHidden(true)) {
                             
                             Image(systemName: "person.crop.circle.fill.badge.plus")
                                 .font(.system(size: 28))
-                            .foregroundStyle(Color.white) }.navigationBarBackButtonHidden(true)
+                            .foregroundStyle(Color.white)
+                        }
                     }
                 })
                 .foregroundStyle(Color.white)
                 .tint(.yellow)
-                .toolbar(content: {
+                .toolbar(content: { 
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink(destination: AdminListMasterDelete(adminViewModel: admimViewModel)) {
                             
                             Image(systemName: "list.bullet.circle.fill")
                                 .font(.system(size: 28))
-                            .foregroundStyle(Color.white)}.navigationBarBackButtonHidden(true)
+                                .foregroundStyle(Color.white)
+                        }.navigationBarBackButtonHidden(true)
                         
                     }
                 })

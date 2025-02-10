@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminSheetCreatPriceList: View {
     
     
-    @ObservedObject var adminViewModel = AdminViewModel()
+    @ObservedObject var adminViewModel: AdminViewModel
     @Environment (\.dismiss) var dismiss
     
     @State private var title: String = ""

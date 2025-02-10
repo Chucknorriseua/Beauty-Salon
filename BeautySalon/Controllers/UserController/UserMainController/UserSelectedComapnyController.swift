@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import CoreLocation
+
 
 struct UserSelectedComapnyController: View {
     
-    @StateObject var clientViewModel = ClientViewModel()
-    @StateObject var locationManager = LocationManager()
-    @StateObject var auth = Auth_ClientViewModel()
+    @ObservedObject var clientViewModel: ClientViewModel
+    @ObservedObject private var locationManager = LocationManager()
+    @StateObject private var auth = Auth_ClientViewModel()
     @EnvironmentObject var coordinator: CoordinatorView
     @EnvironmentObject var google: GoogleSignInViewModel
     @Environment (\.dismiss) var dismiss
@@ -27,29 +27,15 @@ struct UserSelectedComapnyController: View {
     @State private var isShowMenu: Bool = false
     
     @State private var sliderDistance: Double = 500.0
-    
-    
+
     private var searchCompanyNearby: [Company_Model] {
-        guard let userLocation = locationManager.locationManager.location else {
-            return filterCompanies(clientViewModel.comapny)
-        }
-
-        let radius: CLLocationDistance = sliderDistance
-        let nearbyCompanies = clientViewModel.comapny.filter { company in
-            if let distance = locationManager.calculateDistance(from: userLocation, to: company) {
-                return distance <= radius
-            }
-            return false
-        }
-        return filterCompanies(nearbyCompanies)
-    }
-
-    private func filterCompanies(_ companies: [Company_Model]) -> [Company_Model] {
-        companies.filter { company in
-            let matchesName = searchText.isEmpty || company.companyName.localizedCaseInsensitiveContains(searchText)
-            let matchesCategory = company.categories.localizedCaseInsensitiveContains(selectedCategory.rawValue)
-            return matchesName && matchesCategory
-        }
+        return SearchService.filterModels(
+            models: clientViewModel.comapny,
+            searchText: searchText,
+            userLocation: locationManager.locationManager.location,
+            radius: sliderDistance
+        )
+        .filter { $0.categories.localizedCaseInsensitiveContains(selectedCategory.rawValue) }
     }
     
     var body: some View {
@@ -132,6 +118,7 @@ struct UserSelectedComapnyController: View {
                 }
 
         }.searchable(text: $searchText, prompt: "Search salon")
+            .animation(.spring(duration: 1), value: searchText)
        
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -174,9 +161,7 @@ struct UserSelectedComapnyController: View {
             .onAppear {
                 locationManager.isUpdateLocation = true
                 locationManager.startUpdate()
-//                Task {
-//                await clientViewModel.fetchAll_Comapny()
-//                }
+
             }
             .onDisappear {
                 locationManager.isUpdateLocation = false

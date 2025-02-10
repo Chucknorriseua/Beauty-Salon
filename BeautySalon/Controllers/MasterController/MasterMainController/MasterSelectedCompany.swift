@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import CoreLocation
 
 struct MasterSelectedCompany: View {
     
-    @StateObject var masterViewModel = MasterViewModel()
+    @ObservedObject var masterViewModel = MasterViewModel.shared
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject var coordinator: CoordinatorView
 
@@ -23,26 +22,15 @@ struct MasterSelectedCompany: View {
     @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
+    @State private var distance: Double = 10000
     
     
     
     private var searchCompanyNearby: [Company_Model] {
-        guard let userLocation = locationManager.locationManager.location else {
-            return  searchText.isEmpty ? masterViewModel.company :
-            masterViewModel.company.filter({$0.companyName.localizedCaseInsensitiveContains(searchText)})
-        }
-        
-        let radius: CLLocationDistance = 10000
-        return masterViewModel.company.filter { company in
-            let matchesName = searchText.isEmpty ||  company.companyName.localizedCaseInsensitiveContains(searchText)
-            let isNearby: Bool
-            if let distance = locationManager.calculateDistance(from: userLocation, to: company) {
-                isNearby = distance <= radius
-            } else {
-                isNearby = false
-            }
-            return matchesName && isNearby
-        }
+        SearchService.filterModels(models: masterViewModel.company,
+                                   searchText: searchText,
+                                   userLocation: locationManager.locationManager.location,
+                                   radius: distance)
     }
     
     var body: some View {
@@ -105,6 +93,7 @@ struct MasterSelectedCompany: View {
             }
         })
         .searchable(text: $searchText, prompt: "Search salon")
+        .animation(.spring(duration: 1), value: searchText)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -147,7 +136,7 @@ struct MasterSelectedCompany: View {
                 withAnimation {
                     
                     selectedAdmin = nil
-                    masterViewModel.admin.adminID = company.adminID
+                    MasterViewModel.shared.admin.adminID = company.adminID
                     MasterCalendarViewModel.shared.company.adminID = company.adminID
                     selectedAdminID = company.adminID
                     coordinator.push(page: .Master_Main)

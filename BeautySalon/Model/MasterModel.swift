@@ -46,3 +46,6 @@ struct MasterModel: Identifiable, Codable, Hashable {
     }
 
 }
+extension MasterModel: SearchAble {
+    var companyName: String { "" }
+}

@@ -13,7 +13,7 @@ struct GetAllMastersInCompany: View {
 
     
     var body: some View {
-        VStack {
+        NavigationView {
                 VStack {
                     Text("Send schedule for master")
                         .font(.system(.title, design: .serif, weight: .regular))

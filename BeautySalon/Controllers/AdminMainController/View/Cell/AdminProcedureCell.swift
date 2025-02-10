@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdminProcedureCell: View {
     private let adaptiveColumn = [
-        GridItem(.adaptive(minimum: 86))
+        GridItem(.adaptive(minimum: 100))
     ]
     @ObservedObject var adminViewModel: AdminViewModel
     @Binding var selectedProcedures: [Procedure]
@@ -31,7 +31,7 @@ struct AdminProcedureCell: View {
                                 }
                             }, label: {
                                 Text(item.title)
-                                    .frame(width: 100, height: 50, alignment: .center)
+                                    .frame(width: 110, height: 50, alignment: .center)
                                     .background(Color(hex: "#3e5b47").opacity(0.6))
                                     .clipShape(.rect(cornerRadius: 16))
                                     .overlay(

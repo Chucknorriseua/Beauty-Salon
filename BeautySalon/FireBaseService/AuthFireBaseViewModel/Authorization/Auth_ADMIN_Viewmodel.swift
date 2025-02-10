@@ -15,7 +15,7 @@ protocol isFormValid {
 }
 
 @MainActor
-class Auth_ADMIN_Viewmodel: ObservableObject {
+final class Auth_ADMIN_Viewmodel: ObservableObject {
     
     static var shared = Auth_ADMIN_Viewmodel()
     

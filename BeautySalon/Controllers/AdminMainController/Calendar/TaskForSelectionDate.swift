@@ -15,7 +15,7 @@ struct TasksForSelectedDate: View {
     @State private var selectedProcedure: String? = nil
     var currentDate: Date
     private let adaptiveColumn = [
-        GridItem(.adaptive(minimum: 90))
+        GridItem(.adaptive(minimum: 100))
     ]
     
     
@@ -50,10 +50,12 @@ struct TasksForSelectedDate: View {
                                         ForEach(task.procedure, id: \.self) { item in
                                             Text(item.title)
                                                 .frame(width: 110, height: 60, alignment: .center)
+                                                .fontWeight(.heavy)
                                                 .clipShape(.rect(cornerRadius: 16))
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 16)
                                                         .stroke(Color.white, lineWidth: 1)
+                                                    
                                                 )
                                             
                                         }

@@ -46,3 +46,5 @@ struct Company_Model: Identifiable, Codable, Hashable {
         return model
     }
 }
+
+extension Company_Model: SearchAble {}

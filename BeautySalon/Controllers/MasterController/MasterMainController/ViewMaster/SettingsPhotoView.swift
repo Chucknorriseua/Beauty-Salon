@@ -80,7 +80,7 @@ struct SettingsPhotoView: View {
                 }
                 if !imageData.isEmpty {
                     await Master_DataBase.shared.uploadMultipleImages(id: uid, imageData: imageData)
-                    await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
+                    await masterViewModel.fetchProfile_Master()
                 }
                 photoPickerItems.removeAll()
             }

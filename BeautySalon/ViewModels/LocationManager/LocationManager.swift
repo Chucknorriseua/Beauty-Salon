@@ -9,6 +9,9 @@ import Foundation
 import CoreLocation
 
 final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    
+    static var shared = LocationManager()
+    
      var locationManager = CLLocationManager()
     
     @Published var userLatitude: Double = 0.0

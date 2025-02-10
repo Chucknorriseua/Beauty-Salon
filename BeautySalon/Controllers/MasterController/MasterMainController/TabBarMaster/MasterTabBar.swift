@@ -38,7 +38,7 @@ enum TabbedItemsMaster: Int, CaseIterable{
 struct MasterTabBar: View {
     
     @State private var selectedTab = 0
-    @StateObject var masterViewModel = MasterViewModel()
+    @StateObject var masterViewModel = MasterViewModel.shared
     @StateObject var VmCalendar = MasterCalendarViewModel()
     @State private var isPressFullScreen: Bool = false
     

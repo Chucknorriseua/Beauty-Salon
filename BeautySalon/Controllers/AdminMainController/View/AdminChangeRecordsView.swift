@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdminChangeRecordsView: View {
     private let adaptiveColumn = [
-        GridItem(.adaptive(minimum: 80))
+        GridItem(.adaptive(minimum: 100))
     ]
     @ObservedObject var adminViewModel: AdminViewModel
     
@@ -30,7 +30,7 @@ struct AdminChangeRecordsView: View {
                                 }
                             }, label: {
                                 Text(item.title)
-                                    .frame(width: 90, height: 60, alignment: .center)
+                                    .frame(width: 110, height: 60, alignment: .center)
                                     .background(Color(hex: "#3e5b47").opacity(0.6))
                                     .clipShape(.rect(cornerRadius: 16))
                                     .overlay(

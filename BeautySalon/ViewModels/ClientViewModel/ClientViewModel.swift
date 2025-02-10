@@ -27,7 +27,7 @@ final class ClientViewModel: ObservableObject {
     
     @Published var currentDate: Date = Date()
     
-   init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
+  private init(adminProfile: Company_Model? = nil, clientModel: Client? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.clientModel = clientModel ?? Client.clientModel()
         Task {
@@ -92,13 +92,13 @@ final class ClientViewModel: ObservableObject {
                 guard let self else { return }
                 self.adminProfile = admin
             }
-            await fetchAllMasters_FromAdmin()
+           await fetchAllMasters_FromAdmin()
         } catch {
             await handleError(error: error)
         }
     }
     
-    func fetchAllMasters_FromAdmin() async {
+   private func fetchAllMasters_FromAdmin() async {
         let adminId = adminProfile.adminID
         do {
             let masters = try await Client_DataBase.shared.getAllMastersFrom_AdminRoom(adminId: adminId)
@@ -111,7 +111,7 @@ final class ClientViewModel: ObservableObject {
         }
     }
     
-    func fetchHomeCallMaster() async {
+   private func fetchHomeCallMaster() async {
         do {
             let masters = try await Client_DataBase.shared.fetchHomeCallMasters()
             DispatchQueue.main.async { [weak self] in

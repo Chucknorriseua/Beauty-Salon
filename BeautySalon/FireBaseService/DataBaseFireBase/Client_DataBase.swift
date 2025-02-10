@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
 
-@MainActor
+
 final class Client_DataBase {
     
     //MARK: Properties

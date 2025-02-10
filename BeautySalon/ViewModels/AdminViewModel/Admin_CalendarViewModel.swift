@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import FirebaseCore
+
 
 final class Admin_CalendarViewModel: ObservableObject {
     
@@ -24,7 +24,7 @@ final class Admin_CalendarViewModel: ObservableObject {
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
     
-    init(shedules: Shedule? = nil) {
+  private init(shedules: Shedule? = nil) {
         self.shedules = shedules ?? Shedule.sheduleModel()
     }
     

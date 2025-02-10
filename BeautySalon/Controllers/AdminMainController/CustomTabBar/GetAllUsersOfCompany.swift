@@ -13,7 +13,7 @@ struct GetAllUsersOfCompany: View {
     
     // MARK: Fetch all User Of Company
     var body: some View {
-        VStack {
+        NavigationView {
             
             VStack {
                 Text("Clients for recording")

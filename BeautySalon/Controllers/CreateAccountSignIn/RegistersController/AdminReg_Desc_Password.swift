@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminReg_Desc_Password: View {
     
     @StateObject var authViewModel = Auth_ADMIN_Viewmodel()
-    @StateObject var adminViewModel = AdminViewModel()
+    @StateObject var adminViewModel = AdminViewModel.shared
     @EnvironmentObject var coordinator: CoordinatorView
     
     @State private var loader: String = "Loading"

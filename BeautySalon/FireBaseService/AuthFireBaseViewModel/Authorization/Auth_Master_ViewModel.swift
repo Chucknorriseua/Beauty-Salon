@@ -11,7 +11,7 @@ import FirebaseStorage
 import FirebaseFirestore
 
 @MainActor
-class Auth_Master_ViewModel: ObservableObject {
+final class Auth_Master_ViewModel: ObservableObject {
     
     static var shared = Auth_Master_ViewModel()
     

@@ -11,7 +11,6 @@ import FirebaseAuth
 import FirebaseStorage
 
 
-@MainActor
 final class Admin_DataBase {
     
 //MARK: Properties
@@ -356,6 +355,9 @@ final class Admin_DataBase {
     func deinitListener() {
         listener?.remove()
         listener = nil
+    }
+    deinit {
+        print("admin")
     }
 
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-class SignInValidator: ObservableObject {
+final class SignInValidator: ObservableObject {
     
     static var shared = SignInValidator()
     
@@ -39,18 +39,22 @@ class SignInValidator: ObservableObject {
                 hasActive = true
             }
             let email = signIn.email
+            
             if try await Auth_ADMIN_Viewmodel.shared.signIn(email: email, password: signIn.password) {
                 let checkSubscribe = try await checkSubscribeAdminProfile()
                 guard checkSubscribe else {return}
                 useRole = "Admin"
+                await AdminViewModel.shared.fetchProfileAdmin()
                 coordinator.push(page: .Admin_main)
             } else if try await  Auth_Master_ViewModel.shared.signIn(email: email, password: signIn.password) {
                 let checkSubscribe = try await checkSubscribeMasterProfile()
                 guard checkSubscribe else {return}
                 useRole = "Master"
+                await MasterViewModel.shared.fetchProfile_Master()
                 coordinator.push(page: .Master_Select_Company)
             } else if try await Auth_ClientViewModel.shared.signIn(email: email, password: signIn.password) {
                 useRole = "Client"
+                await ClientViewModel.shared.fetchAll_Comapny()
                 coordinator.push(page: .User_Main)
             } else {
                 isLoader = false
@@ -117,9 +121,11 @@ class SignInValidator: ObservableObject {
         } else if useRole == "Master" {
             if  Auth_Master_ViewModel.shared.auth.currentUser != nil {
                 if let saveAdmin = selectedAdminID {
-                    await MasterViewModel.shared.fetchCurrent_AdminSalon(adminId: saveAdmin)
+                    MasterViewModel.shared.admin.adminID = saveAdmin
                     MasterCalendarViewModel.shared.company.adminID = saveAdmin
                     coordinator.push(page: .Master_Main)
+                } else {
+                    coordinator.push(page: .Master_Select_Company)
                 }
             }
         } else if useRole == "Client" {

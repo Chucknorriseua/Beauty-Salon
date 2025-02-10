@@ -84,10 +84,10 @@ final class StoreViewModel: ObservableObject {
         do {
             if role == "Admin" {
                 subscriptionsAdmin = try await Product.products(for: adminProductIds)
-                print(subscriptionsAdmin)
+           
             } else if role == "Master" {
                 subscriptionsMaster = try await Product.products(for: masterProductIds)
-                print(subscriptionsMaster)
+             
             }
         } catch {
             print("Failed product request from app store server", error.localizedDescription)

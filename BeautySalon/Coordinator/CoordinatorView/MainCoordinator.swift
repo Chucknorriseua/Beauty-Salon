@@ -76,6 +76,7 @@ struct MainCoordinator: View {
             .task {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     Task {
+                        
                         await checkProfile.loadProfile(coordinator: coordinator)
                     }
                 }

@@ -41,6 +41,7 @@
 		BC0ED3002C79D6D2003FBEC2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED2FF2C79D6D2003FBEC2 /* FirebaseStorage */; };
 		BC0ED3022C79D6D2003FBEC2 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED3012C79D6D2003FBEC2 /* FirebaseStorageCombine-Community */; };
 		BC0ED3042C79D6D2003FBEC2 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = BC0ED3032C79D6D2003FBEC2 /* FirebaseVertexAI-Preview */; };
+		BC2278102D523B940002DF3C /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22780F2D523B940002DF3C /* SearchService.swift */; };
 		BC22B4EF2C9B20240034B45A /* ShedulCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4EE2C9B20240034B45A /* ShedulCell.swift */; };
 		BC22B4F12C9B2C9B0034B45A /* MasterCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */; };
 		BC22B4F32C9B38F40034B45A /* MasterWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */; };
@@ -177,6 +178,7 @@
 		BC0A50272C8F72BA00CBDCFD /* Master_DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Master_DataBase.swift; sourceTree = "<group>"; };
 		BC0AD7072D367D30005D4B37 /* AdminMenuProcedureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminMenuProcedureView.swift; sourceTree = "<group>"; };
 		BC0AD7092D367FCC005D4B37 /* AdminProcedureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminProcedureCell.swift; sourceTree = "<group>"; };
+		BC22780F2D523B940002DF3C /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		BC22B4EE2C9B20240034B45A /* ShedulCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulCell.swift; sourceTree = "<group>"; };
 		BC22B4F02C9B2C9B0034B45A /* MasterCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterCalendarViewModel.swift; sourceTree = "<group>"; };
 		BC22B4F22C9B38F40034B45A /* MasterWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterWeekView.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				BC7D521B2CC6B112009036E2 /* ImageCache.swift */,
 				BCD8DE012CEF38F500EBBF88 /* PhoneFormatter.swift */,
 				BCD8DE052CEF4E6000EBBF88 /* SwipeBack.swift */,
+				BC22780F2D523B940002DF3C /* SearchService.swift */,
 			);
 			path = Extansion;
 			sourceTree = "<group>";
@@ -914,6 +917,7 @@
 				BC22B4F32C9B38F40034B45A /* MasterWeekView.swift in Sources */,
 				BC0537B82C7F96D9008EEA32 /* CoordinatorView.swift in Sources */,
 				BCBC58342C70CC5100FB3E77 /* Company_Model.swift in Sources */,
+				BC2278102D523B940002DF3C /* SearchService.swift in Sources */,
 				BC644BB72C766D6E00B57117 /* CalendarAddTask.swift in Sources */,
 				BC0537BA2C7F9745008EEA32 /* CoordinatorViewModel.swift in Sources */,
 				BC68A7CC2D3AD142007F4B24 /* AdminSelectNewProcedureView.swift in Sources */,
@@ -1115,7 +1119,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1172,7 +1176,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

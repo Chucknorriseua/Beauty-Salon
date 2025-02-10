@@ -12,7 +12,7 @@ import PhotosUI
 struct MasterUploadProfile: View {
     
     
-    @ObservedObject var masterViewModel = MasterViewModel()
+    @ObservedObject var masterViewModel = MasterViewModel.shared
     @StateObject private var authViewModel = Auth_Master_ViewModel()
     @StateObject private var locationManager = LocationManager()
     
@@ -287,7 +287,7 @@ struct MasterUploadProfile: View {
                 }
                 if !imageData.isEmpty {
                     await Master_DataBase.shared.uploadMultipleImages(id: uid, imageData: imageData)
-                    await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
+                    await masterViewModel.fetchProfile_Master()
                 }
                 photoPickerArray.removeAll()
             }
@@ -302,7 +302,7 @@ struct MasterUploadProfile: View {
                         
                         if let url = await Master_DataBase.shared.uploadImage_URLAvatar_Storage_Master(imageData: data) {
                             await Master_DataBase.shared.updateImageFireBase_Master(id: uid, url: url)
-                            await masterViewModel.fetchProfile_Master(id: masterViewModel.masterModel.id)
+                            await masterViewModel.fetchProfile_Master()
                         }
                     }
                 }

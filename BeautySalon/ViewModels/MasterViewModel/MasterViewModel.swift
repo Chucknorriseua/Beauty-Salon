@@ -25,7 +25,7 @@ final class MasterViewModel: ObservableObject {
     
     var auth = Auth.auth()
     
-   init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
+  private init(sheduleModel: Shedule? = nil, admin: Company_Model? = nil, masterModel: MasterModel? = nil) {
         self.sheduleModel = sheduleModel ?? Shedule.sheduleModel()
         self.admin = admin ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
@@ -64,7 +64,7 @@ final class MasterViewModel: ObservableObject {
     }
     
     //  MARK: Get All comapny
-    func getCompany() async {
+   private func getCompany() async {
         do {
             
             let fetchAllCompany = try await Master_DataBase.shared.fetchAllCompany()
@@ -72,7 +72,7 @@ final class MasterViewModel: ObservableObject {
                 guard let self else { return }
                 self.company = fetchAllCompany
             }
-            await fetchProfile_Master(id: masterModel.id)
+            await fetchProfile_Master()
    
         } catch {
             print("error getCompany", error.localizedDescription)
@@ -80,20 +80,8 @@ final class MasterViewModel: ObservableObject {
         }
     }
 
-    func fetchCurrent_AdminSalon(adminId: String) async {
-        do {
-            guard let admin = try await Client_DataBase.shared.fetchAdmiProfile(adminId: adminId) else { return}
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                self.admin = admin
-            }
-        } catch {
-            print("fetchCurrent_AdminSalon", error.localizedDescription)
-        }
-    }
-    
     //  MARK: Fetch profile master
-    func fetchProfile_Master(id: String) async {
+   func fetchProfile_Master() async {
         do {
             let master = try await Master_DataBase.shared.fecth_Data_Master_FB()
             DispatchQueue.main.async { [weak self] in

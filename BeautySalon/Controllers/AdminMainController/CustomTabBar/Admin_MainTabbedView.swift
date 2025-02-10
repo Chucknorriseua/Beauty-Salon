@@ -42,27 +42,28 @@ enum TabbedItems: Int, CaseIterable{
 struct Admin_MainTabbedView: View {
     
     @State private var selectedTab = 0
-    @StateObject var adminViewModel = AdminViewModel()
-
+    @StateObject var adminViewModel = AdminViewModel.shared
+    
     
     var body: some View {
         
         ZStack(alignment: .bottom){
-            NavigationView {
-                
-                switch selectedTab {
-                case 0:
+            TabView(selection: $selectedTab) {
+  
                     AdminMainController(admimViewModel: adminViewModel)
-                case 1:
+                        .tag(0)
+                        .toolbarBackground(.hidden, for: .tabBar)
                     GetAllMastersInCompany(adminViewModel: adminViewModel)
-                case 2:
+                        .tag(1)
+                        .toolbarBackground(.hidden, for: .tabBar)
                     GetAllUsersOfCompany(adminViewModel: adminViewModel)
-                case 3:
+                        .tag(2)
+                        .toolbarBackground(.hidden, for: .tabBar)
                     SettingsAdminView(adminViewModel: adminViewModel)
-                default:
-                    AdminMainController(admimViewModel: adminViewModel)
-                }
-            }.toolbarBackground(.hidden, for: .tabBar)
+                        .tag(3)
+                        .toolbarBackground(.hidden, for: .tabBar)
+                
+            }
 
             ZStack {
                 HStack{
@@ -86,7 +87,7 @@ struct Admin_MainTabbedView: View {
 }
 
 extension Admin_MainTabbedView{
-   private func CustomTabItem(imageName: String, title: String, isActive: Bool) -> some View{
+    private func CustomTabItem(imageName: String, title: String, isActive: Bool) -> some View{
         HStack(spacing: 10){
             Spacer()
             Image(systemName: imageName)

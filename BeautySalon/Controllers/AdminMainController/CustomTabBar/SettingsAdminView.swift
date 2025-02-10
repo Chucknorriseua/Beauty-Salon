@@ -33,7 +33,7 @@ struct SettingsAdminView: View {
     
     
     var body: some View {
-        VStack {
+        NavigationView {
             
             GeometryReader(content: { geometry in
                 ScrollView {

@@ -22,7 +22,7 @@ struct CellAdminAddSheduleMasterList: View {
                         .clipShape(Circle())
                         .frame(width: 60, height: 60)
                 } else {
-                    Image("ab3")
+                    Image(systemName: "person.circle")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .clipShape(Circle())

@@ -13,7 +13,7 @@ struct UserSettings: View {
     @State private var taskTitle: String = ""
     @State private var taskService: String = ""
     
-    @ObservedObject var clientViewModel = ClientViewModel()
+    @ObservedObject var clientViewModel = ClientViewModel.shared
     
     var body: some View {
         GeometryReader { geo in
