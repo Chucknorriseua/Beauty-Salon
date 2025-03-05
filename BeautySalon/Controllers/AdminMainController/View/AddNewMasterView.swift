@@ -17,100 +17,164 @@ struct AddNewMasterView: View {
     @State private var isShowProcedure: Bool = false
     @State var isShowPricelist: Bool = false
     @State var addMasterInRoom: MasterModel
+    @State var isShowMasterSend: Bool = false
+    @State var isShowSendButton: Bool = false
+    @State private var isShowSendShedule: Bool = false
     
     var body: some View {
         GeometryReader { geo in
-            
-            VStack {
-                VStack(alignment: .center, spacing: 10) {
-                    Color.clear
-                        .createImageView(model: addMasterInRoom.image ?? "", width: geo.size.width * 0.8,
-                                         height: geo.size.height * 0.44)
-                    VStack(spacing: 10) {
-                        Text(addMasterInRoom.name)
-                            .font(.system(size: 28, weight: .bold))
-                            .fontDesign(.monospaced)
-                        
-                        Text(addMasterInRoom.phone)
-                            .font(.system(size: 18, weight: .bold))
-                            .onTapGesture {
-                                let phoneNumber = "tel://" + addMasterInRoom.phone
-                                if let url = URL(string: phoneNumber) {
-                                    UIApplication.shared.open(url)
+            ScrollView {
+                VStack {
+                    VStack(alignment: .center, spacing: 10) {
+                        Color.clear
+                            .createImageView(model: addMasterInRoom.image ?? "", width: geo.size.width * 0.8,
+                                             height: geo.size.height * 0.44)
+                            .overlay(alignment: .bottomLeading) {
+                                if isShowMasterSend {
+                                    
+                                    Button(action: {
+                                        Task {
+                                            await ClientViewModel.shared.addMyFavoritesMaster(master: addMasterInRoom)
+                                        }
+                                    }) {
+                                        VStack {
+                                            Image(systemName: "star.square.fill")
+                                                .font(.system(size: 34))
+                                                .foregroundStyle(Color.yellow)
+                                        }
+                                    }
                                 }
                             }
-                    }.foregroundStyle(Color(hex: "F3E3CE"))
-                    
-                    VStack {
-                        ScrollView(.horizontal) {
-                            LazyHStack {
-                                
-                                ForEach(addMasterInRoom.imagesUrl ?? [], id: \.self) { master in
-                                    HStack {
-                                        
-                                        if let url = URL(string: master) {
-                                            
-                                            WebImage(url: url)
-                                                .resizable()
-                                                .indicator(.activity)
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: geo.size.width * 0.26,
-                                                       height: geo.size.height * 0.14)
-                                                .clipShape(Circle())
-                                                .overlay(content: {
-                                                    Circle()
-                                                        .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
-                                                })
-                                                .clipped()
-                                                .onTapGesture {
-                                                    withAnimation(.snappy(duration: 0.5)) {
-                                                        selectedImage = master
-                                                        isPressFullScreen.toggle()
-                                                    }
-                                                }
-                                            
+                            .overlay(alignment: .bottomTrailing) {
+                                if isShowMasterSend {
+                                    Button(action: {
+                                        Task {
+                                            do {
+                                                try await Client_DataBase.shared.favoritesLikeMasters(masterID: addMasterInRoom.masterID, userID: ClientViewModel.shared.clientModel.id)
+                                            } catch {
+                                                print(error.localizedDescription)
+                                            }
                                         }
-                                    }.id(master)
+                                    }) {
+                                        VStack(spacing: -16) {
+                                            Image(systemName: "heart.fill")
+                                                .foregroundStyle(Color.red)
+                                                .font(.system(size: 36))
+                                            HStack(spacing: 0) {
+                                                Image(systemName: "smiley")
+                                                    .foregroundStyle(Color.yellow)
+                                                Text("+\(addMasterInRoom.likes)")
+                                                    .foregroundStyle(Color.white)
+                                                    .fontWeight(.bold)
+                                            }
+                                            .frame(width: 80)
+                                            .offset(x: -14, y: 18)
+                                        }
+                                    }
+                                    .offset(x: 18)
                                 }
-                                
-                            }.scrollTargetLayout()
-                        }.scrollIndicators(.hidden)
-                            .padding(.leading, 4)
-                            .padding(.trailing, 4)
-                            .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.16)
-                            .background(.ultraThinMaterial.opacity(0.6), in: .rect(topLeadingRadius: 16, topTrailingRadius: 16))
+                            }
+                        VStack(spacing: 10) {
+                            Text(addMasterInRoom.name)
+                                .font(.system(size: 28, weight: .bold))
+                                .fontDesign(.monospaced)
+                            
+                            Text(addMasterInRoom.phone)
+                                .font(.system(size: 18, weight: .bold))
+                                .onTapGesture {
+                                    let phoneNumber = "tel://" + addMasterInRoom.phone
+                                    if let url = URL(string: phoneNumber) {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+                        }
                         
-                        VStack(alignment: .leading, spacing: 10) {
-
-                            Text(addMasterInRoom.description)
-                                .lineLimit(12)
-                                .font(.system(size: 22, weight: .regular))
-                                .padding(.horizontal, 6)
-       
-                            Spacer()
-                        }.truncationMode(.middle)
-                            .foregroundStyle(Color(hex: "F3E3CE"))
-                            .frame(width: geo.size.width * 0.96, height: isShowButtonAdd ? geo.size.height * 0.18 : geo.size.height * 0.26)
-                            .background(.ultraThinMaterial.opacity(0.6), in: .rect(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
-                       
+                        VStack {
+                            ScrollView(.horizontal) {
+                                LazyHStack {
+                                    
+                                    ForEach(addMasterInRoom.imagesUrl ?? [], id: \.self) { master in
+                                        HStack {
+                                            
+                                            if let url = URL(string: master) {
+                                                
+                                                WebImage(url: url)
+                                                    .resizable()
+                                                    .indicator(.activity)
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: geo.size.width * 0.26,
+                                                           height: geo.size.height * 0.14)
+                                                    .clipShape(Circle())
+                                                    .clipped()
+                                                    .overlay(content: {
+                                                        Circle()
+                                                            .stroke(Color.white, lineWidth: 2)
+                                                    })
+                                                    .onTapGesture {
+                                                        withAnimation(.snappy(duration: 0.5)) {
+                                                            selectedImage = master
+                                                            isPressFullScreen.toggle()
+                                                        }
+                                                    }
+                                                
+                                            }
+                                        }.id(master)
+                                            .padding(.horizontal, 4)
+                                       
+                                    }
+                                    
+                                }.scrollTargetLayout()
+                            }.scrollIndicators(.hidden)
+                                .frame(width: geo.size.width * 0.96, height: geo.size.height * 0.16)
+                            
+                            VStack(alignment: .leading) {
+                               
+                                    Text(addMasterInRoom.description)
+                                        .lineLimit(12)
+                                        .font(.system(size: 20, weight: .heavy))
+                                        .fontDesign(.serif)
+                                        .multilineTextAlignment(.leading)
+                                
+                            }
+                            .padding(.horizontal, 6)
+                        }
+                    }.padding(.top, 80)
+                }
+            }
+            .createBackgrounfFon()
+            .overlay(alignment: .bottom, content: {
+                VStack {
+                    
+                    if isShowButtonAdd {
+                        CustomButton(title: "Add") {
+                            Task {
+                                let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, categories: addMasterInRoom.categories, fcnTokenUser: addMasterInRoom.fcnTokenUser, likes: addMasterInRoom.likes, procedure: [], latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
+                                await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
+                                let titleEnter = String(
+                                    format: NSLocalizedString("addMaster", comment: ""), addMasterInRoom.name)
+                                let subTitle = String(
+                                    format: NSLocalizedString("addMasterTitle", comment: ""))
+                                NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 2)
+                            }
+                        }
                     }
-                }.padding(.top, 60)
-                if isShowButtonAdd {
-                    CustomButton(title: "Add") {
-                        Task {
-                            let addMaster = MasterModel(id: addMasterInRoom.id, masterID: addMasterInRoom.masterID, name: addMasterInRoom.name, email: addMasterInRoom.email, phone: addMasterInRoom.phone, description: addMasterInRoom.description, image: addMasterInRoom.image, imagesUrl: addMasterInRoom.imagesUrl, categories: addMasterInRoom.categories, procedure: [], latitude: addMasterInRoom.latitude, longitude: addMasterInRoom.longitude)
-                            await AdminViewModel.shared.add_MasterToRoom(masterID: addMaster.id, master: addMaster)
-                            let titleEnter = String(
-                                format: NSLocalizedString("addMaster", comment: ""), addMasterInRoom.name)
-                            let subTitle = String(
-                                format: NSLocalizedString("addMasterTitle", comment: ""))
-                            NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 2)
+                    if isShowSendButton {
+                        CustomButton(title: "Sign up") {
+                            isShowSendShedule = true
                         }
                     }
                 }
-            }.createBackgrounfFon()
+                .padding(.bottom, 30)
+            })
+            .scrollIndicators(.hidden)
+
+                .foregroundStyle(Color.white)
                 .sheet(isPresented: $isShowProcedure, content: {
                     User_MasterPriceList(masterPrice: addMasterInRoom)
+                        .presentationDetents([.height(600)])
+                })
+                .sheet(isPresented: $isShowSendShedule, content: {
+                    User_SheetSheduleMasterHome(masterModel: addMasterInRoom)
                         .presentationDetents([.height(600)])
                 })
                 .swipeBackDismiss(dismiss: dismiss)
@@ -119,17 +183,9 @@ struct AddNewMasterView: View {
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
                         if !isPressFullScreen {
-                            Button(action: { dismiss()}, label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "chevron.backward.circle.fill")
-                                        .font(.system(size: 18))
-                                        .foregroundStyle(Color.init(hex: "#3e5b47").opacity(0.8))
-                                    Text("Back")
-                                        .font(.system(size: 18).bold())
-                                    
-                                }.foregroundStyle(Color.white)
-                                    .font(.system(size: 16).bold())
-                            })
+                            TabBarButtonBack {
+                                dismiss()
+                            }
                         } else {
                             Text("")
                         }
@@ -158,3 +214,7 @@ struct AddNewMasterView: View {
         }
     }
 }
+
+#Preview(body: {
+    AddNewMasterView(addMasterInRoom: MasterModel.masterModel())
+})

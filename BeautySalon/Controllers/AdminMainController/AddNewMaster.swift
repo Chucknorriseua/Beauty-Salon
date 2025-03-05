@@ -32,13 +32,13 @@ struct AddNewMaster: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(searchCompanyNearby, id: \.id) { master in
-                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, isShowPricelist: false, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, isShowPricelist: false, addMasterInRoom: master, isShowMasterSend: false).navigationBarBackButtonHidden(true)) {
                                 
                                 AddNewMasterCell(addMasterInRoom: master)
                             }
                         }
                     }
-                    .padding(.top, 40)
+                    .padding(.top, 10)
                 }
                 .refreshable {
                     Task { await adminModelView.fetchAllMastersFireBase() }
@@ -61,9 +61,9 @@ struct AddNewMaster: View {
                             dismiss()
                         }} else {Text("")}
                 }
-                ToolbarItem(placement: .navigation) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Text("Find a Master")
-                        .foregroundStyle(isShowDetails ? Color.clear : Color.yellow.opacity(0.8))
+                        .foregroundStyle(isShowDetails ? Color.clear : Color.yellow)
                         .font(.system(size: 24, weight: .heavy).bold())
                 }
             })

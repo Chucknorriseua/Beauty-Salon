@@ -22,8 +22,6 @@ struct SettingsPhotoView: View {
     @Binding var isShowPhotoPicker: Bool
     
     var body: some View {
-        
-        GeometryReader { geo in
             VStack {
                 ScrollView(.horizontal) {
                     LazyHStack {
@@ -34,15 +32,14 @@ struct SettingsPhotoView: View {
                                        .resizable()
                                        .indicator(.activity)
                                        .aspectRatio(contentMode: .fill)
-                                       .frame(width: geo.size.width * 0.3,
-                                              height: geo.size.height * 0.5)
+                                       .frame(width: 90,
+                                              height: 90)
                                        .clipShape(Circle())
+                                       .clipped()
                                        .overlay(content: {
                                            Circle()
-                                               .stroke(Color.init(hex: "#3e5b47"), lineWidth: 2)
+                                               .stroke(Color.white, lineWidth: 2)
                                        })
-
-                                       .clipped()
                                        .onTapGesture {
                                            withAnimation(.easeInOut(duration: 0.5)) {
                                                
@@ -58,12 +55,11 @@ struct SettingsPhotoView: View {
                      
                 }.scrollIndicators(.hidden)
                 
-            }.frame(height: geo.size.height * 0.66)
+            }
+            .frame(maxWidth: .infinity, maxHeight: 200)
                 .padding(.leading, 6)
-                .background(.ultraThickMaterial.opacity(0.6))
                 .photosPicker(isPresented: $isShowPhotoPicker, selection: $photoPickerItems, maxSelectionCount: 10, selectionBehavior: .ordered)
-        }
-        .frame(height: 220)
+
         .padding(.leading, 8)
         .padding(.trailing, 8)
         

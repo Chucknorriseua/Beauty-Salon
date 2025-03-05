@@ -15,6 +15,7 @@ final class MasterViewModel: ObservableObject {
     
     @Published private(set) var company: [Company_Model] = []
     @Published var createProcedure: [Procedure] = []
+    @Published var sheduleFromClient: [Shedule] = []
     
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
@@ -33,7 +34,7 @@ final class MasterViewModel: ObservableObject {
             await getCompany()
         }
     }
-    
+// MARK: Procedure
     @MainActor
     func addNewProcedureFirebase(addProcedure: Procedure) async {
         do {
@@ -62,6 +63,22 @@ final class MasterViewModel: ObservableObject {
             await handleError(error: error)
         }
     }
+//___________________________________________________________________________________________________
+    
+    
+    func deleteShedule(sheduleID: Shedule) async {
+        if let index = sheduleFromClient.firstIndex(where: {$0.id == sheduleID.id}) {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.sheduleFromClient.remove(at: index)
+            }
+        }
+        do {
+            try await Master_DataBase.shared.remove_SheduleFromClient(sheduleID: sheduleID.id)
+        } catch {
+            await handleError(error: error)
+        }
+    }
     
     //  MARK: Get All comapny
    private func getCompany() async {
@@ -77,6 +94,21 @@ final class MasterViewModel: ObservableObject {
         } catch {
             print("error getCompany", error.localizedDescription)
 //            await handleError(error: error)
+        }
+    }
+    
+    func fetchSheduleFromClient() async {
+        do {
+            let shedule = try await Master_DataBase.shared.fetchSheduleFromClinet()
+            let sortedDate = shedule.sorted(by: {$0.creationDate < $1.creationDate})
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.sheduleFromClient = sortedDate
+            
+                print("Shedule:", shedule)
+            }
+        } catch {
+            await handleError(error: error)
         }
     }
 

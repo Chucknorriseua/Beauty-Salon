@@ -21,8 +21,9 @@ struct GoogleRegisterProfile: View {
         
         VStack {
             Text("Selected Profile")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(Color.yellow.opacity(0.8))
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(Color.yellow)
+                .multilineTextAlignment(.center)
             
             VStack(alignment: .center, spacing: 10) {
                 Picker("Profile", selection: $selectedProfile) {
@@ -36,16 +37,16 @@ struct GoogleRegisterProfile: View {
                     if selectedProfile == "Admin" {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
                         CustomTextField(text: $registerGoogle.nameCompany, title: "Name Company", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: $registerGoogle.phone, title: "Phone (+000)", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
+                        CustomTextFieldPhone(text: $registerGoogle.phone, title: "000-000-00-00",
+                                             width: UIScreen.main.bounds.width - 20)
                             .keyboardType(.phonePad)
                             .textContentType(.telephoneNumber)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                         
                     } else if selectedProfile == "Master" || selectedProfile == "Client" {
                         CustomTextField(text: $registerGoogle.fullName, title: "Name", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                        CustomTextField(text: $registerGoogle.phone, title: "Phone (+000)", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword)
-                            .keyboardType(.phonePad)
-                            .textContentType(.telephoneNumber)
+                        CustomTextFieldPhone(text: $registerGoogle.phone, title: "000-000-00-00",
+                                             width: UIScreen.main.bounds.width - 20)
                         CustomTextField(text: Binding(get: {google.emailGoogle ?? ""}, set: { newvalue in google.emailGoogle = newvalue }), title: "Email", width: UIScreen.main.bounds.width - 20, showPassword: $registerGoogle.showPassword).disabled(true)
                         
                     }
@@ -77,13 +78,6 @@ struct GoogleRegisterProfile: View {
             }.foregroundStyle((Color.white))
                 .font(.title2.bold())
             
-        }
-        .navigationBarTitleDisplayMode(.inline).toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Register Profile with Google")
-                    .foregroundStyle(Color.yellow.opacity(0.8))
-                    .font(.system(size: 26, weight: .heavy).bold())
-            }
         }
         .createBackgrounfFon()
         

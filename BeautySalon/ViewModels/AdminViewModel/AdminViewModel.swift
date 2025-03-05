@@ -14,20 +14,26 @@ final class AdminViewModel: ObservableObject {
     
     @Published private(set) var allMasters: [MasterModel] = []
     @Published private(set) var recordsClient: [Shedule] = []
+    @Published private(set) var recordsSaveClient: [Shedule] = []
+    @Published private(set) var chartsMonthlyInfo: [Shedule] = []
     @Published private(set) var addMasterInRoom: [MasterModel] = []
     @Published private(set) var client: [Client] = []
     @Published private(set) var createProcedure: [Procedure] = []
     @Published var procedure: [Procedure] = []
+    @Published var createHomeCare: [Procedure] = []
+    
     
     @Published var isAlert: Bool = false
     @Published var errorMassage: String = ""
     @Published var totalCost: Double = 0.0
+    @Published var selectedMonth: MonthStatistics = MonthStatistics.currentMonth
     
     @Published var adminProfile: Company_Model
     @Published private var masterModel: MasterModel
     @Published private var shedule: Shedule
     
-   private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
+    
+    private init(adminProfile: Company_Model? = nil, masterModel: MasterModel? = nil, shedule: Shedule? = nil) {
         self.adminProfile = adminProfile ?? Company_Model.companyModel()
         self.masterModel = masterModel ?? MasterModel.masterModel()
         self.shedule = shedule ?? Shedule.sheduleModel()
@@ -36,6 +42,46 @@ final class AdminViewModel: ObservableObject {
         }
     }
     
+    
+    var recordsForSelectedMonth: [Shedule] {
+        filterRecordsByMonth(recordsSaveClient, selectedMonth)
+    }
+    
+    var monthlyRecords: Int {
+        AnalyticsCalculator.getMonthlyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var biweeklyRecords: Int {
+        AnalyticsCalculator.getBiweeklyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var uniqueClients: Int {
+        AnalyticsCalculator.getUniqueClients(schedules: client)
+    }
+    
+    var popularMasters: [String: Int] {
+        AnalyticsCalculator.getPopularMasters(schedules: recordsForSelectedMonth)
+    }
+    
+    var popularProcedures: [String: Int] {
+        AnalyticsCalculator.getPopularProcedures(schedules: recordsForSelectedMonth)
+    }
+    
+    var totalCostProcedure: Double {
+        AnalyticsCalculator.getTotalCostProcedure(schedules: recordsForSelectedMonth)
+    }
+    
+    private func filterRecordsByMonth(_ schedules: [Shedule], _ month: MonthStatistics) -> [Shedule] {
+        let calendar = Calendar.current
+        return schedules.filter { schedule in
+            let components = calendar.dateComponents([.month], from: schedule.creationDate)
+            return components.month == month.monthNumber
+        }
+    }
+    
+    private func removeAllInfoChartsOfMonthly(info: Shedule) async {
+        
+    }
     //  MARK: Fetch profile admin
     func fetchProfileAdmin() async {
         do {
@@ -47,13 +93,53 @@ final class AdminViewModel: ObservableObject {
                 self.createProcedure = adminProfile.procedure
             }
             await fethAllData()
- 
+            
         } catch {
-            print("error fetchProfileAdmin", error.localizedDescription)
-//            await handleError(error: error, wheare: "fetch my profile")
+            await handleError(error: error, wheare: "fetch my profile")
         }
         
     }
+    
+    // MARK: HomeCare
+    @MainActor
+    func addNewHomeCareFirebase(addProcedure: Procedure) async {
+        do {
+            _ = try await Admin_DataBase.shared.addHomeCare(procedure: addProcedure)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.createHomeCare.append(addProcedure)
+            }
+        } catch {
+            await handleError(error: error, wheare: "addNewHomeCareFirebase")
+        }
+    }
+    
+    func deleteCreateHomeCare(procedureID: Procedure) async {
+        if let index = createHomeCare.firstIndex(where: {$0.id == procedureID.id}) {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.createHomeCare.remove(at: index)
+            }
+        }
+        do {
+            try await Admin_DataBase.shared.remove_HomeCare(id: procedureID.id)
+        } catch {
+            await handleError(error: error, wheare: "deleteCreateHomeCare")
+        }
+    }
+    
+    func fetchHomeCareProduct() async {
+        do {
+            let homeCare = try await Admin_DataBase.shared.fetchHomeCareProduct()
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.createHomeCare = homeCare
+            }
+        } catch {
+            await handleError(error: error, wheare: "fetch client")
+        }
+    }
+    //___________________________________________________________________________________________________
     
     //  MARK: Fetch profile admin
     func refreshProfileAdmin() async {
@@ -74,15 +160,14 @@ final class AdminViewModel: ObservableObject {
     private func fethAllData() async {
         await withTaskGroup(of: Void.self) { [weak self] group in
             guard let self else { return }
-
+            
             group.addTask { await self.get_AllAdded_Masters_InRomm() }
-            group.addTask { await Admin_DataBase.shared.removeYesterdaysClient() }
+            //            group.addTask { await Admin_DataBase.shared.removeOldClients() }
             group.addTask { await self.fetchClientRecords() }
             group.addTask { await self.fetchCurrentClient() }
-      
+            
         }
     }
-    
     
     //  MARK: ADD Master it to room
     func add_MasterToRoom(masterID: String, master: MasterModel) async {
@@ -106,7 +191,7 @@ final class AdminViewModel: ObservableObject {
             guard let self else { return }
             if !procedure.contains(where: {$0.id == addProcedure.id}) {
                 self.procedure.append(addProcedure)
-         
+                
             }
         }
     }
@@ -162,8 +247,21 @@ final class AdminViewModel: ObservableObject {
         
     }
     
+    func fetch_RecordsMonthly() async {
+        do {
+            let records = try await Admin_DataBase.shared.fetch_RecordsMonthly()
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.recordsSaveClient = records
+            }
+        } catch {
+            await handleError(error: error, wheare: "fetch all masters")
+        }
+        
+    }
+    
     //  MARK: Fetch all profile master in to rooms
-     func get_AllAdded_Masters_InRomm() async {
+    func get_AllAdded_Masters_InRomm() async {
         do {
             
             let master = try await Admin_DataBase.shared.getAll_Added_Masters()
@@ -178,25 +276,26 @@ final class AdminViewModel: ObservableObject {
     }
     
     func sendCurrentMasterRecord(masterID: String, shedule: Shedule) async {
-        
         do {
             try await Admin_DataBase.shared.send_ShedulesTo_Master(idMaster: masterID, shedule: shedule)
+            await deleteRecord(record: shedule)
         } catch {
             await handleError(error: error, wheare: "send record master")
         }
     }
     
     
-    func updateRecordsFromClient(record: Shedule, id: String) async {
-        
+    func updateRecordsFromClient(record: Shedule, clientID: String) async {
         do {
             try await Admin_DataBase.shared.changeRecordFromClient(record: record, id: record.id)
+            try await Admin_DataBase.shared.saveChangeSendClient(clientID: clientID, record: record)
+
         } catch {
             await handleError(error: error, wheare: "update record client")
         }
     }
     
- 
+    
     func fetchClientRecords() async {
         do {
             let records = try await Admin_DataBase.shared.fetch_ClientRecords()
@@ -204,6 +303,7 @@ final class AdminViewModel: ObservableObject {
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.recordsClient = sortedDate
+                self.recordsSaveClient = records
             }
         } catch {
             await handleError(error: error, wheare: "get client records")
@@ -284,5 +384,31 @@ final class AdminViewModel: ObservableObject {
         errorMassage = "\(error.localizedDescription), \(wheare)"
         print("Error in task: \(error.localizedDescription)")
     }
+    
+}
 
+extension MonthStatistics {
+    var monthNumber: Int {
+        switch self {
+        case .january: return 1
+        case .february: return 2
+        case .march: return 3
+        case .april: return 4
+        case .may: return 5
+        case .june: return 6
+        case .july: return 7
+        case .august: return 8
+        case .september: return 9
+        case .october: return 10
+        case .november: return 11
+        case .december: return 12
+        }
+    }
+}
+
+extension MonthStatistics {
+    static var currentMonth: MonthStatistics {
+        let currentMonthNumber = Calendar.current.component(.month, from: Date())
+        return MonthStatistics.allCases.first { $0.monthNumber == currentMonthNumber } ?? .january
+    }
 }

@@ -20,6 +20,7 @@ final class Admin_DataBase {
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     
     private init() {}
     
@@ -36,6 +37,9 @@ final class Admin_DataBase {
         return db.collection("Master")
     }
     
+    private var clientFs: CollectionReference {
+        return db.collection("Client")
+    }
     
     // MARK:  /\_____________________________ADMIN___________________________________/\
     
@@ -53,7 +57,7 @@ final class Admin_DataBase {
             var id = shedule
             id.masterId = idMaster
             try await mainFS.document(uid).collection("Masters").document(idMaster).collection("Shedule").addDocument(data: id.shedule)
-
+            try await addRecordMonthly(shedules: shedule)
         } catch {
             print("DEBUG: sendAppoitmentToMaster not correct send...", error.localizedDescription)
             throw error
@@ -71,6 +75,32 @@ final class Admin_DataBase {
         try await mainFS.document(uid).updateData(["procedure": FieldValue.arrayUnion([procedure.procedure])])
         }
     
+    func addHomeCare(procedure: Procedure) async throws {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        try await mainFS.document(uid).collection("HomeCare").addDocument(data: procedure.procedure)
+        }
+    
+    func addRecordMonthly(shedules: Shedule) async throws {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        let uuID = UUID().uuidString
+        try await mainFS.document(uid).collection("RecordMonthly").document(uuID).setData(shedules.shedule)
+        }
+    
+    func saveChangeSendClient(clientID: String, record: Shedule) async throws {
+        let recordID = record.id
+        let clientRef = clientFs.document(clientID)
+        let clientSnapshot = try await clientRef.getDocument()
+
+        if clientSnapshot.exists {
+            let recordRef = clientRef.collection("MyRecords").document(recordID)
+            
+            try await recordRef.setData(record.shedule, merge: true)
+            print("✅ Запись успешно обновлена для клиента с ID: \(clientID)")
+        } else {
+            print("❌ Клиент с ID \(clientID) не найден!")
+        }
+    }
+    
     func isMasterAllReadyInRoom(masterId: String) async -> Bool {
         let ref = mainFS.document(masterId).collection("Masters").document(masterId)
         do {
@@ -87,10 +117,27 @@ final class Admin_DataBase {
     func fetchAdmiProfile() async throws -> Company_Model {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
         
-        do { let snapShot = try await mainFS.document(uid).getDocument(as: Company_Model.self)
+        do { 
+            let snapShot = try await mainFS.document(uid).getDocument(as: Company_Model.self)
+            try await mainFS.document(uid).updateData(["fcnTokenUser": fcnTokenUser])
             return snapShot
         } catch {
             print("DEBUG: Error fetch profile as admin...", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchHomeCareProduct() async throws -> [Procedure] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        
+        do {
+            let snapShot = try await mainFS.document(uid).collection("HomeCare").getDocuments()
+            let homeCare: [Procedure] = try snapShot.documents.compactMap {[weak self] document in
+                return try self?.convertDocumentToProcedure(document)
+            }
+            return homeCare
+        } catch {
+            print("DEBUG ERROR FETCH ALL MASTER...", error.localizedDescription)
             throw error
         }
     }
@@ -167,52 +214,21 @@ final class Admin_DataBase {
             throw error
         }
     }
-//    func fetch_ClientRecords(isLoad: Bool = false) async throws -> [Shedule] {
-//        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
-//        var query = mainFS.document(uid).collection("Record").order(by: "creationDate", descending: false).limit(to: pageSize)
-//        
-//        if let lastDoc = lastDocument, !isLoad {
-//            query = query.start(afterDocument: lastDoc)
-//        }
-//        
-//        do {
-//            
-//            let snapShot = try await query.getDocuments()
-//     
-//            let newRec = snapShot.documents.compactMap { document in
-//                try? document.data(as: Shedule.self)
-//            }
-//            
-//            lastDocument = snapShot.documents.last
-//            return newRec
-//        } catch {
-//            print("DEBUG: ERROR FETCH records amount", error.localizedDescription)
-//            throw error
-//        }
-//    }
     
-// MARK: Update Image
-// update profile as admin
+    func fetch_RecordsMonthly() async throws -> [Shedule] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
+        do {
+        let snapShot = try await mainFS.document(uid).collection("RecordMonthly").getDocuments()
+        let shedule: [Shedule] = try snapShot.documents.compactMap {[weak self] doc in
+            return try self?.convertDocumentToShedule(doc)
+        }
+        return shedule
+        } catch {
+            print("DEBUG: ERROR FETCH records amount", error.localizedDescription)
+            throw error
+        }
+    }
 
-//    func updateProfile_Admin() async {
-//        guard let uid = auth.currentUser?.uid else { return }
-//        
-//        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
-//            
-//            if let error = error {
-//                print("Error", error.localizedDescription)
-//            }
-//            
-//            guard let document = snap, document.exists else { return }
-//            
-//            if let data = try? document.data(as: Company_Model.self) {
-//                
-//                DispatchQueue.main.async {
-//                    AdminViewModel.shared.adminProfile = data
-//                }
-//            }
-//        })
-//    }
     
     //    Update Image fire store
     func updateLocationCompany(company: Company_Model) async {
@@ -250,6 +266,30 @@ final class Admin_DataBase {
             
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpg"
+            
+            _ = try await store.putDataAsync(image, metadata: metadata)
+            
+            let dowload = try await store.downloadURL()
+            return dowload
+        } catch {
+            print("DEBUG: Error upload image...", error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func addImageHomeCare(imageData: Data) async -> URL? {
+        guard let uid = auth.currentUser?.uid else { return nil }
+        
+        guard let imageData = UIImage(data: imageData) else { return nil}
+        let targetSize = CGSize(width: 900, height: 900)
+        let resizedImage = imageData.resizeImageUpload(image: imageData, targetSize: targetSize)
+        guard let image = resizedImage.jpegData(compressionQuality: 0.3) else { return nil}
+        do {
+            let uniqueID = UUID().uuidString
+            let store = storage.child("homeCare/\(uid)/\(uniqueID)")
+            
+            let metadata = StorageMetadata()
+            metadata.contentType = "homeCare/jpg"
             
             _ = try await store.putDataAsync(image, metadata: metadata)
             
@@ -303,6 +343,23 @@ final class Admin_DataBase {
         }
     }
     
+    func remove_RecodsChangeFromClient(clientID: String) async throws {
+        let record = clientFs.document(clientID).collection("MyRecords")
+        let snap = try await record.whereField("id", isEqualTo: clientID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
+    func remove_HomeCare(id: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = mainFS.document(uid).collection("HomeCare")
+        let snap = try await record.whereField("id", isEqualTo: id).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
     func remove_MasterShedule(shedule: Shedule, clientID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         let record =  mainFS.document(uid).collection("Masters").document(clientID).collection("Shedule")
@@ -310,45 +367,15 @@ final class Admin_DataBase {
         for doc in snap.documents {
             try await doc.reference.delete()
         }
+        try await remove_RecordsMonthly(shedule: shedule)
     }
     
-    func removeOldSchedules(masterID: String) async throws {
+    func remove_RecordsMonthly(shedule: Shedule) async throws {
         guard let uid = auth.currentUser?.uid else { return }
-
-        let calendar = Calendar.current
-        let startOfToday = calendar.startOfDay(for: Date())
-
-        let record = mainFS.document(uid)
-            .collection("Masters")
-            .document(masterID)
-            .collection("Shedule")
-        
-        let snap = try await record
-            .whereField("creationDate", isLessThan: startOfToday)
-            .getDocuments()
-
+        let record = mainFS.document(uid).collection("RecordMonthly")
+        let snap = try await record.whereField("id", isEqualTo: shedule.id).getDocuments()
         for doc in snap.documents {
             try await doc.reference.delete()
-        }
-    }
-    
-    func removeYesterdaysClient() async  {
-        guard let uid = auth.currentUser?.uid else { return }
-
-        let calendar = Calendar.current
-        let startOfToday = calendar.startOfDay(for: Date())
-
-        let record = mainFS.document(uid).collection("Record")
-        do {
-            let snap = try await record
-                .whereField("creationDate", isLessThan: startOfToday)
-                .getDocuments()
-            
-            for doc in snap.documents {
-                try await doc.reference.delete()
-            }
-        } catch {
-            print("removeYesterdaysClient", error.localizedDescription)
         }
     }
     
@@ -361,17 +388,3 @@ final class Admin_DataBase {
     }
 
 }
-
-//func fetch_CurrentClient_SentRecord() async throws -> [Client] {
-//    guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil)}
-//    do {
-//        let snapShot = try await mainFS.document(uid).collection("Client").getDocuments()
-//        let client: [Client] = try snapShot.documents.compactMap {[weak self] doc in
-//            return try self?.convertDocumentToClient(doc)
-//        }
-//        return client
-//    } catch {
-//        print("DEBUG: ERROR FETCH CURRENT MASTRER SHEDULE22222", error.localizedDescription)
-//        throw error
-//    }
-//}

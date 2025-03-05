@@ -23,6 +23,9 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
     @Published var signInViewModel = SignInViewModel()
     @Published var selectedImage: Data? = nil
     @Published var currentUser: User? = nil
+    @Published var message: String = ""
+    @Published var showAlert: Bool = false
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     
     let auth = Auth.auth()
     
@@ -68,8 +71,13 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
                                    email: email,
                                    phone: phone,
                                     description: desc,
-                                      image: dowloadURL?.absoluteString ?? "", procedure: [],
-                                      latitude: locationManager.userLatitude, longitude: locationManager.userLongitude, categories: "")
+                                      image: dowloadURL?.absoluteString ?? "", 
+                                      procedure: [],
+                                      likes: 0,
+                                      fcnTokenUser: fcnTokenUser,
+                                      latitude: locationManager.userLatitude, 
+                                      longitude: locationManager.userLongitude,
+                                      categories: "")
           
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: admin)
             
@@ -95,6 +103,16 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
 
     }
     
+    func resetPasswors() async throws {
+        Auth.auth().sendPasswordReset(withEmail: signInViewModel.email) { error in
+            if let error = error {
+                self.message = error.localizedDescription
+            } else {
+                self.message = "Ссылка для сброса отправлена на \(self.signInViewModel.email)"
+            }
+            self.showAlert = true
+        }
+    }
     
     
     func signOut() async {

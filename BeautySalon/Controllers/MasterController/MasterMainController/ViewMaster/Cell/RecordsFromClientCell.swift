@@ -1,0 +1,181 @@
+//
+//  RecordsFromClientCell.swift
+//  BeautySalon
+//
+//  Created by Евгений Полтавец on 21/02/2025.
+//
+
+import SwiftUI
+
+struct RecordsFromClientCell: View {
+    
+    @State var shedule: Shedule
+    @State private var isShow: Bool = false
+    @State private var message: String = "Do you want to delete the record?"
+    @State private var isShowDelete: Bool = false
+    private let adaptiveColumn = [
+        GridItem(.adaptive(minimum: 90))
+    ]
+    
+    var body: some View {
+        Button(action: {
+            withAnimation(.snappy) {
+                isShow.toggle()
+            }
+        }, label: {
+            VStack {
+                
+                if isShow {
+                    VStack {
+                        VStack(alignment: .leading, spacing: 20) {
+                            HStack {
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .foregroundStyle(Color.white)
+                                    .frame(width: 50, height: 50)
+                                Spacer()
+                                Text(shedule.nameCurrent)
+                                    .foregroundStyle(Color.yellow)
+                                    .font(.system(size: 24, weight: .bold))
+                                    .underline(color: .white.opacity(0.5))
+                            }
+                            .padding(.horizontal, 16)
+                            
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "phone.arrow.up.right.circle.fill")
+                                        .foregroundStyle(Color.green)
+                                    Text(shedule.phone)
+                                        .foregroundStyle(Color.white)
+                                        .onTapGesture {
+                                            let phoneNumber = "tel://" + shedule.phone
+                                            if let url = URL(string: phoneNumber) {
+                                                UIApplication.shared.open(url)
+                                            }
+                                        }
+                                }
+                                HStack {
+                                    Text("comment: ")
+                                    HStack(spacing: -6) {
+                                        Text(shedule.comment)
+                                            .lineLimit(6)
+                                            .multilineTextAlignment(.leading)
+                                            .foregroundStyle(Color.white)
+                                        Spacer()
+                                    }
+                                    .frame(maxWidth: 220, maxHeight: 120)
+                                }
+                       
+                                HStack(spacing: 4) {
+                                    Text("Procedure: ")
+                                    Text(shedule.taskService)
+                                        .foregroundStyle(Color.white)
+                                }
+                            }
+                            .foregroundStyle(Color.yellow)
+                            .font(.system(size: 20, weight: .bold))
+                            
+                            LazyVGrid(columns: adaptiveColumn, spacing: 8) {
+                                ForEach(shedule.procedure, id: \.self) { item in
+                                    Text(item.title)
+                                        .foregroundStyle(Color.white)
+                                        .fontWeight(.heavy)
+                                        .frame(width: 110, height: 60, alignment: .center)
+                                        .clipShape(.rect(cornerRadius: 16))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(Color.init(hex: "#9AC9E8"), lineWidth: 1)
+                                        )
+                                }
+                            }
+                            Spacer()
+                        }
+                        .padding(.vertical, 12)
+                        .padding(.leading, 4)
+                        
+                        VStack(alignment: .center) {
+                            Text("\(format(shedule.creationDate))")
+                        }
+                        .font(.system(size: 20, weight: .heavy))
+                        .foregroundStyle(Color.white)
+                    }
+                    .overlay(alignment: .bottomTrailing) {
+                        VStack {
+                            Button(action: {
+                                withAnimation(.snappy) {
+                                    isShowDelete = true
+                                }
+                            }, label: {
+                               Image(systemName: "xmark.circle.fill")
+                                    .foregroundStyle(Color.white)
+                                    .font(.system(size: 28))
+                                
+                            })
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 36)
+                                    .stroke(Color.yellow, lineWidth: 2)
+                            )
+                        }
+                    }
+                } else {
+                    VStack {
+                        HStack {
+                            Image(systemName: "person.crop.circle")
+                                .resizable()
+                                .foregroundStyle(Color.white)
+                                .frame(width: 50, height: 50)
+                            Spacer()
+                            Text(shedule.nameCurrent)
+                                .foregroundStyle(Color.yellow)
+                                .font(.system(size: 20, weight: .bold))
+                        }
+                        .padding(.horizontal, 16)
+                        
+                        VStack(alignment: .center) {
+                            Text("\(format(shedule.creationDate))")
+                        }
+                        .font(.system(size: 20, weight: .heavy))
+                        .foregroundStyle(Color.white)
+                    }
+                }
+            }
+            .padding(.all, 10)
+        })
+        .frame(maxWidth: .infinity, maxHeight: isShow ? 800 : 140)
+        .background(.ultraThinMaterial.opacity(0.7))
+        .clipShape(.rect(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.init(hex: "#58A6DA"), Color.white]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    lineWidth: 2
+                )
+        )
+        .padding(.horizontal, 12)
+        .overlay(alignment: .center, content: {
+            ZStack {}
+                .customAlert(isPresented: $isShowDelete, hideCancel: true, message: message, title: "") {
+                    delete()
+                } onCancel: {}
+        })
+    }
+    private func format(_ date: Date) -> String {
+         let formatter = DateFormatter()
+         formatter.dateFormat = "  HH : mm,  dd MMMM"
+         return formatter.string(from: date)
+     }
+    
+    private func delete() {
+        Task {
+            await MasterViewModel.shared.deleteShedule(sheduleID: shedule)
+        }
+    }
+}
+
+#Preview {
+    RecordsFromClientCell(shedule: Shedule.sheduleModel())
+}

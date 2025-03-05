@@ -59,6 +59,11 @@ struct ShedulCell: View {
                                                 
                                             }
                                         }
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "phone.circle.fill")
+                                                .foregroundStyle(Color.white)
+                                            Text("\(task.phone)")
+                                        }
                                     }.padding(.horizontal, 8)
                                 }
                             }
@@ -101,6 +106,7 @@ struct ShedulCell: View {
                     )
                     .clipShape(.rect(cornerRadius: 22))
                     .padding(.horizontal, 8)
+                   
             }
         }
         

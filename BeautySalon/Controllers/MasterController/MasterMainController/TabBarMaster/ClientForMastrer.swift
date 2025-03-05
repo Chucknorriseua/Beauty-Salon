@@ -29,7 +29,7 @@ struct ClientForMastrer: View {
                                 CellUser(clientModel: user)
                             }
                             
-                        }.padding(.top, 30)
+                        }.padding(.top, 10)
                         
                     }.scrollIndicators(.hidden)
                         .refreshable {

@@ -41,8 +41,8 @@ struct CalendarAddTask: View {
                 
                 VStack(alignment: .leading) {
                     
-                    SettingsButton(text: $taskTitle, title: "Name client", width: geo.size.width * 1)
-                    SettingsButton(text: $taskService, title: "Service(nails or hair)", width: geo.size.width * 1)
+                    SettingsTextField(text: $taskTitle, title: "Name client", width: geo.size.width * 1)
+                    SettingsTextField(text: $taskService, title: "Service(nails or hair)", width: geo.size.width * 1)
                     
                 }.font(.system(size: 16, weight: .medium))
                     .tint(Color.white)
@@ -139,7 +139,7 @@ struct CalendarAddTask: View {
                                 adminViewModel.procedure.contains(where: {$0.id == proc.id})
                             }
                           
-                            let shedul = Shedule(id: UUID().uuidString, masterId: masterModel.masterID, nameCurrent: taskTitle, taskService: taskService, phone: "", nameMaster: "", comment: "", creationDate: adminCalendarViewModel.currentDate, tint: taskColor, timesTamp: Timestamp(date: adminCalendarViewModel.currentDate), procedure: procedure)
+                            let shedul = Shedule(id: UUID().uuidString, masterId: masterModel.masterID, nameCurrent: taskTitle, taskService: taskService, phone: "", nameMaster: masterModel.name, comment: "", creationDate: adminCalendarViewModel.currentDate, fcnTokenUser: masterModel.fcnTokenUser, tint: taskColor, timesTamp: Timestamp(date: adminCalendarViewModel.currentDate), procedure: procedure)
 
                             await Admin_CalendarViewModel.shared.addTaskShedule(masterID: masterModel.masterID, addTask: shedul)
                             adminViewModel.procedure.removeAll()
@@ -156,7 +156,7 @@ struct CalendarAddTask: View {
                 adminViewModel.procedure.removeAll()
             }
             .frame(width: geo.size.width * 1)
-            .background(Color.init(hex: "#3e5b47").opacity(0.8))
+            .sheetColor()
             .overlay(alignment: .bottom) {
                 if isMenuProcedure {
                     VStack {

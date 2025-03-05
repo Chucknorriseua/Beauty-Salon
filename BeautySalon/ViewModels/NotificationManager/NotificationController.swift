@@ -32,15 +32,17 @@ final class NotificationController: NotificationCenter {
         }
     }
     
-    func requestAuthorization() {
-        notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            DispatchQueue.main.async {
-                if granted {
-                    print("Permission granted for notifications.")
+    func requestNotificationAuthorization() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if let error = error {
+                print("❌ Ошибка запроса разрешений: \(error.localizedDescription)")
+            }
+            print("✅ Разрешение на уведомления: \(granted)")
+            self.getNotificationsSetting()
+            if granted {
+                DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
-                    self.getNotificationsSetting()
-                } else {
-                    print("Permission for push notifications denied.")
                 }
             }
         }

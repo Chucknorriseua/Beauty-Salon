@@ -11,6 +11,7 @@ import SwiftUI
 struct User_AdminViewProfile: View {
     
     @ObservedObject var clientViewModel: ClientViewModel
+    @EnvironmentObject var coordinator: CoordinatorView
     @State private var isPriseList: Bool = false
     
     var body: some View {
@@ -28,22 +29,18 @@ struct User_AdminViewProfile: View {
                     Spacer()
                     VStack(alignment: .leading, spacing: 18) {
                         Button {
-                            isPriseList = true
+                            coordinator.push(page: .User_PriceList)
                         } label: {
                             VStack {
                                 Image(systemName: "list.bullet.rectangle.portrait.fill")
                                     .font(.system(size: 28))
                                 Text("Price list")
+                                    .foregroundStyle(Color.yellow)
                                     .font(.system(size: 16, weight: .bold))
                             }.padding(.horizontal, 12)
                         }
                     }
                 }
-                .sheet(isPresented: $isPriseList, content: {
-                    User_PriceList(clientViewModel: clientViewModel)
-                        .foregroundStyle(Color.white)
-                        .presentationDetents([.height(740)])
-                })
                 HStack {
                     Image(systemName: "phone.circle.fill")
                     Text(clientViewModel.adminProfile.phone)
@@ -56,11 +53,11 @@ struct User_AdminViewProfile: View {
                 }
                 
                 Text("Administrator")
-                    .font(.system(size: 14, weight: .medium).smallCaps())
+                    .font(.system(size: 14, weight: .medium)
+                        .smallCaps())
                 
             }.frame(width: geo.size.width * 1, height: geo.size.height * 1)
-                .foregroundStyle(Color.yellow.opacity(0.8))
-                .background(.ultraThinMaterial.opacity(0.3))
+                .foregroundStyle(Color.white)
             
         }.frame(height: 140)
             .padding(.bottom, 8)

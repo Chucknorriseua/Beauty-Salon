@@ -29,7 +29,7 @@ struct User_MasterPriceList: View {
                 }
             }.frame(width: geo.size.width * 1, height: geo.size.height * 1)
                 .foregroundStyle(Color.yellow.opacity(0.8))
-                .background(Color.init(hex: "#3e5b47").opacity(0.8))
+                .createBackgrounfFon()
         }
     }
 }

@@ -21,7 +21,7 @@ final class Master_DataBase {
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
-    
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     private init() {
         
     }
@@ -43,6 +43,7 @@ final class Master_DataBase {
     
     func setData_For_Master_FB(master: MasterModel) async throws {
         guard let uid = auth.currentUser?.uid else { return }
+    
         try await masterFs.document(uid).setData(master.master_ModelFB)
     }
     
@@ -61,6 +62,7 @@ final class Master_DataBase {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
         do {
             let snapShot = try await masterFs.document(uid).getDocument(as: MasterModel.self)
+            try await masterFs.document(uid).updateData(["fcnTokenUser": fcnTokenUser])
             return snapShot
         } catch {
             print("DEBUG: Error fecth_Data_Master_FB", error.localizedDescription)
@@ -78,6 +80,20 @@ final class Master_DataBase {
             return shedul
         } catch {
             print("DEBUG: Error fetch_Shedule_ForMaster", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchSheduleFromClinet() async throws -> [Shedule] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        do {
+            let snapShot = try await masterFs.document(uid).collection("Record").getDocuments()
+            let shedule: [Shedule] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToShedule(document)
+            }
+            return shedule
+        } catch {
+            print("DEBUG: Error fetchAllCompany", error.localizedDescription)
             throw error
         }
     }
@@ -311,6 +327,16 @@ final class Master_DataBase {
             return id == procedureID
         }
         try await record.updateData(["procedure": procedures])
+    }
+    
+    
+    func remove_SheduleFromClient(sheduleID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = masterFs.document(uid).collection("Record")
+        let snap = try await record.whereField("id", isEqualTo: sheduleID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
     }
     
     func deinitListener() {

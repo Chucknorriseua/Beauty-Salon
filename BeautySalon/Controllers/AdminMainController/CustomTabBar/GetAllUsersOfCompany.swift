@@ -28,8 +28,7 @@ struct GetAllUsersOfCompany: View {
                             
                         }
                         
-                    }.padding(.top, 30)
-                        .padding(.bottom, 50)
+                    }.padding(.top, 10)
                     
                 }.scrollIndicators(.hidden)
                 

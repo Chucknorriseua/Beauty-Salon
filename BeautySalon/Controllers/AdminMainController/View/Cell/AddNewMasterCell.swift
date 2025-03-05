@@ -13,7 +13,6 @@ struct AddNewMasterCell: View {
     @State var addMasterInRoom: MasterModel
     
     var body: some View {
-        GeometryReader { geometry in
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(addMasterInRoom.name)
@@ -21,27 +20,25 @@ struct AddNewMasterCell: View {
                         .padding(.leading, 8)
 
                     HStack {
-                        Image(systemName: "envelope.fill")
+                        Image(systemName: "phone.down.circle")
                             .font(.system(size: 20))
-                        Text(addMasterInRoom.email)
+                        Text(addMasterInRoom.phone)
                     }
                 }.padding(.leading, 6)
-                    .foregroundStyle(Color(hex: "F3E3CE"))
+                    .foregroundStyle(Color.white)
                     .lineLimit(2)
                 
                 Spacer()
                 VStack {}
-                    .createImageView(model: addMasterInRoom.image ?? "", width: geometry.size.width * 0.46 / 2,
-                                     height: geometry.size.height * 0.46)
+                    .createImageView(model: addMasterInRoom.image ?? "", width: 80,
+                                     height: 80)
                 
-            }.frame(height: geometry.size.height * 0.54)
-                .background(.ultraThinMaterial.opacity(0.8).opacity(0.7), in: .rect(cornerRadius: 36))
+            }.frame(height: 100)
+                .setCellColor(radius: 36)
                 .padding(.horizontal, 6)
         }
-        .frame(height: 150)
-        .padding(.vertical, -36)
     }
-}
+
 #Preview(body: {
     AddNewMasterCell(addMasterInRoom: MasterModel.masterModel())
 })

@@ -1,0 +1,13 @@
+diff --git a/BeautySalon/Preview Content/GoogleService-Info.plist b/BeautySalon/Preview Content/GoogleService-Info.plist
+index e287447..7636c3a 100644
+--- a/BeautySalon/Preview Content/GoogleService-Info.plist	
++++ b/BeautySalon/Preview Content/GoogleService-Info.plist	
+@@ -7,7 +7,7 @@
+ 	<key>REVERSED_CLIENT_ID</key>
+ 	<string>com.googleusercontent.apps.106015560222-8n4mamh50vj1qdjg3cmee3sr616lm9jo</string>
+ 	<key>API_KEY</key>
+-	<string></string>
++	<string>AIzaSyDYUsRu86WrB86Phn0O7YfSS3hXbeOe2Wc</string>
+ 	<key>GCM_SENDER_ID</key>
+ 	<string>106015560222</string>
+ 	<key>PLIST_VERSION</key>

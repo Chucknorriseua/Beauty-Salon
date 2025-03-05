@@ -13,6 +13,8 @@ struct MasterCreatPriceList: View {
     @EnvironmentObject var coordinator: CoordinatorView
     @ObservedObject var masterVM = MasterViewModel.shared
     @State private var isShowSheet: Bool = false
+    @State private var masterOffsets: [String: CGFloat] = [:]
+    @State private var selectedMaster: String? = nil
     
     var body: some View {
         VStack {
@@ -20,18 +22,40 @@ struct MasterCreatPriceList: View {
                 LazyVStack {
                     ForEach(masterVM.createProcedure, id:\.self) { proced in
                         MasterProcedureCell(procedure: proced, masterVM: masterVM)
+                            .offset(x: masterOffsets[proced.id] ?? 0)
+                            .gesture(
+                                DragGesture()
+                                    .onChanged { value in
+                                        if value.translation.width < 0 {
+                                            if selectedMaster != proced.id {
+                                                removeOffset()
+                                                selectedMaster = proced.id
+                                            }
+                                            masterOffsets[proced.id] = value.translation.width
+                                        }
+                                    }
+                                    .onEnded { value in
+                                    
+                                        if value.translation.width < -100 {
+                                            masterOffsets[proced.id] = -100
+                           
+                                        } else {
+                                            masterOffsets[proced.id] = 0
+                                  
+                                            selectedMaster = nil
+                                        }
+                                    }
+                            )
+                            .animation(.spring(), value: masterOffsets[proced.id])
                     }
                 }.padding(.top, 10)
                     .animation(.easeInOut(duration: 1), value: masterVM.createProcedure)
             }
         }.createBackgrounfFon()
-            .onDisappear {
-//                Task { await masterVM.refreshProfileAdmin()}
-            }
+
             .sheet(isPresented: $isShowSheet, content: {
                 MasterSheetAddProcedure(masterVM: masterVM)
                     .presentationDetents([.height(380)])
-//                    .interactiveDismissDisabled()
             })
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
@@ -49,5 +73,10 @@ struct MasterCreatPriceList: View {
                     })
                 }
             })
+    }
+    private func removeOffset() {
+        for key in masterOffsets.keys {
+            masterOffsets[key] = 0
+        }
     }
 }

@@ -18,24 +18,25 @@ struct Shedule: Identifiable, Codable, Hashable {
     var nameMaster: String
     var comment: String
     var creationDate: Date
+    var fcnTokenUser: String
     var tint: String
     var timesTamp: Timestamp
     var procedure: [Procedure]
     
     static func sheduleModel() -> Shedule {
-        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), tint: "", timesTamp: Timestamp(date: Date()), procedure: [])
+        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), fcnTokenUser: "", tint: "", timesTamp: Timestamp(date: Date()), procedure: [])
     }
     
     var tinColor: Color {
         switch tint {
-        case "Color": return .mint.opacity(0.4)
-        case "Color1": return .blue.opacity(0.4)
-        case "Color2": return .red.opacity(0.4)
-        case "Color3": return .green.opacity(0.4)
-        case "Color4": return .pink.opacity(0.4)
-        case "Color5": return .orange.opacity(0.4)
+        case "Color": return Color.init(hex: "#4F988D")
+        case "Color1": return Color.init(hex: "#4786B0")
+        case "Color2": return Color.init(hex: "#C23240")
+        case "Color3": return Color.init(hex: "#608C7D")
+        case "Color4": return Color.init(hex: "#D87ABB")
+        case "Color5": return Color.init(hex: "#DC953E")
         default:
-            return .mint
+            return Color.init(hex: "#4F988D")
         }
     }
     
@@ -48,6 +49,7 @@ struct Shedule: Identifiable, Codable, Hashable {
         model["phone"] = self.phone
         model["nameMaster"] = self.nameMaster
         model["comment"] = self.comment
+        model["fcnTokenUser"] = self.fcnTokenUser
         model["creationDate"] = self.creationDate
         model["tint"] = self.tint
         model["timesTamp"] = self.timesTamp

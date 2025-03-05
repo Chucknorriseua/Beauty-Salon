@@ -30,7 +30,7 @@ struct GetAllMastersInCompany: View {
                                 }
                             }
                             
-                        }.padding(.top, 40)
+                        }.padding(.top, 10)
                     }.scrollIndicators(.hidden)
                         .refreshable {
                             Task {

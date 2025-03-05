@@ -34,11 +34,6 @@ struct AdminMainController: View {
                                         selecetedRecord = record
                                     })
                                        .transition(.opacity)
-                                       .scrollTransition(.animated) { content, phase in
-                                           content
-                                               .opacity(phase.isIdentity ? 1 : 0)
-                                               .offset(y: phase.isIdentity ? 0 : -40)
-                                       }
                                 }
                             }
                         }
@@ -72,8 +67,10 @@ struct AdminMainController: View {
                             }
                         } onCancel: {}
                 })
+        
             
                 .customAlert(isPresented: $admimViewModel.isAlert, hideCancel: true, message: admimViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+                
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarLeading) {
                         NavigationLink(destination: AddNewMaster(adminModelView: admimViewModel).navigationBarBackButtonHidden(true)) {
@@ -85,10 +82,10 @@ struct AdminMainController: View {
                     }
                 })
                 .foregroundStyle(Color.white)
-                .tint(.yellow)
-                .toolbar(content: { 
+          
+                .toolbar(content: {
                     ToolbarItem(placement: .topBarTrailing) {
-                        NavigationLink(destination: AdminListMasterDelete(adminViewModel: admimViewModel)) {
+                        NavigationLink(destination: AdminMyMastersController(adminViewModel: admimViewModel)) {
                             
                             Image(systemName: "list.bullet.circle.fill")
                                 .font(.system(size: 28))
@@ -97,12 +94,13 @@ struct AdminMainController: View {
                         
                     }
                 })
+              
                 .foregroundStyle(Color.white)
                 .tint(.yellow)
                 .sheet(isPresented: $isShowListMaster, content: {
                     AdminListMasterAddShedule(adminViewModel: admimViewModel, selecetedRecord: $selecetedRecord)
                         .presentationDetents([.height(500)])
-                        .interactiveDismissDisabled()
+                        
                 })
                 .sheet(isPresented: $isShowRedactor, content: {
                     

@@ -20,6 +20,7 @@ final class Client_DataBase {
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     
     private init() {
         
@@ -51,23 +52,93 @@ final class Client_DataBase {
         guard let uid = auth.currentUser?.uid else { return }
         try await mainFS.document(adminID).collection("Client").document(uid).setData(clientModel.clientDic)
     }
-
+    
+    func addFavoritesSalon(salonID: String, salon: Company_Model) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await clientFs.document(uid).collection("FavoritesSalon").document(salonID).setData(salon.admin_Model_FB)
+    }
+    
+    func addFavoritesMaster(masterID: String, master: MasterModel) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await clientFs.document(uid).collection("FavoritesMaster").document(masterID).setData(master.master_ModelFB)
+    }
+    
     func send_RecordForAdmin(adminID: String, record: Shedule) async throws {
         do {
             try await mainFS.document(adminID).collection("Record").document(record.id).setData(record.shedule)
+            try await saveSendRecordsForAdmin(adminID: adminID, records: record)
         } catch {
             print("DEBUG: sendAppoitmentToMaster not correct send...", error.localizedDescription)
             throw error
         }
     }
-
+    
+    func saveSendRecordsForAdmin(adminID: String, records: Shedule) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await clientFs.document(uid).collection("MyRecords").document(records.id).setData(records.shedule)
+    }
+    
+    func send_RecordForMaster(masterID: String, record: Shedule) async throws {
+        do {
+            try await master.document(masterID).collection("Record").document(record.id).setData(record.shedule)
+            try await saveSendRecordsForAdmin(adminID: masterID, records: record)
+        } catch {
+            print("DEBUG: sendAppoitmentToMaster not correct send...", error.localizedDescription)
+            throw error
+        }
+    }
+    
     func fetchClient_DataFB() async throws -> Client? {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
         do {
             let snapShot = try await clientFs.document(uid).getDocument(as: Client.self)
+            try await clientFs.document(uid).updateData(["fcnTokenUser": fcnTokenUser])
             return snapShot
         } catch {
             print("DEBUG: ERROR fetch data current Client...", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchFavorites_Salon() async throws -> [Company_Model] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
+        do {
+            let snapShot = try await clientFs.document(uid).collection("FavoritesSalon").getDocuments()
+            
+            let salon: [Company_Model] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToCompany(document)
+            }
+            return salon
+        } catch {
+            print("DEBUG: Error fetchFavorites_Salon", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchHomeCare_Salon(adminID: String) async throws -> [Procedure] {
+        do {
+            let snapShot = try await mainFS.document(adminID).collection("HomeCare").getDocuments()
+            
+            let homeCare: [Procedure] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToProcedure(document)
+            }
+            return homeCare
+        } catch {
+            print("DEBUG: Error fetchFavorites_Salon", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchFavorites_Master() async throws -> [MasterModel] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
+        do {
+            let snapShot = try await clientFs.document(uid).collection("FavoritesMaster").getDocuments()
+            let master: [MasterModel] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToMater(document)
+            }
+            return master
+        } catch {
+            print("DEBUG: Error fetchFavorites_Master", error.localizedDescription)
             throw error
         }
     }
@@ -85,16 +156,16 @@ final class Client_DataBase {
     
     //  fetch All Masters in current company
     func getAllMastersFrom_AdminRoom(adminId: String) async throws -> [MasterModel] {
-            do {
-                
-                let snapShot = try await mainFS.document(adminId).collection("Masters").getDocuments()
-                let masters: [MasterModel] = try snapShot.documents.compactMap { document in
-                    return try Admin_DataBase.shared.convertDocumentToMater(document)
-                }
-                return masters
-            } catch {
-                print("DEBUG ERROR FETCH ALL MASTER...", error.localizedDescription)
-                throw error
+        do {
+            
+            let snapShot = try await mainFS.document(adminId).collection("Masters").getDocuments()
+            let masters: [MasterModel] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToMater(document)
+            }
+            return masters
+        } catch {
+            print("DEBUG ERROR FETCH ALL MASTER...", error.localizedDescription)
+            throw error
         }
     }
     
@@ -106,9 +177,9 @@ final class Client_DataBase {
         }
         let masterHousecall = masters.filter {$0.categories == "housecall"}
         return masterHousecall
-
+        
     }
-
+    
     func updateLocationCompany(company: Client) async {
         guard let uid = auth.currentUser?.uid else { return }
         guard let latitude = company.latitude, let longitudes = company.longitude else { return }
@@ -119,6 +190,76 @@ final class Client_DataBase {
             
         } catch {
             print("DEBUG: Error updateLocationCompany", error.localizedDescription)
+        }
+    }
+    func remove_FavoritesSalon(salonID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = clientFs.document(uid).collection("FavoritesSalon")
+        let snap = try await record.whereField("id", isEqualTo: salonID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
+    func remove_FavoritesMaster(masterID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = clientFs.document(uid).collection("FavoritesMaster")
+        let snap = try await record.whereField("id", isEqualTo: masterID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
+    
+    func favoritesLikes(salonID: String, userID: String) async throws {
+        let salonRef = mainFS.document(salonID)
+        let userLikeRef = salonRef.collection("likes").document(userID)
+        
+        do {
+            let likeDoc = try await userLikeRef.getDocument()
+            
+            if likeDoc.exists {
+                print("Пользователь уже поставил лайк")
+                return
+            }
+            try await userLikeRef.setData([
+                "hasLiked": true,
+                "timestamp": Timestamp()
+            ])
+            try await salonRef.updateData([
+                "likes": FieldValue.increment(Int64(1))
+            ])
+            
+            print("Лайк успешно добавлен")
+        } catch {
+            print("Ошибка при обновлении лайков:", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func favoritesLikeMasters(masterID: String, userID: String) async throws {
+        let salonRef = master.document(masterID)
+        let userLikeRef = salonRef.collection("likes").document(userID)
+        
+        do {
+            let likeDoc = try await userLikeRef.getDocument()
+            
+            if likeDoc.exists {
+                print("Пользователь уже поставил лайк")
+                return
+            }
+            try await userLikeRef.setData([
+                "hasLiked": true,
+                "timestamp": Timestamp()
+            ])
+            try await salonRef.updateData([
+                "likes": FieldValue.increment(Int64(1))
+            ])
+            
+            print("Лайк успешно добавлен")
+        } catch {
+            print("Ошибка при обновлении лайков:", error.localizedDescription)
+            throw error
         }
     }
     

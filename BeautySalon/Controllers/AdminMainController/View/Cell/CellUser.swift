@@ -11,9 +11,9 @@ import SDWebImageSwiftUI
 struct CellUser: View {
     
     @State var clientModel: Client? = nil
+    @State private var isShowRecords: Bool = false
     
     var body: some View {
-        GeometryReader { geometry in
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(clientModel?.name ?? "no name")
@@ -30,33 +30,22 @@ struct CellUser: View {
                             UIApplication.shared.open(url)
                         }
                     }
-                    HStack {
-                        Image(systemName: "envelope.fill")
-                            .font(.system(size: 20))
-                        Text(clientModel?.email ?? "")
-                    }
-                    
                 }.padding(.leading)
-                    .foregroundStyle(Color(hex: "F3E3CE"))
+                    .foregroundStyle(Color.white)
                     .lineLimit(2)
                 
                 Spacer()
                 Image(systemName: "person.crop.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: geometry.size.width * 0.2,
-                           height: geometry.size.height * 0.1)
+                    .frame(width: 90,
+                           height: 90)
                     .foregroundStyle(Color.white.opacity(0.7))
                     .padding(.trailing, 4)
-            }.frame(height: geometry.size.height * 0.7)
-                .background(.ultraThinMaterial.opacity(0.8), in: .rect(cornerRadius: 36))
+            }.frame(height: 120)
+                .setCellColor(radius: 24)
                 .padding(.leading, 5)
                 .padding(.trailing, 5)
-        }
-        .frame(height: 160)
-        .padding(.vertical, -26)
+   
     }
 }
-#Preview(body: {
-    CellUser(clientModel: Client.clientModel())
-})

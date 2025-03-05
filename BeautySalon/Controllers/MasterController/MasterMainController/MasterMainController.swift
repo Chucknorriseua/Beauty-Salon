@@ -20,16 +20,18 @@ struct MasterMainController: View {
                     VStack {
                         
                         ShedulMasterHeader(masterCalendarViewModel: VmCalendar)
-                    }.padding(.bottom, -20)
+                    }
+                    .padding(.bottom, -20)
                     
                     ScrollView {
                         
                         ShedulCell(masterViewModel: VmCalendar, currentDate: VmCalendar.currentDate)
+                            .padding(.bottom, 80)
                         
                     }
                     .scrollIndicators(.hidden)
-                    
-                }.createBackgrounfFon()
+                }
+                .createBackgrounfFon()
                     .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
                 
             }

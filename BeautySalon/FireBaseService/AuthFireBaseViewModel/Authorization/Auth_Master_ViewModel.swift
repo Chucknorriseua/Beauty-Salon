@@ -21,6 +21,7 @@ final class Auth_Master_ViewModel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var isShowAlert: Bool = false
     @Published var isShowSheet: Bool = false
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     
     let auth = Auth.auth()
     
@@ -65,7 +66,11 @@ final class Auth_Master_ViewModel: ObservableObject {
                                      phone: phone,
                                      description: "",
                                      image: dowloadURL?.absoluteString ?? "",
-                                     imagesUrl: [], categories: "", procedure: [], latitude: locationManager.userLatitude,
+                                     imagesUrl: [], categories: "",
+                                     fcnTokenUser: fcnTokenUser,
+                                     likes: 0,
+                                     procedure: [],
+                                     latitude: locationManager.userLatitude,
                                      longitude: locationManager.userLongitude)
             
             try await Master_DataBase.shared.setData_For_Master_FB(master: master)

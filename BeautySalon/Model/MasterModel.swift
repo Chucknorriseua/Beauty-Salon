@@ -19,13 +19,15 @@ struct MasterModel: Identifiable, Codable, Hashable {
     var image: String?
     var imagesUrl: [String]?
     var categories: String
+    var fcnTokenUser: String
+    var likes: Int
     var procedure: [Procedure]
     var latitude: Double?
     var longitude: Double?
     
     
     static func masterModel() -> MasterModel {
-        return MasterModel(id: "", masterID: "", name: "", email: "", phone: "", description: "", image: "", imagesUrl: [], categories: "", procedure: [], latitude: 0.0, longitude: 0.0)
+        return MasterModel(id: "", masterID: "", name: "", email: "", phone: "", description: "", image: "", imagesUrl: [], categories: "", fcnTokenUser: "", likes: 0, procedure: [], latitude: 0.0, longitude: 0.0)
     }
     
     var master_ModelFB: [String: Any] {
@@ -36,7 +38,9 @@ struct MasterModel: Identifiable, Codable, Hashable {
         model["description"] = self.description
         model["email"] = self.email
         model["phone"] = self.phone
+        model["fcnTokenUser"] = self.fcnTokenUser
         model["categories"] = self.categories
+        model["likes"] = self.likes
         model["procedure"] = self.procedure.map {$0.procedure}
         model["latitude"] = self.latitude
         model["longitude"] = self.longitude

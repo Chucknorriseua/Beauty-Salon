@@ -15,21 +15,14 @@ struct AdminListMasterAddShedule: View {
     
     var body: some View {
         VStack {
-            Button { dismiss() } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .tint(Color.white)
-                    .font(.system(size: 20))
-                    .padding(.all, 2)
-                    .padding(.leading, 30)
-                    .padding(.trailing, 30)
-            }.background(Color.red, in: .rect(bottomLeadingRadius: 44, bottomTrailingRadius: 44))
             let send = String(
                 format: NSLocalizedString("sendRecord", comment: ""),
                 selecetedRecord?.nameCurrent ?? ""
             )
             Text(send)
-                .fontWeight(.bold)
-                .foregroundStyle(Color.yellow.opacity(0.8))
+                .font(.system(size: 20, weight: .bold))
+                .fontDesign(.serif)
+                .foregroundStyle(Color.yellow)
             Group {
                 ScrollView(.vertical) {
                     
@@ -39,7 +32,6 @@ struct AdminListMasterAddShedule: View {
                                 if let selected = selecetedRecord {
                                     Task {
                                         await adminViewModel.sendCurrentMasterRecord(masterID: master.masterID, shedule: selected)
-                                        await adminViewModel.deleteRecord(record: selected)
                                         let titleEnter = String(
                                             format: NSLocalizedString("sendRecordFormaster", comment: ""),
                                             master.name)
@@ -52,13 +44,16 @@ struct AdminListMasterAddShedule: View {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     dismiss()
                                 }
-                            } label: { CellAdminAddSheduleMasterList(masterModel: master) }
+                            } label: {
+                                CellAdminAddSheduleMasterList(masterModel: master)
+                            }
                         }
                     })
                 }
             }
             Spacer()
-        }.background(Color.init(hex: "#3e5b47").opacity(0.9))
+        }
+        .sheetColor()
             .ignoresSafeArea()
     }
 }

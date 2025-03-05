@@ -34,7 +34,6 @@ struct CellAdminAddSheduleMasterList: View {
                     .foregroundStyle(Color.white.opacity(0.9))
                 Spacer()
             }.padding(.leading, 2)
-                .background(Color.init(hex: "#3e5b47").opacity(0.6), in: .rect(cornerRadius: 24, style: .circular))
                 .padding(.leading, 4)
                 .padding(.trailing, 4)
         }

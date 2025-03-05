@@ -18,6 +18,7 @@ struct UserSelectedComapnyController: View {
     @Environment (\.dismiss) var dismiss
     
     @AppStorage ("useRole") private var useRole: String?
+    
     @State private var selectedCategory: Categories = .nail
     @State private var selectedID: String? = nil
     
@@ -37,6 +38,15 @@ struct UserSelectedComapnyController: View {
         )
         .filter { $0.categories.localizedCaseInsensitiveContains(selectedCategory.rawValue) }
     }
+    private var searchMasterHome: [MasterModel] {
+        return SearchService.filterModels(
+            models: clientViewModel.homeCall,
+            searchText: searchText,
+            userLocation: locationManager.locationManager.location,
+            radius: sliderDistance
+        )
+//        .filter { $0.name.localizedCaseInsensitiveContains(selectedCategory.rawValue) }
+    }
     
     var body: some View {
         VStack {
@@ -46,8 +56,8 @@ struct UserSelectedComapnyController: View {
                     LazyVStack {
                         if selectedCategory == .housecall {
                             VStack {
-                                ForEach(clientViewModel.homeCall, id:\.self) { master in
-                                    NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, isShowPricelist: true, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                                ForEach(searchMasterHome, id:\.self) { master in
+                                    NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, isShowPricelist: true, addMasterInRoom: master, isShowMasterSend: true).navigationBarBackButtonHidden(true)) {
                                         AddNewMasterCell(addMasterInRoom: master)
                                     }.padding(.bottom, 12)
                                 }
@@ -56,7 +66,7 @@ struct UserSelectedComapnyController: View {
                             ForEach(searchCompanyNearby, id:\.self) { company  in
                                 NavigationLink(destination: UserMainForSheduleController(clientViewModel:
                                                                                             clientViewModel).navigationBarBackButtonHidden(true)) {
-                                    CompanyAllCell(companyModel: company, isShow: selectedID == company.id, onToggle: {
+                                    CompanyAllCell(companyModel: company, isShow: selectedID == company.id, isShowLike: true, onToggle: {
                                         withAnimation {
                                             if selectedID == company.id {
                                                 selectedID = nil
@@ -66,14 +76,16 @@ struct UserSelectedComapnyController: View {
                                         }
 
                                     })
-                                    .padding(.bottom, 30)
                                         .onTapGesture {
                                             isLoader = true
                                             Task {
+                                                clientViewModel.isFetchDataLoader = false
                                                 clientViewModel.adminProfile.adminID = company.adminID
                                                 await clientViewModel.fetchCurrent_AdminSalon(adminId: company.adminID)
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                                    coordinator.push(page: .User_SheduleAdmin)
+                                                await MainActor.run {
+                                                    if clientViewModel.isFetchDataLoader {
+                                                        coordinator.push(page: .User_SheduleAdmin)
+                                                    }
                                                     isLoader = false
                                                 }
                                             }
@@ -81,13 +93,7 @@ struct UserSelectedComapnyController: View {
             
                                 }.id(company)
                                     .disabled(isShowMenu)
-                                    .scrollTransition(.animated) { content, phase in
-                                            content
-                                                .opacity(phase.isIdentity ? 1 : 0)
-                                                .offset(y: phase.isIdentity ? 0 : 40)
-                                        
-                                    }
-                                
+           
                             }
                         }
                     }.scrollTargetLayout()
@@ -164,6 +170,7 @@ struct UserSelectedComapnyController: View {
 
             }
             .onDisappear {
+                isShowMenu = false
                 locationManager.isUpdateLocation = false
                 locationManager.stopUpdate()
             }

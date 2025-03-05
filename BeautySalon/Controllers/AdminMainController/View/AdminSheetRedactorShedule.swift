@@ -21,14 +21,14 @@ struct AdminSheetRedactorShedule: View {
     
     var body: some View {
         if let record = selecetedRecord {
-            VStack {
-                VStack {
+            VStack(alignment: .center) {
+                VStack(alignment: .center) {
                     Text("Change the client record")
                         .fontWeight(.bold)
                         .fontDesign(.serif)
                         .foregroundStyle(Color.yellow.opacity(0.9))
                     VStack(alignment: .center) {
-                        SettingsButton(text: $masterName, title: "Master: ", width: .infinity)
+                        SettingsTextField(text: $masterName, title: "Master: ", width: .infinity)
                         HStack {
                             Spacer()
                             Button {
@@ -72,17 +72,20 @@ struct AdminSheetRedactorShedule: View {
                                 }
                         }
                         HStack {
-                            VStack {
+                            Spacer()
+                            VStack(alignment: .center) {
                                 DatePicker("", selection: $createNewDate, displayedComponents: [.hourAndMinute, .date])
                                     .datePickerStyle(.compact)
-                            }.padding(.trailing, 90)
+                                    .tint(Color.yellow)
+                            }
+                        Spacer()
                         }
                         CustomButton(title: "Save change") {
-                            let sendRecord = Shedule(id: record.id, masterId: record.masterId, nameCurrent: record.nameCurrent, taskService: record.taskService, phone: record.phone, nameMaster: masterName, comment: record.comment, creationDate: createNewDate, tint: record.tint, timesTamp: Timestamp(date: Date()), procedure: adminViewModel.procedure)
+                            let sendRecord = Shedule(id: record.id, masterId: record.masterId, nameCurrent: record.nameCurrent, taskService: record.taskService, phone: record.phone, nameMaster: masterName, comment: record.comment, creationDate: createNewDate, fcnTokenUser: record.fcnTokenUser, tint: record.tint, timesTamp: Timestamp(date: Date()), procedure: adminViewModel.procedure)
 
                             Task {
                                 print("sendRecord", sendRecord)
-                                await adminViewModel.updateRecordsFromClient(record: sendRecord, id: sendRecord.id)
+                                await adminViewModel.updateRecordsFromClient(record: sendRecord, clientID: sendRecord.masterId)
                                 dismiss()
                             }
                         }
@@ -90,7 +93,7 @@ struct AdminSheetRedactorShedule: View {
                 }.padding(.top, 20)
                 Spacer()
             }
-            .background(Color.init(hex: "#3e5b47").opacity(0.8))
+            .sheetColor()
             .ignoresSafeArea(.all)
             .overlay(alignment: .bottom) {
                 if isMenuProcedure {

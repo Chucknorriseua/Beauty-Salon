@@ -41,18 +41,11 @@ struct MasterRegister: View {
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 
-                CustomTextField(text: $authMaster.signInViewmodel.phone,
-                                title: "Phone (+000)",
-                                width: UIScreen.main.bounds.width - 20,
-                                showPassword: $authMaster.signInViewmodel.showPassword)
-                .keyboardType(.phonePad)
-                .textContentType(.telephoneNumber)
-                .onChange(of: authMaster.signInViewmodel.phone) { _, new in
-                    authMaster.signInViewmodel.phone = formatPhoneNumber(new)
-                }
+                CustomTextFieldPhone(text: $authMaster.signInViewmodel.phone, title: "000-000-00-00",
+                                     width: UIScreen.main.bounds.width - 20)
                 
                 CustomTextField(text: $authMaster.signInViewmodel.email,
-                                title: "Email- @",
+                                title: "Email- @gmail",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authMaster.signInViewmodel.showPassword)
                 .keyboardType(.emailAddress)
@@ -112,7 +105,7 @@ struct MasterRegister: View {
 }
 extension MasterRegister: isFormValid {
     var isFarmValid: Bool {
-        return authMaster.signInViewmodel.email.contains("@")
+        return authMaster.signInViewmodel.email.contains("@gmail")
         && authMaster.signInViewmodel.password.count > 5
     }
     

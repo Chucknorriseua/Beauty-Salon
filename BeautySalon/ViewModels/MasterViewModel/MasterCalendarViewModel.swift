@@ -19,6 +19,7 @@ final class MasterCalendarViewModel: ObservableObject {
     @Published var createWeek: Bool = false
     @Published private(set) var productTask: [Shedule] = [] 
     @Published private(set) var client: [Client] = []
+    @Published var selectedMonth: MonthStatistics = MonthStatistics.currentMonth
 
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
@@ -31,6 +32,33 @@ final class MasterCalendarViewModel: ObservableObject {
         self.company = company ?? Company_Model.companyModel()
     }
     
+    var recordsForSelectedMonth: [Shedule] {
+        filterRecordsByMonth(productTask, selectedMonth)
+    }
+    
+    
+    var monthlyRecords: Int {
+        AnalyticsCalculator.getMonthlyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var biweeklyRecords: Int {
+        AnalyticsCalculator.getBiweeklyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var popularProcedures: [String: Int] {
+        AnalyticsCalculator.getPopularProcedures(schedules: recordsForSelectedMonth)
+    }
+    var uniqueClients: Int {
+        AnalyticsCalculator.getUniqueClients(schedules: client)
+    }
+    
+    private func filterRecordsByMonth(_ schedules: [Shedule], _ month: MonthStatistics) -> [Shedule] {
+        let calendar = Calendar.current
+        return schedules.filter { schedule in
+            let components = calendar.dateComponents([.month], from: schedule.creationDate)
+            return components.month == month.monthNumber
+        }
+    }
     
     func setupWeeks() {
         if weekSlider.isEmpty {
@@ -54,10 +82,10 @@ final class MasterCalendarViewModel: ObservableObject {
         let adminID = company.adminID
         do {
             let shedule = try await Master_DataBase.shared.fetch_Shedule_ForMaster(adminId: adminID)
-            let sortedDate =  shedule.sorted(by: {$0.creationDate < $1.creationDate})
+            let sortedDate = shedule.sorted(by: {$0.creationDate < $1.creationDate})
             await MainActor.run { [weak self] in
-                guard let strongSelf = self else { return }
-                strongSelf.productTask = sortedDate
+                guard let self = self else { return }
+                self.productTask = sortedDate
             }
             await fetchCurrentClient()
         } catch {

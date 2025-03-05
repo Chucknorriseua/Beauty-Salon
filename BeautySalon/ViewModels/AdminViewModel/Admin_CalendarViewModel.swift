@@ -31,7 +31,7 @@ final class Admin_CalendarViewModel: ObservableObject {
     @MainActor
     func fetchAllSheduleCurrentMaster(masterID: String, sheduleMaster: Shedule) async {
         do {
-            try await Admin_DataBase.shared.removeOldSchedules(masterID: masterID)
+//            await Admin_DataBase.shared.removeOldRecords(masterID: masterID)
             let shedule = try await Admin_DataBase.shared.fetchShedule_CurrentMaster(masterID: masterID)
             let sortedDate = shedule.sorted(by: {$0.creationDate < $1.creationDate})
             await MainActor.run { [weak self] in

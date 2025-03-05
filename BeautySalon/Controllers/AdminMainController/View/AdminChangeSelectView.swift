@@ -44,7 +44,7 @@ struct AdminChangeSelectView: View {
                         }, label: {
                             Text(String(item.title))
                                 .frame(width: 110, height: 44, alignment: .center)
-                                .background(selectedProcedure.contains(item) ? Color.gray.opacity(0.2) : Color.init(hex: "#3e5b47").opacity(0.6))
+                                .background(selectedProcedure.contains(item) ? Color.clear : Color.gray.opacity(0.2))
                                 .cornerRadius(16)
                                 .foregroundColor(.white)
                                 .font(.system(size: 12, weight: .heavy))

@@ -10,19 +10,16 @@ import Firebase
 import FirebaseStorage
 import SDWebImageSwiftUI
 import GoogleSignIn
+import FirebaseMessaging
+import FirebaseFirestore
+import FirebaseAuth
 
 @main
 struct BeautyMastersApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
     
     init() {
-        FirebaseApp.configure()
-//        let settings = FirestoreSettings()
-//        settings.isPersistenceEnabled = true
-//        Firestore.firestore().settings = settings
-        
     }
 
     
@@ -33,17 +30,31 @@ struct BeautyMastersApp: App {
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     let notification = NotificationController()
+    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-//        let tokenString = deviceToken.reduce("", {$0 + String(format: "%02x", $1)})
-//            print("Device push notification token - \(tokenString)")
+        print("✅ APNs Token получен: \(deviceToken)")
+        Messaging.messaging().apnsToken = deviceToken
     }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        if let token = fcmToken {
+            print("✅ FCM Token: \(token)")
+            self.fcnTokenUser = token
+        } else {
+            print("❌ Ошибка получения FCM токена")
+        }
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        notification.requestAuthorization()
+        FirebaseApp.configure()
+        notification.requestNotificationAuthorization()
         notification.notificationCenter.delegate = self
+        Messaging.messaging().delegate = self
+        
         
         let cache = SDImageCache.shared
         cache.config.maxMemoryCost = 50 * 1024 * 1024 // 50 MB
@@ -94,3 +105,4 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         completionHandler()
     }
 }
+

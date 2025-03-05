@@ -15,9 +15,23 @@ protocol Admin_DataBaseDocumentConvertProtocol {
     func convertDocumentToShedule(_ document: DocumentSnapshot) throws -> Shedule
     func convertDocumentToCompany(_ document: DocumentSnapshot) throws -> Company_Model
     func convertDocumentToClient(_ document: DocumentSnapshot) throws -> Client
+    func convertDocumentToProcedure(_ document: DocumentSnapshot) throws -> Procedure
 }
 
 extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
+    func convertDocumentToProcedure(_ document: DocumentSnapshot) throws -> Procedure {
+        let proce = document.data()
+        guard let id = proce?["id"] as? String,
+              let title = proce?["title"] as? String,
+              let image = proce?["image"] as? String,
+              let colorText = proce?["colorText"] as? String,
+              let price = proce?["price"] as? String,
+              let description = proce?["description"] as? String else {
+            throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
+        }
+        return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
+    }
+    
     func convertDocumentToClient(_ document: DocumentSnapshot) throws -> Client {
         let data = document.data()
         guard let id = data?["id"] as? String,
@@ -25,6 +39,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let name =  data?["name"] as? String,
               let email = data?["email"] as? String,
               let phone = data?["phone"] as? String,
+              let fcnTokenUser = data?["fcnTokenUser"] as? String,
               let date = data?["date"] as? Timestamp,
               let latitude = data?["latitude"] as? Double,
               let shedules = data?["shedule"] as? [[String: Any]],
@@ -39,6 +54,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
                   let phone = proce["phone"] as? String,
                   let nameMaster = proce["nameMaster"] as? String,
                   let comment = proce["comment"] as? String,
+                  let fcnTokenUser = data?["fcnTokenUser"] as? String,
                   let creationDate = proce["creationDate"] as? String,
                   let tint = proce["tint"] as? String,
                   let procedure = proce["procedure"] as? [[String: Any]],
@@ -48,18 +64,20 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
             let procedur: [Procedure] = try procedure.compactMap { proce in
                 guard let id = proce["id"] as? String,
                       let title = proce["title"] as? String,
+                      let image = proce["image"] as? String,
+                      let colorText = proce["colorText"] as? String,
                       let price = proce["price"] as? String,
                       let description = proce["description"] as? String else {
                     throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
                 }
-                return Procedure(id: id, title: title, price: price, description: description)
+                return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
             }
             return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
-                           nameMaster: nameMaster, comment: comment, creationDate: createTampDate, tint: tint, timesTamp: timesTamp, procedure: procedur)
+                           nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur)
         }
         
         return Client(id: id, clientID: clientID, name: name, email: email, phone: phone,
-                      date: createTampDate, latitude: latitude, longitude: longitude, shedule: shedule)
+                      date: createTampDate, fcnTokenUser: fcnTokenUser, latitude: latitude, longitude: longitude, shedule: shedule)
     }
     
      func convertDocumentToMater(_ document: DocumentSnapshot) throws -> MasterModel {
@@ -71,6 +89,8 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let email = data?["email"] as? String,
               let phone = data?["phone"] as? String,
               let image = data?["image"] as? String,
+              let likes = data?["likes"] as? Int,
+              let fcnTokenUser = data?["fcnTokenUser"] as? String,
               let imageUrl = data?["imagesUrl"] as? [String],
               let categories = data?["categories"] as? String,
               let procedure = data?["procedure"] as? [[String: Any]],
@@ -82,14 +102,16 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
              guard let id = proce["id"] as? String,
                    let title = proce["title"] as? String,
                    let price = proce["price"] as? String,
+                   let colorText = proce["colorText"] as? String,
+                   let image = proce["image"] as? String,
                    let description = proce["description"] as? String else {
                  throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
              }
-             return Procedure(id: id, title: title, price: price, description: description)
+             return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
         return MasterModel(id: id, masterID: masterID, name: name, email: email,
                            phone: phone, description: desc, image: image,
-                           imagesUrl: imageUrl, categories: categories, procedure: procedur, latitude: latitude, longitude: longitude)
+                           imagesUrl: imageUrl, categories: categories, fcnTokenUser: fcnTokenUser, likes: likes, procedure: procedur, latitude: latitude, longitude: longitude)
     }
     
      func convertDocumentToShedule(_ document: DocumentSnapshot) throws -> Shedule {
@@ -100,6 +122,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let taskService = data?["taskService"] as? String,
               let creationDate = data?["creationDate"] as? Timestamp,
               let phone = data?["phone"] as? String,
+              let fcnTokenUser = data?["fcnTokenUser"] as? String,
               let nameMaster = data?["nameMaster"] as? String,
               let procedure = data?["procedure"] as? [[String: Any]],
               let comment = data?["comment"] as? String,
@@ -110,14 +133,16 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
          let procedur: [Procedure] = try procedure.compactMap { proce in
              guard let id = proce["id"] as? String,
                    let title = proce["title"] as? String,
+                   let image = proce["image"] as? String,
+                   let colorText = proce["colorText"] as? String,
                    let price = proce["price"] as? String,
                    let description = proce["description"] as? String else {
                  throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
              }
-             return Procedure(id: id, title: title, price: price, description: description)
+             return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
         return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
-                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, tint: tint, timesTamp: timesTamp, procedure: procedur)
+                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur)
     }
     
      func convertDocumentToCompany(_ document: DocumentSnapshot) throws -> Company_Model {
@@ -131,7 +156,9 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let image = data?["image"] as? String,
               let procedure = data?["procedure"] as? [[String: Any]],
               let adress = data?["adress"] as? String,
+              let fcnTokenUser = data?["fcnTokenUser"] as? String,
               let desc = data?["description"] as? String,
+              let likes = data?["likes"] as? Int,
               let latitude = data?["latitude"] as? Double,
               let longitude = data?["longitude"] as? Double,
               let categories = data?["categories"] as? String else {
@@ -140,16 +167,18 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
          let procedur: [Procedure] = try procedure.compactMap { proce in
              guard let id = proce["id"] as? String,
                    let title = proce["title"] as? String,
+                   let image = proce["image"] as? String,
+                   let colorText = proce["colorText"] as? String,
                    let price = proce["price"] as? String,
                    let description = proce["description"] as? String else {
                  throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
              }
-             return Procedure(id: id, title: title, price: price, description: description)
+             return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
         return Company_Model(id: id, adminID: adminID, name: name,
                              companyName: companyName,
                              adress: adress, email: email,
                              phone: phone, description: desc,
-                             image: image, procedure: procedur, latitude: latitude, longitude: longitude, categories: categories)
+                             image: image, procedure: procedur, likes: likes, fcnTokenUser: fcnTokenUser, latitude: latitude, longitude: longitude, categories: categories)
     }
 }

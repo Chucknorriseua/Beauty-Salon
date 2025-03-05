@@ -21,10 +21,10 @@ struct MasterSheetAddProcedure: View {
         VStack {
             Text("Create prise list")
                 .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(Color.yellow.opacity(0.9))
+                .foregroundStyle(Color.yellow)
             VStack {
-                SettingsButton(text: $title, title: "Procedure name", width: .infinity)
-                SettingsButton(text: $price, title: "Price", width: .infinity)
+                SettingsTextField(text: $title, title: "Procedure name", width: .infinity)
+                SettingsTextField(text: $price, title: "Price", width: .infinity)
                     .keyboardType(.phonePad)
                 ZStack(alignment: .topLeading) {
                     if description.isEmpty {
@@ -32,22 +32,28 @@ struct MasterSheetAddProcedure: View {
                             .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
                             .padding(.top, 4)
                             .padding(.leading, 4)
+                          
                     }
                         TextEditor(text: $description)
+                        .foregroundStyle(Color.white)
                             .scrollContentBackground(.hidden)
 
                 }.frame(height: 120)
-                .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                    .overlay(content: {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.white, lineWidth: 1)
+                        })
                 .padding(.horizontal, 14)
                 CustomButton(title: "Create") {
                     Task {
-                        let produced = Procedure(id: UUID().uuidString, title: title, price: price, description: description)
+                        let produced = Procedure(id: UUID().uuidString, title: title, price: price, image: "", colorText: "", description: description)
                         await masterVM.addNewProcedureFirebase(addProcedure: produced)
                         dismiss()
                     }
                 }
             }
             Spacer()
-        }.background(Color.init(hex: "#3e5b47").opacity(0.8))
+        }
+        .sheetColor()
     }
 }

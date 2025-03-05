@@ -33,7 +33,7 @@ struct AdminRegister: View {
                             .clipShape(.rect(cornerRadius: 16))
                     }
                     
-                    Text("Сhoose company logo")
+                    Text("Сhoose photo salon")
                         .foregroundStyle(Color.white)
                         .font(.system(.title, design: .serif, weight: .regular))
                 }
@@ -47,17 +47,11 @@ struct AdminRegister: View {
                                 title: "Name Administrator", width: UIScreen.main.bounds.width - 20,
                                 showPassword:  $authViewModel.signInViewModel.showPassword)
                 
-                CustomTextField(text: $authViewModel.signInViewModel.phone,
-                                title: "Phone (+000)", width: UIScreen.main.bounds.width - 20,
-                                showPassword:  $authViewModel.signInViewModel.showPassword)
-                .keyboardType(.phonePad)
-                .textContentType(.telephoneNumber)
-                .onChange(of: authViewModel.signInViewModel.phone) { _, new in
-                    authViewModel.signInViewModel.phone = formatPhoneNumber(new)
-                }
+                CustomTextFieldPhone(text: $authViewModel.signInViewModel.phone, title: "000-000-00-00",
+                                     width: UIScreen.main.bounds.width - 20)
                 
                 CustomTextField(text: $authViewModel.signInViewModel.email,
-                                title: "Email- @", width: UIScreen.main.bounds.width - 20,
+                                title: "Email- @gmail", width: UIScreen.main.bounds.width - 20,
                                 showPassword:  $authViewModel.signInViewModel.showPassword)
                 .keyboardType(.emailAddress)
                 .textContentType(.emailAddress)
@@ -118,7 +112,7 @@ struct AdminRegister: View {
 
 extension AdminRegister: isFormValid {
     var isFarmValid: Bool {
-        return authViewModel.signInViewModel.email.contains("@")
+        return authViewModel.signInViewModel.email.contains("@gmail")
         && authViewModel.signInViewModel.password.count > 5
     }
 }

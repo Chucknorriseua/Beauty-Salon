@@ -52,7 +52,7 @@ struct MasterTabBar: View {
                 case 1:
                     ClientForMastrer(masterViewModel: masterViewModel, VmCalendar: VmCalendar)
                 case 2:
-                    SettingsMaster(masterViewModel: masterViewModel, isPressFullScreen: $isPressFullScreen)
+                    SettingsMasterController(masterViewModel: masterViewModel, isPressFullScreen: $isPressFullScreen)
                 default:
                     MasterMainController(masterViewModel: masterViewModel, VmCalendar: VmCalendar)
                 }

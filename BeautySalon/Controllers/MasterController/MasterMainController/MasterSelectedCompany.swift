@@ -52,7 +52,7 @@ struct MasterSelectedCompany: View {
                                     isTitle = titleEnter
                                 }
                             } label: {
-                                CompanyAllCell(companyModel: company, isShow: selectedAdmin == company.id, onToggle: {})
+                                CompanyAllCell(companyModel: company, isShow: selectedAdmin == company.id, isShowLike: false, onToggle: {})
                             }
                         }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
                             if !newValue { selectedAdmin = nil }
@@ -68,14 +68,7 @@ struct MasterSelectedCompany: View {
                             message = ""
                         }
                         .id(company)
-                            .padding(.bottom, 26)
-                    
-                            .scrollTransition(.animated) { content, phase in
-                                    
-                                    content
-                                        .opacity(phase.isIdentity ? 1 : 0)
-                                        .offset(y: phase.isIdentity ? 0 : 40)
-                            }
+
                     }
                 }.scrollTargetLayout()
                 
@@ -155,12 +148,12 @@ struct MasterSelectedCompany: View {
       
     }
     private func signOut() {
-        Task {
-            selectedAdminID = nil
-            useRole = ""
-            Auth_Master_ViewModel.shared.signOut()
-            try await GoogleSignInViewModel.shared.logOut()
-            coordinator.popToRoot()
+            Task {
+                selectedAdminID = nil
+                useRole = ""
+                Auth_Master_ViewModel.shared.signOut()
+                try await GoogleSignInViewModel.shared.logOut()
+                coordinator.popToRoot()
         }
     }
 }

@@ -60,8 +60,7 @@ struct AdminReg_Desc_Password: View {
                         coordinator.popToRoot()
                         isLoader = false
                     }
-                }.opacity(isFarmValid ? 1 : 0.5)
-                .disabled(!isFarmValid)
+                }
                 
             }.padding(.leading, 4)
                 .padding(.trailing, 4)
@@ -73,10 +72,5 @@ struct AdminReg_Desc_Password: View {
                     await adminViewModel.fetchProfileAdmin()
                 }
             }
-    }
-}
-extension AdminReg_Desc_Password: isFormValid {
-    var isFarmValid: Bool {
-        return adminViewModel.adminProfile.description.count < 160
     }
 }

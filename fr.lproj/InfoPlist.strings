@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  BeautySalon
+
+  Created by Евгений Полтавец on 17/01/2025.
+  
+*/
+"NSUserTrackingUsageDescription" = "Beauty Salon a besoin de votre emplacement pour suggérer les salons et maîtres les plus proches.";
+"NSLocationWhenInUseUsageDescription" = "Le salon de beauté a besoin de votre emplacement pour suggérer des salons et maîtres à proximité.";
+"NSLocationAlwaysUsageDescription" = "Le salon de beauté a besoin de votre emplacement pour la fonctionnalité en arrière-plan.";

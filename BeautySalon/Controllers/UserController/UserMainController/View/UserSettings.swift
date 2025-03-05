@@ -16,7 +16,6 @@ struct UserSettings: View {
     @ObservedObject var clientViewModel = ClientViewModel.shared
     
     var body: some View {
-        GeometryReader { geo in
             
             VStack(spacing: 10,  content: {
                 
@@ -33,14 +32,9 @@ struct UserSettings: View {
                     
                     VStack {
                         
-                        SettingsButton(text: $clientViewModel.clientModel.name, title: "Change name", width: geo.size.width * 1)
-                        SettingsButton(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
-                            .keyboardType(.numberPad)
-                            .textContentType(.telephoneNumber)
-                            .onChange(of: clientViewModel.clientModel.phone) { _, new in
-                                clientViewModel.clientModel.phone = formatPhoneNumber(new)
-                            }
-                        
+                        SettingsTextField(text: $clientViewModel.clientModel.name, title: "Change name", width: .infinity)
+                        SettingsTextFieldPhone(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: .infinity)
+                     
                     }
                     .font(.system(size: 16, weight: .medium))
                     
@@ -60,8 +54,7 @@ struct UserSettings: View {
                 }
                 Spacer()
             })
-            .background(Color.init(hex: "#3e5b47").opacity(0.8))
-           
-        }.frame(width: 416, height: 260)
+            .sheetColor()
+
     }
 }

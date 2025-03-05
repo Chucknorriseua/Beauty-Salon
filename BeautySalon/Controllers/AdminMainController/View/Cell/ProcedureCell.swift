@@ -24,38 +24,49 @@ struct ProcedureCell: View {
                     HStack(spacing: 2) {
                         Spacer()
                         Text("price: ")
-                        Text(procedure.price)
-                            .foregroundStyle(Color.green.opacity(0.8))
-                            .font(.system(size: 16, weight: .bold))
+                        HStack {
+                            Text(procedure.price)
+                                .foregroundStyle(Color.blue)
+                                .font(.system(size: 16, weight: .bold))
+                                .padding(.all, 8)
+                        }
+                        .background(Color.white)
+                        .clipShape(.rect(cornerRadius: 18))
                     }
+                    .offset(x: 40)
                 }.foregroundStyle(Color.white)
-                Spacer()
-                Button(action: {
-                    Task {
-                        await adminViewModel.deleteCreateProcedure(procedureID: procedure)
+                Button {
+                    withAnimation(.easeOut) {
+                        delete()
                     }
-                }, label: {
-                    Image(systemName: "trash.circle.fill")
-                        .font(.system(size: 26))
-                        .foregroundColor(Color.red.opacity(0.8))
-                })
-            }.padding([.horizontal, .vertical], 10)
+                } label: {
+                    Image(systemName: "trash.square")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .foregroundStyle(Color.red)
+                }.offset(x: 80)
+                Spacer()
+            }.padding(.vertical, 8)
+                .padding(.leading, 4)
         }
-        .background(.ultraThinMaterial.opacity(0.6))
+        .setCellColor(radius: 12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(
                     LinearGradient(
-                        gradient: Gradient(colors: [.gray]),
-                        startPoint: .leading,
+                        gradient: Gradient(colors: [Color.init(hex: "#58A6DA"), Color.white]),
+                        startPoint: .top,
                         endPoint: .trailing
                     ),
-                    lineWidth: 2
+                    lineWidth: 1
                 )
         )
-        .clipShape(.rect(cornerRadius: 12))
-        .padding(.horizontal, 4)
-        
+        .padding(.horizontal, 8)
+    }
+    private func delete() {
+        Task {
+            await adminViewModel.deleteCreateProcedure(procedureID: procedure)
+        }
     }
 }
 

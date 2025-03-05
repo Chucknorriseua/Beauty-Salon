@@ -31,8 +31,6 @@ struct AdminChangeRecordsView: View {
                             }, label: {
                                 Text(item.title)
                                     .frame(width: 110, height: 60, alignment: .center)
-                                    .background(Color(hex: "#3e5b47").opacity(0.6))
-                                    .clipShape(.rect(cornerRadius: 16))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
                                             .stroke(adminViewModel.procedure.contains(item) ? Color.white : Color.clear, lineWidth: 2)

@@ -13,10 +13,12 @@ struct Procedure: Identifiable, Codable, Hashable {
     let id: String
     var title: String
     var price: String
+    var image: String
+    var colorText: String
     var description: String
     
     static func procedureModel() -> Procedure {
-        return Procedure(id: "", title: "", price: "", description: "")
+        return Procedure(id: "", title: "", price: "", image: "", colorText: "", description: "")
     }
     
     var procedure: [String: Any] {
@@ -24,6 +26,8 @@ struct Procedure: Identifiable, Codable, Hashable {
         model["id"] = self.id
         model["title"] = self.title
         model["price"] = self.price
+        model["colorText"] = self.colorText
+        model["image"] = self.image
         model["description"] = self.description
         return model
     }

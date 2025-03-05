@@ -17,14 +17,14 @@ struct UserMainSelectedMaster: View {
                 
                 LazyVStack {
                     ForEach(clientViewModel.mastersInRoom, id: \.self) { master in
-                        NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, addMasterInRoom: master).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: AddNewMasterView(isShowButtonAdd: false, addMasterInRoom: master, isShowMasterSend: false).navigationBarBackButtonHidden(true)) {
                             
                             User_MasterInToRoomCell(masterModel: master)
-                        }.padding(.bottom, 14)
+                        }.padding(.bottom, 6)
                     }
                 }.padding(.top, 26)
-
-            }.createBackgrounfFon()
+                    .padding(.bottom, 90)
+            }
             .scrollIndicators(.hidden)
         }
     }

@@ -29,24 +29,14 @@ struct UserSend_SheduleForAdmin: View {
             
             VStack(alignment: .center, spacing: 10,  content: {
                 
-                Button { dismiss() } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .tint(Color.white)
-                        .font(.system(size: 20))
-                        .padding(.all, 2)
-                        .padding(.leading, 30)
-                        .padding(.trailing, 30)
-                }.background(Color.red, in: .rect(bottomLeadingRadius: 44, bottomTrailingRadius: 44))
-                
-                
                 VStack(alignment: .leading, spacing: 10) {
-                    SettingsButton(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
+                    SettingsTextField(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
                         .keyboardType(.numberPad)
                         .textContentType(.telephoneNumber)
                         .onChange(of: clientViewModel.clientModel.phone) { _, new in
                             clientViewModel.clientModel.phone = formatPhoneNumber(new)
                         }
-                    SettingsButton(text: $serviceRecord, title: "Procedure make nails", width: geo.size.width * 1)
+                    SettingsTextField(text: $serviceRecord, title: "Procedure make nails", width: geo.size.width * 1)
                         .overlay(alignment: .trailing) {
                             if !clientViewModel.adminProfile.procedure.isEmpty {
                                 Button {
@@ -117,7 +107,7 @@ struct UserSend_SheduleForAdmin: View {
                         }.pickerStyle(.menu)
                             .tint(Color(hex: "F3E3CE")).opacity(0.7)
                     }
-                    SettingsButton(text: $comment, title: "comment: ", width: geo.size.width * 1)
+                    SettingsTextField(text: $comment, title: "comment: ", width: geo.size.width * 1)
                     
                 }.padding(.leading, 0)
                     .font(.system(size: 12, weight: .medium))
@@ -128,7 +118,7 @@ struct UserSend_SheduleForAdmin: View {
                     DatePicker("", selection: $clientViewModel.currentDate, displayedComponents: [.hourAndMinute, .date])
                         .datePickerStyle(.compact)
                        
-                }.padding(.trailing, 90)
+                }.padding(.trailing, 100)
                 HStack {
                     let sendRecordsTotal = String(
                         format: NSLocalizedString("sendRecords", comment: ""),
@@ -140,11 +130,12 @@ struct UserSend_SheduleForAdmin: View {
                 }
                 Spacer()
             }).frame(width: geo.size.width * 1, height: geo.size.height * 1)
+                .padding(.top, 10)
                 .onDisappear {
                     clientViewModel.totalCost = 0.0
                     clientViewModel.procedure.removeAll()
                 }
-                .background(Color.init(hex: "#3e5b47").opacity(0.8))
+                .sheetColor()
                 .ignoresSafeArea(.all)
                 .overlay(alignment: .bottom) {
                     if isMenuProcedure {
@@ -163,7 +154,7 @@ struct UserSend_SheduleForAdmin: View {
         let procedure = clientViewModel.adminProfile.procedure.filter { proc in
             clientViewModel.procedure.contains(where: {$0.id == proc.id})
         }
-        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: model.name, taskService: serviceRecord, phone: model.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
+        let sendRecord = Shedule(id: UUID().uuidString, masterId: model.id, nameCurrent: model.name, taskService: serviceRecord, phone: model.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, fcnTokenUser: model.fcnTokenUser, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
         
         
         Task {
@@ -179,7 +170,3 @@ struct UserSend_SheduleForAdmin: View {
         }
     }
 }
-
-#Preview(body: {
-    UserSend_SheduleForAdmin(clientViewModel: ClientViewModel.shared)
-})

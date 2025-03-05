@@ -26,18 +26,12 @@ struct UserRegisters: View {
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 
-                CustomTextField(text: $authClientViewModel.signInViewmodel.phone,
-                                title: "Phone (+000)",
-                                width: UIScreen.main.bounds.width - 20,
-                                showPassword: $authClientViewModel.signInViewmodel.showPassword)
-                .keyboardType(.phonePad)
-                .textContentType(.telephoneNumber)
-                .onChange(of: authClientViewModel.signInViewmodel.phone) { _, new in
-                    authClientViewModel.signInViewmodel.phone = formatPhoneNumber(new)
-                }
+                CustomTextFieldPhone(text: $authClientViewModel.signInViewmodel.phone, title: "000-000-00-00",
+                                     width: .infinity)
                 
+
                 CustomTextField(text: $authClientViewModel.signInViewmodel.email,
-                                title: "Email- @",
+                                title: "Email- @gmail",
                                 width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authClientViewModel.signInViewmodel.showPassword)
                 .keyboardType(.emailAddress)
@@ -89,7 +83,7 @@ struct UserRegisters: View {
 
 extension UserRegisters: isFormValid {
     var isFarmValid: Bool {
-        return authClientViewModel.signInViewmodel.email.contains("@")
+        return authClientViewModel.signInViewmodel.email.contains("@gmail")
         && authClientViewModel.signInViewmodel.password.count > 5
     }
     

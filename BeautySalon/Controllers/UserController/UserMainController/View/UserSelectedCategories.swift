@@ -28,6 +28,7 @@ enum Categories: String, Identifiable, CaseIterable {
 struct UserSelectedCategories: View {
     
     @Binding var selectedCategory: Categories
+    @EnvironmentObject var coordinator: CoordinatorView
     @State private var isShowCategories: Bool = false
     @State private var isSliderDistance: Bool = false
     @Binding var distanceValue: Double
@@ -98,6 +99,24 @@ struct UserSelectedCategories: View {
                             .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal, 4)
                     }
+                    Button {
+                        withAnimation(.snappy(duration: 0.5)) {
+                            coordinator.push(page: .User_Favorites)
+                        }
+                    } label: {
+                        HStack {
+                            Text("My Favorites")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                .padding(.leading, 4)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .padding(.trailing, 4)
+                            
+                        }.frame(maxWidth: .infinity, maxHeight: 44)
+                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                            .padding(.horizontal, 4)
+                    }
                 }.padding(.top, 10)
                 if isSliderDistance {
                     VStack {
@@ -123,7 +142,7 @@ struct UserSelectedCategories: View {
                 }
             }
             Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 260 : 200)
+        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 280 : 240)
             .background(.regularMaterial)
             .overlay(
                 RoundedRectangle(cornerRadius: 24)

@@ -59,7 +59,7 @@ struct Admin_MainTabbedView: View {
                     GetAllUsersOfCompany(adminViewModel: adminViewModel)
                         .tag(2)
                         .toolbarBackground(.hidden, for: .tabBar)
-                    SettingsAdminView(adminViewModel: adminViewModel)
+                    SettingsAdminController(adminViewModel: adminViewModel)
                         .tag(3)
                         .toolbarBackground(.hidden, for: .tabBar)
                 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 import GoogleSignIn
 import FirebaseAuth
 
@@ -18,7 +19,10 @@ final class GoogleSignInViewModel: ObservableObject {
     
     @Published var isLogin: Bool = false
     @Published var emailGoogle: String? = ""
-    @Published var idProfile = ""
+    @Published var isSubscribe: Bool = false
+    @AppStorage ("useRole") var useRole: String = ""
+    @AppStorage ("appleEmail") var appleEmail: String = ""
+    @AppStorage ("appleID") var appleID: String = ""
     @Published var idGoogle = ""
     
     init() {}
@@ -61,18 +65,16 @@ final class GoogleSignInViewModel: ObservableObject {
         }
     }
     
-    func checkSubscribeGoogleProfile(coordinator: CoordinatorView) async throws -> Bool {
-        if StoreViewModel.shared.checkSubscribe {
-            if isLogin {
-                goConntrollerProfile(coordinator: coordinator)
-            } else {
-             signInWuthGoogle(coordinator: coordinator)
-            }
-            return true
+    func checkSubscribeGoogleProfile(coordinator: CoordinatorView) async throws  {
+        appleEmail = ""
+        appleID = ""
+        if isLogin {
+        await goConntrollerProfile(coordinator: coordinator)
         } else {
-            return false
+         signInWuthGoogle(coordinator: coordinator)
         }
     }
+    
     
     private func loadUserProfile(coordinator: CoordinatorView) async throws {
         let db = Firestore.firestore()
@@ -82,10 +84,10 @@ final class GoogleSignInViewModel: ObservableObject {
             let snapshot = try await db.collection(collectioName).whereField("email", isEqualTo: self.emailGoogle ?? "").getDocuments()
             if snapshot.documents.first != nil { 
                 
-                self.idProfile = profile
-                DispatchQueue.main.async {
+                self.useRole = profile
+               Task {
                     
-                self.goConntrollerProfile(coordinator: coordinator)
+               await self.goConntrollerProfile(coordinator: coordinator)
                 }
                 return
             }
@@ -93,13 +95,24 @@ final class GoogleSignInViewModel: ObservableObject {
         DispatchQueue.main.async { coordinator.push(page: .google) }
     }
     
-     func goConntrollerProfile(coordinator: CoordinatorView) {
-        switch self.idProfile {
+     func goConntrollerProfile(coordinator: CoordinatorView) async {
+        switch self.useRole {
         case "Admin":
-            coordinator.push(page: .Admin_main)
+            if StoreViewModel.shared.checkSubscribe {
+                await AdminViewModel.shared.fetchProfileAdmin()
+                coordinator.push(page: .Admin_main)
+            } else {
+                self.isSubscribe = true
+            }
         case "Master":
-            coordinator.push(page: .Master_Select_Company)
+            if StoreViewModel.shared.checkSubscribe {
+                await MasterViewModel.shared.fetchProfile_Master()
+                coordinator.push(page: .Master_Select_Company)
+            } else {
+                self.isSubscribe = true
+            }
         case "Client":
+            await ClientViewModel.shared.fetchAll_Comapny()
             coordinator.push(page: .User_Main)
         default: break
         }
@@ -107,8 +120,9 @@ final class GoogleSignInViewModel: ObservableObject {
     
     func logOut() async throws {
         isLogin = false
-        GIDSignIn.sharedInstance.signOut()
         try Auth.auth().signOut()
+        GIDSignIn.sharedInstance.signOut()
+        try await GIDSignIn.sharedInstance.disconnect()
     }
     
     deinit {

@@ -12,7 +12,7 @@ struct CoordinatorViewModel: View {
     @StateObject private var coordinator = CoordinatorView()
     @StateObject private var google = GoogleSignInViewModel()
     @StateObject private var storeKitView = StoreViewModel()
-    
+    @StateObject private var apple = AppleAuthViewModel(coordinator: CoordinatorView())
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -24,6 +24,6 @@ struct CoordinatorViewModel: View {
         .environmentObject(coordinator)
         .environmentObject(storeKitView)
         .environmentObject(google)
-      
+        .environmentObject(apple)
     }
 }

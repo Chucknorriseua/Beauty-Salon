@@ -27,8 +27,9 @@ struct UserMainForSheduleController: View {
                     UserMainSelectedMaster(clientViewModel: clientViewModel)
                 }
                 
-            }.background(Color.init(hex: "#3e5b47").opacity(0.9))
+            }
                 .customAlert(isPresented: $clientViewModel.isAlert, hideCancel: true, message: clientViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+                .createBackgrounfFon()
                 .overlay(alignment: .bottom, content: {
                     VStack {
                         CustomButton(title: "Sign up") {
@@ -69,9 +70,7 @@ struct UserMainForSheduleController: View {
                 })
                 .foregroundStyle(Color.white)
                 .tint(.yellow)
-//                .task {
-//                    await clientViewModel.fetchAllMasters_FromAdmin()
-//                }
+
    
         }
     }

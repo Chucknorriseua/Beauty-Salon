@@ -92,11 +92,13 @@ struct AdminSheduleFromClientCell: View {
                                     LazyVGrid(columns: adaptiveColumn, spacing: 8) {
                                         ForEach(recordModel.procedure, id: \.self) { item in
                                             Text(item.title)
+                                                .foregroundStyle(Color.white)
+                                                .fontWeight(.heavy)
                                                 .frame(width: 110, height: 60, alignment: .center)
                                                 .clipShape(.rect(cornerRadius: 16))
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 16)
-                                                        .stroke(Color.white, lineWidth: 1)
+                                                        .stroke(Color.init(hex: "#9AC9E8"), lineWidth: 1)
                                                 )
                                         }
                                     }
@@ -185,20 +187,20 @@ struct AdminSheduleFromClientCell: View {
             })
         }
         .frame(maxWidth: .infinity, maxHeight: !isShowInfo ? 140 : 600)
-        .background(.regularMaterial)
+        .background(.ultraThinMaterial.opacity(0.7))
+        .clipShape(.rect(cornerRadius: 22))
         .overlay(
             RoundedRectangle(cornerRadius: 22)
                 .stroke(
                     LinearGradient(
-                        gradient: Gradient(colors: [.gray]),
-                        startPoint: .leading,
+                        gradient: Gradient(colors: [Color.init(hex: "#58A6DA"), Color.white]),
+                        startPoint: .top,
                         endPoint: .trailing
                     ),
-                    lineWidth: 6
+                    lineWidth: 1
                 )
         )
         .foregroundStyle(Color.yellow)
-        .clipShape(.rect(cornerRadius: 24))
         .padding(.horizontal, 8)
     }
    private func format(_ date: Date) -> String {
