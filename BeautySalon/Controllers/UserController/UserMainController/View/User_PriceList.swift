@@ -55,7 +55,7 @@ struct User_PriceList: View {
             .foregroundStyle(Color.yellow.opacity(0.8))
             .overlay(alignment: .bottom) {
                 if !storeKitView.checkSubscribe {
-                    Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                    Banner()
                         .frame(maxWidth: .infinity, maxHeight: 120)
                         .padding(.horizontal, 12)
                 }

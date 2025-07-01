@@ -36,7 +36,7 @@ struct GetAllUsersOfCompany: View {
             }
             .overlay(alignment: .bottom) {
                 if !storeKitView.checkSubscribe {
-                    Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                    Banner()
                         .frame(maxWidth: .infinity, maxHeight: 80)
                         .padding(.horizontal, 12)
                 }
