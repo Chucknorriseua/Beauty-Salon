@@ -25,7 +25,3 @@ struct Banner: UIViewRepresentable {
 
     func updateUIView(_ uiView: BannerView, context: Context) {}
 }
-//    .overlay(alignment: .bottom) {
-//        Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
-//            .frame(width: 320, height: 50)
-//    }
