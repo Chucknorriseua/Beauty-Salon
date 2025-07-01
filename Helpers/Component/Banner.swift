@@ -10,7 +10,7 @@ import SwiftUI
 import GoogleMobileAds
 
 struct Banner: UIViewRepresentable {
-    let adUnitID: String
+    let adUnitID: String = ""
 
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(adSize: AdSizeBanner)
