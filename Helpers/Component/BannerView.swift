@@ -22,7 +22,7 @@ class InterstitialAdViewModel: NSObject, ObservableObject, FullScreenContentDele
 
     func loadAd() {
         let request = Request()
-        InterstitialAd.load(with: "ca-app-pub-1923324197362942/8376442176",
+        InterstitialAd.load(with: "",
                                request: request) { [weak self] ad, error in
             if let error = error {
                 print("Ошибка загрузки рекламы: \(error.localizedDescription)")
