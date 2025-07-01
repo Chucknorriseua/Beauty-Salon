@@ -10,9 +10,11 @@ import SwiftUI
 struct RecordsFromClientCell: View {
     
     @State var shedule: Shedule
+    @Binding var isShowChange: Bool
+    @Binding var selecetedRecord: Shedule?
     @State private var isShow: Bool = false
-    @State private var message: String = "Do you want to delete the record?"
-    @State private var isShowDelete: Bool = false
+    @Binding var isShowDelete: Bool
+    @Binding var isAddSheduleStatic: Bool
     private let adaptiveColumn = [
         GridItem(.adaptive(minimum: 90))
     ]
@@ -21,10 +23,10 @@ struct RecordsFromClientCell: View {
         Button(action: {
             withAnimation(.snappy) {
                 isShow.toggle()
+                selecetedRecord = shedule
             }
         }, label: {
             VStack {
-                
                 if isShow {
                     VStack {
                         VStack(alignment: .leading, spacing: 20) {
@@ -74,19 +76,31 @@ struct RecordsFromClientCell: View {
                             }
                             .foregroundStyle(Color.yellow)
                             .font(.system(size: 20, weight: .bold))
-                            
-                            LazyVGrid(columns: adaptiveColumn, spacing: 8) {
-                                ForEach(shedule.procedure, id: \.self) { item in
-                                    Text(item.title)
-                                        .foregroundStyle(Color.white)
-                                        .fontWeight(.heavy)
-                                        .frame(width: 110, height: 60, alignment: .center)
-                                        .clipShape(.rect(cornerRadius: 16))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 16)
-                                                .stroke(Color.init(hex: "#9AC9E8"), lineWidth: 1)
-                                        )
+                            VStack {
+                                LazyVGrid(columns: adaptiveColumn, spacing: 8) {
+                                    ForEach(shedule.procedure, id: \.self) { item in
+                                        Text(item.title)
+                                            .foregroundStyle(Color.white)
+                                            .fontWeight(.heavy)
+                                            .frame(width: 110, height: 60, alignment: .center)
+                                            .clipShape(.rect(cornerRadius: 16))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .stroke(Color.init(hex: "#9AC9E8"), lineWidth: 1)
+                                            )
+                                        
+                                    }
+                                    
                                 }
+                                let totalCost = String(
+                                    format: NSLocalizedString("totalcost", comment: ""),
+                                    calculatePriceProcedure(record: shedule)
+                                )
+                                Text(totalCost)
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.bold)
+                                    .fontDesign(.serif)
+                                    .underline(color: .white.opacity(0.5))
                             }
                             Spacer()
                         }
@@ -100,7 +114,7 @@ struct RecordsFromClientCell: View {
                         .foregroundStyle(Color.white)
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        VStack {
+                        HStack(spacing: 24) {
                             Button(action: {
                                 withAnimation(.snappy) {
                                     isShowDelete = true
@@ -117,6 +131,30 @@ struct RecordsFromClientCell: View {
                             )
                         }
                     }
+                    .overlay(alignment: .bottomLeading) {
+                        HStack(spacing: 16) {
+                            Button(action: {
+                                withAnimation(.snappy) {
+                                    isShowChange = true
+                                }
+                            }, label: {
+                                Image(systemName: "list.bullet.circle.fill")
+                                    .foregroundStyle(Color.white)
+                                    .font(.system(size: 30))
+                                
+                            })
+                            
+                            Button {
+                                withAnimation(.snappy) {
+                                    isAddSheduleStatic = true
+                                }
+                            } label: {
+                                Image(systemName: "plus.circle.fill")
+                                     .foregroundStyle(Color.white)
+                                     .font(.system(size: 28))
+                            }
+                        }
+                    }
                 } else {
                     VStack {
                         HStack {
@@ -128,6 +166,7 @@ struct RecordsFromClientCell: View {
                             Text(shedule.nameCurrent)
                                 .foregroundStyle(Color.yellow)
                                 .font(.system(size: 20, weight: .bold))
+                                .underline(color: .white.opacity(0.5))
                         }
                         .padding(.horizontal, 16)
                         
@@ -142,26 +181,21 @@ struct RecordsFromClientCell: View {
             .padding(.all, 10)
         })
         .frame(maxWidth: .infinity, maxHeight: isShow ? 800 : 140)
-        .background(.ultraThinMaterial.opacity(0.7))
-        .clipShape(.rect(cornerRadius: 16))
+        .background(.ultraThinMaterial.opacity(0.4))
+        .clipShape(.rect(cornerRadius: 24))
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 24)
                 .stroke(
                     LinearGradient(
                         gradient: Gradient(colors: [Color.init(hex: "#58A6DA"), Color.white]),
                         startPoint: .leading,
                         endPoint: .trailing
                     ),
-                    lineWidth: 2
+                    lineWidth: 1
                 )
         )
         .padding(.horizontal, 12)
-        .overlay(alignment: .center, content: {
-            ZStack {}
-                .customAlert(isPresented: $isShowDelete, hideCancel: true, message: message, title: "") {
-                    delete()
-                } onCancel: {}
-        })
+
     }
     private func format(_ date: Date) -> String {
          let formatter = DateFormatter()
@@ -169,13 +203,23 @@ struct RecordsFromClientCell: View {
          return formatter.string(from: date)
      }
     
-    private func delete() {
-        Task {
-            await MasterViewModel.shared.deleteShedule(sheduleID: shedule)
+    private func getCurrencySymbol() -> String {
+        let countryCode = Locale.current.region?.identifier ?? "US"
+        switch countryCode {
+        case "UA":
+            return "₴"
+        case "PL":
+            return "zł"
+        default:
+            return "$"
         }
     }
-}
-
-#Preview {
-    RecordsFromClientCell(shedule: Shedule.sheduleModel())
+    
+    func calculatePriceProcedure(record: Shedule) -> String {
+        let totalCost = record.procedure.reduce(0.0) { (result, item) -> Double in
+            return result + (Double(item.price) ?? 0.0)
+        }
+        let currencySymbol = getCurrencySymbol()
+        return "\(String(format: "%.1f", totalCost)) \(currencySymbol)"
+    }
 }

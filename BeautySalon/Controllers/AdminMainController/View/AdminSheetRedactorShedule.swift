@@ -11,7 +11,7 @@ import FirebaseFirestore
 struct AdminSheetRedactorShedule: View {
     
     @ObservedObject var adminViewModel: AdminViewModel
-    @Environment (\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss
     @State private var selectedProcedures: [Procedure] = []
     @State private var isMenuProcedure: Bool = false
     @State private var isAddrocedure: Bool = false
@@ -48,7 +48,7 @@ struct AdminSheetRedactorShedule: View {
                                 withAnimation {
                                     AdminChangeRecordsView(adminViewModel: adminViewModel)
                                 }
-                            }.frame(maxWidth: .infinity, maxHeight: 400)
+                            }.frame(maxWidth: .infinity, maxHeight: 240)
                                 .background(.ultraThinMaterial.opacity(0.6))
                                 .clipShape(.rect(cornerRadius: 12))
                                 .padding(.horizontal, 6)
@@ -81,7 +81,7 @@ struct AdminSheetRedactorShedule: View {
                         Spacer()
                         }
                         CustomButton(title: "Save change") {
-                            let sendRecord = Shedule(id: record.id, masterId: record.masterId, nameCurrent: record.nameCurrent, taskService: record.taskService, phone: record.phone, nameMaster: masterName, comment: record.comment, creationDate: createNewDate, fcnTokenUser: record.fcnTokenUser, tint: record.tint, timesTamp: Timestamp(date: Date()), procedure: adminViewModel.procedure)
+                            let sendRecord = Shedule(id: record.id, masterId: record.masterId, nameCurrent: record.nameCurrent, taskService: record.taskService, phone: record.phone, nameMaster: masterName, comment: record.comment, creationDate: createNewDate, fcnTokenUser: record.fcnTokenUser, tint: record.tint, timesTamp: Timestamp(date: Date()), procedure: adminViewModel.procedure, nameSalonOrManster: "", phoneSalonOrMaster: "")
 
                             Task {
                                 print("sendRecord", sendRecord)
@@ -95,6 +95,7 @@ struct AdminSheetRedactorShedule: View {
             }
             .sheetColor()
             .ignoresSafeArea(.all)
+            .ignoresSafeArea(.keyboard)
             .overlay(alignment: .bottom) {
                 if isMenuProcedure {
                     VStack {

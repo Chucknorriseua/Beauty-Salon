@@ -12,9 +12,14 @@ struct MasterSelectedCompany: View {
     @ObservedObject var masterViewModel = MasterViewModel.shared
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject var coordinator: CoordinatorView
-
-    @AppStorage ("selectedAdmin") private var selectedAdminID: String?
-    @AppStorage ("useRole") private var useRole: String = ""
+    @EnvironmentObject var banner: InterstitialAdViewModel
+    @EnvironmentObject var storeKitView: StoreViewModel
+    
+    
+    @AppStorage("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage("useRole") private var useRole: String = ""
+    @AppStorage("firstSignIn") var firstSignIn: Bool = false
+    
     
     @State private var selectedAdmin: String? = nil
     @State private var searchText: String = ""
@@ -22,6 +27,8 @@ struct MasterSelectedCompany: View {
     @State private var message: String = ""
     @State private var isTitle: String = ""
     @State private var isLoader: Bool = false
+    @State private var isShowSubscription: Bool = false
+    @State private var isShowMessage: Bool = false
     @State private var distance: Double = 10000
     
     
@@ -52,7 +59,7 @@ struct MasterSelectedCompany: View {
                                     isTitle = titleEnter
                                 }
                             } label: {
-                                CompanyAllCell(companyModel: company, isShow: selectedAdmin == company.id, isShowLike: false, onToggle: {})
+                                CompanyAllCell(companyModel: company, isShow: selectedAdmin == company.id, isShowLike: false, isShowFavoritesSalon: true, onToggle: {})
                             }
                         }.customAlert(isPresented: Binding(get: { selectedAdmin == company.adminID }, set: { newValue in
                             if !newValue { selectedAdmin = nil }
@@ -72,19 +79,55 @@ struct MasterSelectedCompany: View {
                     }
                 }.scrollTargetLayout()
                 
-            }.scrollIndicators(.hidden)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                            if !firstSignIn {
+                                withAnimation(.easeOut(duration: 1)) {
+                                    if !storeKitView.checkSubscribe {
+                                        isShowSubscription = true
+                                    }
+                                }
+                                if !storeKitView.checkSubscribe {
+                                 
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        if let rootVC = UIApplication.shared.connectedScenes
+                                            .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+                                            .first {
+                                            banner.showAd(from: rootVC)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
             
-    
-        }
-        .createBackgrounfFon()
-        .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
-        .swipeBack(coordinator: coordinator)
-        .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
-        .overlay(content: {
+            }.scrollIndicators(.hidden)
+         
+                .refreshable {
+                    Task {
+                        await masterViewModel.getCompany()
+                    }
+                }
             if searchCompanyNearby.isEmpty {
                 ContentUnavailableView("Salon not found...", systemImage: "house.lodge.circle.fill", description: Text("Please try again."))
             }
+        }
+        .createBackgrounfFon()
+        .overlay(alignment: .bottom) {
+            if !storeKitView.checkSubscribe {
+                Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                    .frame(maxWidth: .infinity, maxHeight: 80)
+                    .padding(.horizontal, 12)
+            }
+        }
+        .overlay(alignment: .center, content: {
+            if isShowSubscription {
+                StoreKitBuyAdvertisement(isXmarkButton: $isShowSubscription)
+            }
         })
+        .customAlert(isPresented: $masterViewModel.isAlert, hideCancel: true, message: masterViewModel.errorMassage, title: "Error", onConfirm: {}, onCancel: {})
+        .swipeBack(coordinator: coordinator)
+        .overlay(alignment: .center) { CustomLoader(isLoader: $isLoader, text: $loader) }
         .searchable(text: $searchText, prompt: "Search salon")
         .animation(.spring(duration: 1), value: searchText)
         .navigationBarTitleDisplayMode(.inline)
@@ -98,11 +141,6 @@ struct MasterSelectedCompany: View {
             }
         }
         .toolbar(content: {
-            ToolbarItem(placement: .topBarLeading) {
-                TabBarButtonBack {
-                    signOut()
-                }
-            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     coordinator.push(page: .Master_upDateProfile)
@@ -139,21 +177,12 @@ struct MasterSelectedCompany: View {
             } else {
                 isLoader = false
                 withAnimation {
-                    
+                
                     selectedAdmin = company.adminID
                     isTitle = "Not correct"
                     message = "The login was incorrect, perhaps the admin did not add you to the salon as a master"
                 }
             }
       
-    }
-    private func signOut() {
-            Task {
-                selectedAdminID = nil
-                useRole = ""
-                Auth_Master_ViewModel.shared.signOut()
-                try await GoogleSignInViewModel.shared.logOut()
-                coordinator.popToRoot()
-        }
     }
 }

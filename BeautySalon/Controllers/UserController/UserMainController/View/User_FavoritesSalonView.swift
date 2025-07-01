@@ -9,18 +9,12 @@ import SwiftUI
 
 struct User_FavoritesSalonView: View {
     
-    @ObservedObject var clientVM = ClientViewModel.shared
+    @ObservedObject var clientVM: ClientViewModel
     @EnvironmentObject var coordinator: CoordinatorView
     @Binding var isLoader: Bool
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("My favorites Salon")
-                .foregroundStyle(Color.yellow)
-                .font(.system(size: 24, weight: .bold))
-                .fontDesign(.serif)
-                .underline(color: .yellow)
-            
             ScrollView(.horizontal) {
                 LazyHStack {
                     ForEach(clientVM.salonFavorites, id: \.id) { salon in
@@ -44,9 +38,8 @@ struct User_FavoritesSalonView: View {
                 }
             }
             .scrollIndicators(.hidden)
-            .frame(maxWidth: .infinity, maxHeight: 200)
         }
-        .frame(maxWidth: .infinity)
+        .frame(height: 200)
         .onAppear {
             Task {
                 await clientVM.fetchFavoritesSalon()

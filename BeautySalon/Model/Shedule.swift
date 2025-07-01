@@ -22,9 +22,13 @@ struct Shedule: Identifiable, Codable, Hashable {
     var tint: String
     var timesTamp: Timestamp
     var procedure: [Procedure]
+    var latitude: Double?
+    var longitude: Double?
+    var nameSalonOrManster: String
+    var phoneSalonOrMaster: String
     
     static func sheduleModel() -> Shedule {
-        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), fcnTokenUser: "", tint: "", timesTamp: Timestamp(date: Date()), procedure: [])
+        return Shedule(id: "", masterId: "", nameCurrent: "", taskService: "", phone: "", nameMaster: "", comment: "", creationDate: Date(), fcnTokenUser: "", tint: "", timesTamp: Timestamp(date: Date()), procedure: [], latitude: 0.0, longitude: 0.0, nameSalonOrManster: "", phoneSalonOrMaster: "")
     }
     
     var tinColor: Color {
@@ -54,6 +58,10 @@ struct Shedule: Identifiable, Codable, Hashable {
         model["tint"] = self.tint
         model["timesTamp"] = self.timesTamp
         model["procedure"] = self.procedure.map {$0.procedure }
+        model["latitude"] = self.latitude
+        model["longitude"] = self.longitude
+        model["nameSalonOrManster"] = self.nameSalonOrManster
+        model["phoneSalonOrMaster"] = self.phoneSalonOrMaster
         return model
     }
 }

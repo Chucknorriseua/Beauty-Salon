@@ -11,7 +11,7 @@ struct AdminSheetCreatPriceList: View {
     
     
     @ObservedObject var adminViewModel: AdminViewModel
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     @State private var title: String = ""
     @State private var price: String = ""
@@ -39,7 +39,7 @@ struct AdminSheetCreatPriceList: View {
                 }.frame(height: 120)
                     .overlay(content: {
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white, lineWidth: 2)
+                                .stroke(Color.white, lineWidth: 1)
                         })
            
                 .padding(.horizontal, 14)
@@ -54,5 +54,6 @@ struct AdminSheetCreatPriceList: View {
             Spacer()
         }
         .sheetColor()
+        .ignoresSafeArea(.keyboard)
     }
 }

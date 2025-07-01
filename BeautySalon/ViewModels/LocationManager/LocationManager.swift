@@ -33,10 +33,12 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         locationManager.stopUpdatingLocation()
     }
     
+    @MainActor
     func startUpdate() {
         locationManager.startUpdatingLocation()
     }
     
+    @MainActor
     func stopUpdate() {
         locationManager.stopUpdatingLocation()
     }
@@ -70,7 +72,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
         await Client_DataBase.shared.updateLocationCompany(company: updateCompany)
     }
     
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             DispatchQueue.main.async { [weak self] in
@@ -87,7 +89,7 @@ final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelega
             }
         }
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         self.authorizationStatus = status
     }

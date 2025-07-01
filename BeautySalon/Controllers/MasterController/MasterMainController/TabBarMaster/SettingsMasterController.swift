@@ -17,13 +17,16 @@ struct SettingsMasterController: View {
     @ObservedObject var masterViewModel: MasterViewModel
 
     
-    @AppStorage ("selectedAdmin") private var selectedAdminID: String?
-    @AppStorage ("useRole") private var useRole: String = ""
+    @AppStorage("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage("useRole") private var useRole: String = ""
     
     @State private var isPressAlarm: Bool = false
     @State private var isShowprofilephoto: Bool = false
     @State private var isEditor: Bool = false
     @State private var isChangeProfilePhoto: Bool = false
+    @State private var isDeleteMyProfile: Bool = false
+    @State private var massage: String = ""
+    @State private var title: String = ""
     
     @State private var photoPickerItems: PhotosPickerItem? = nil
     @Binding  var isPressFullScreen: Bool
@@ -62,13 +65,11 @@ struct SettingsMasterController: View {
                                 SettingsTextFieldPhone(text: $masterViewModel.masterModel.phone, title: "Phone +(000)", width: .infinity)
                                
                             }
+                            Text("About me")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundStyle(Color.white)
+                            
                             ZStack(alignment: .topLeading) {
-                                if masterViewModel.masterModel.description.isEmpty {
-                                    Text("Please limit your input to 160 characters.")
-                                        .foregroundStyle(Color(hex: "F3E3CE").opacity(0.7))
-                                        .padding(.top, 8)
-                                        .padding(.leading, 4)
-                                }
                                 TextEditor(text: $masterViewModel.masterModel.description)
                                     .scrollContentBackground(.hidden)
                                     .foregroundStyle(Color.white)
@@ -76,6 +77,7 @@ struct SettingsMasterController: View {
                                 .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
                                 .clipShape(.rect(cornerRadius: 16))
                                 .padding(.horizontal, 12)
+                            
                             CustomSettingsButton(title: "Back") {
                                 withAnimation(.linear) {
                                     isShowDesc.toggle()
@@ -97,6 +99,11 @@ struct SettingsMasterController: View {
                                     isShowDesc.toggle()
                                 }
                             }
+                            CustomSettingsButton(title: "Delete my Profile") {
+                                isDeleteMyProfile = true
+                                massage = "Once your profile has been deleted, it can no longer be restored"
+                                title = "Do you really want to delete your profile?"
+                            }
                         }
                         
                         CustomSettingsButton(title: "Save change") {
@@ -114,7 +121,7 @@ struct SettingsMasterController: View {
                         }
                     }
                 }
-                .padding(.bottom, 40)
+                .padding(.bottom, 80)
             }
             .createBackgrounfFon()
             .ignoresSafeArea(.keyboard)
@@ -124,6 +131,12 @@ struct SettingsMasterController: View {
             }
             .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: "Are you sure want to exit?",
                          title: "Leave Session", onConfirm: {signOut()}, onCancel: {})
+            .customAlert(isPresented: $isDeleteMyProfile, hideCancel: true, message: massage,title: title, onConfirm: {
+                Task {
+                    try await Master_DataBase.shared.deleteMyProfileFromFirebase(profile: masterViewModel.masterModel)
+                    coordinator.popToRoot()
+                }
+            }, onCancel: {})
             .scrollIndicators(.hidden)
             .onTapGesture {
                 withAnimation {
@@ -149,10 +162,6 @@ struct SettingsMasterController: View {
                 }
                 photoPickerItems = nil
             }
-            
-        }
-        .onDisappear {
-            Master_DataBase.shared.deinitListener()
             
         }
     }

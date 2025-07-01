@@ -52,6 +52,10 @@ final class MasterCalendarViewModel: ObservableObject {
         AnalyticsCalculator.getUniqueClients(schedules: client)
     }
     
+    var totalCostProcedure: Double {
+        AnalyticsCalculator.getTotalCostProcedure(schedules: recordsForSelectedMonth)
+    }
+    
     private func filterRecordsByMonth(_ schedules: [Shedule], _ month: MonthStatistics) -> [Shedule] {
         let calendar = Calendar.current
         return schedules.filter { schedule in

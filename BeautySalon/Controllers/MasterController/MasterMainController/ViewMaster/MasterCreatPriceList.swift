@@ -12,6 +12,8 @@ struct MasterCreatPriceList: View {
    
     @EnvironmentObject var coordinator: CoordinatorView
     @ObservedObject var masterVM = MasterViewModel.shared
+    @EnvironmentObject var storeKitView: StoreViewModel
+    
     @State private var isShowSheet: Bool = false
     @State private var masterOffsets: [String: CGFloat] = [:]
     @State private var selectedMaster: String? = nil
@@ -51,7 +53,15 @@ struct MasterCreatPriceList: View {
                 }.padding(.top, 10)
                     .animation(.easeInOut(duration: 1), value: masterVM.createProcedure)
             }
-        }.createBackgrounfFon()
+        }
+        .overlay(alignment: .bottom) {
+            if !storeKitView.checkSubscribe {
+                Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                    .frame(maxWidth: .infinity, maxHeight: 80)
+                    .padding(.horizontal, 12)
+            }
+        }
+        .createBackgrounfFon()
 
             .sheet(isPresented: $isShowSheet, content: {
                 MasterSheetAddProcedure(masterVM: masterVM)

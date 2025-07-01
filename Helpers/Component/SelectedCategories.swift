@@ -12,6 +12,7 @@ struct SelectedCategories: View {
     @Binding var selectedCtegory: String?
     @Binding var isShowInformation: Bool
     @Binding var isShowAnother: Bool
+
     
     var body: some View {
         VStack {
@@ -26,6 +27,53 @@ struct SelectedCategories: View {
                         withAnimation(.linear) {
                             isShowInformation = (item == .housecall)
                             isShowAnother = (item == .another)
+                            
+                        }
+                    }, label: {
+                        VStack {
+                            HStack {
+                                Text(item.displayName)
+                                    .foregroundStyle(Color.white)
+                                    .font(.system(size: 20, weight: .bold))
+                                    .padding(.all, 12)
+                                Spacer()
+                                Image(systemName: selectedCtegory == item.rawValue ? "largecircle.fill.circle" : "circlebadge")
+                                    .foregroundStyle(Color.yellow)
+                            }
+                            Divider()
+                                .frame(height: 4)
+                        }
+                    })
+                    .padding(.horizontal, 2)
+                }
+            }
+        }
+        .transition(.scale)
+    }
+}
+
+struct SelectedCategoriesMaster: View {
+    
+    @Binding var selectedCtegory: String?
+    @Binding var isShowInformation: Bool
+    @Binding var isShowAnother: Bool
+    @State var isHideAnother: Bool = false
+    
+    var body: some View {
+        VStack {
+            Text("Categories")
+                .foregroundStyle(Color.white)
+                .font(.system(size: 20, weight: .bold))
+                .offset(x: 10)
+            VStack {
+                ForEach(Categories.allCases.filter({isHideAnother ? $0 != .another : true}), id: \.self) { item in
+                    Button(action: {
+                        selectedCtegory = item.rawValue
+                        withAnimation(.linear) {
+                            isShowInformation = (item == .housecall)
+                            if isHideAnother {
+                                isShowAnother = (item == .another)
+                            }
                         }
                     }, label: {
                         VStack {
@@ -56,10 +104,15 @@ struct SelectedMonth: View {
     
     var body: some View {
         VStack {
-            Text("Selected Month Statistics.")
-                .foregroundStyle(Color.white)
-                .fontWeight(.bold)
-                .offset(x: 10)
+            VStack {
+                Text("Selected Month Statistics.")
+                    .foregroundStyle(Color.blue)
+                    .font(.system(size: 18, weight: .bold))
+                    .padding(.all, 6)
+            }
+            .background(Color.white)
+            .clipShape(.rect(cornerRadius: 20))
+            .offset(x: 10)
             ScrollView {
                 
                 VStack {

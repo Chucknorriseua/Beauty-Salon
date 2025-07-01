@@ -12,6 +12,7 @@ struct CalendarMainController: View {
     @ObservedObject var viewModel: Admin_CalendarViewModel
     @ObservedObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel
+    @EnvironmentObject var storeKitView: StoreViewModel
     
     var body: some View {
         GeometryReader { geo in
@@ -23,6 +24,16 @@ struct CalendarMainController: View {
                 }
                 .scrollIndicators(.hidden)
             
+            }
+            .overlay(alignment: .bottom) {
+                if !storeKitView.checkSubscribe {
+                    VStack {
+                        Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                            .frame(maxWidth: .infinity, maxHeight: 80)
+                            .padding(.horizontal, 12)
+                    }
+                    .padding(.bottom, 20)
+                }
             }
             .onAppear {
                 viewModel.setupWeeks()

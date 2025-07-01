@@ -42,7 +42,6 @@ struct CustomTextField: View {
             }
         }
         .foregroundStyle(.white)
-        .padding(.leading)
         .frame(width: UIScreen.main.bounds.width - 20, height: 60)
         .overlay(alignment: .trailing) {
             if title == "Password" {
@@ -56,6 +55,7 @@ struct CustomTextField: View {
                         .font(.system(size: 26))
                         .padding(.trailing)
                 })
+                .padding(.bottom, 16)
             }
         }
     }
@@ -73,6 +73,7 @@ struct CustomTextFieldPhone: View {
                 HStack {
                     TextField(text: $text) {
                         Text(LocalizedStringKey(title))
+                            .foregroundStyle(.white.opacity(0.8))
 
                     }
                     .keyboardType(.phonePad)
@@ -83,7 +84,6 @@ struct CustomTextFieldPhone: View {
                     .frame(height: 2)
             }
         }
-        .padding(.leading)
         .foregroundStyle(.white)
         .frame(width: UIScreen.main.bounds.width - 20, height: 60)
     }

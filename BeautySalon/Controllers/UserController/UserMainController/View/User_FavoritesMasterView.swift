@@ -9,7 +9,7 @@ import SwiftUI
 
 struct User_FavoritesMasterView: View {
     
-    @ObservedObject var clientVM = ClientViewModel.shared
+    @ObservedObject var clientVM: ClientViewModel
     
     var body: some View {
         VStack {
@@ -30,18 +30,12 @@ struct User_FavoritesMasterView: View {
                 }
             }
             .scrollIndicators(.hidden)
-            .frame(maxWidth: .infinity, maxHeight: 200)
-
         }
-        .frame(maxWidth: .infinity)
+        .frame(height: 200)
         .onAppear {
             Task {
                 await clientVM.fetchFavoritesMaster()
             }
         }
     }
-}
-
-#Preview {
-    User_FavoritesMasterView()
 }

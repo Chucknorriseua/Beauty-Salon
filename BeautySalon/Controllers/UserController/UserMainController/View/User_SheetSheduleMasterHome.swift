@@ -47,7 +47,8 @@ struct User_SheetSheduleMasterHome: View {
                     VStack {
                         DatePicker("", selection: $clientViewModel.currentDate, displayedComponents: [.hourAndMinute, .date])
                             .datePickerStyle(.compact)
-                    }.padding(.trailing, 110)
+                            .tint(Color.yellow)
+                    }.padding(.trailing, 14)
                 }
                 .padding(.top, 16)
                 if !clientViewModel.procedure.isEmpty {
@@ -102,9 +103,15 @@ struct User_SheetSheduleMasterHome: View {
                     sendRecords()
                 }
             }
+            .onDisappear {
+                clientViewModel.totalCost = 0
+                selectedProcedures.removeAll()
+                selectedProceduresColor.removeAll()
+            }
             Spacer()
         }
         .sheetColor()
+        .ignoresSafeArea(.keyboard)
         .overlay(alignment: .bottom) {
             if isMenuProcedure {
                 VStack {
@@ -121,19 +128,24 @@ struct User_SheetSheduleMasterHome: View {
         let procedure = masterModel.procedure.filter { proc in
             clientViewModel.procedure.contains(where: {$0.id == proc.id})
         }
-        let sendRecord = Shedule(id: UUID().uuidString, masterId: UUID().uuidString, nameCurrent: model.name, taskService: taskService, phone: model.phone, nameMaster: "", comment: comment, creationDate: clientViewModel.currentDate, fcnTokenUser: model.fcnTokenUser, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
+        let sendRecord = Shedule(id: UUID().uuidString, masterId: model.id, nameCurrent: model.name, taskService: taskService, phone: model.phone, nameMaster: "", comment: comment, creationDate: clientViewModel.currentDate, fcnTokenUser: model.fcnTokenUser, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure, latitude: model.latitude, longitude: model.longitude, nameSalonOrManster: masterModel.name, phoneSalonOrMaster: masterModel.phone)
         
         
         Task {
-            let titleEnter = String(
-                format: NSLocalizedString("notification", comment: ""),
-               masterModel.name)
-            let subTitle = String(
-                format: NSLocalizedString("notifiTitleMaster", comment: ""))
-            await clientViewModel.send_SheduleForMaster(masterID: masterModel.id, record: sendRecord)
-            NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
-            clientViewModel.procedure.removeAll()
-            dismiss()
+            do {
+                let titleEnter = String(
+                    format: NSLocalizedString("notification", comment: ""),
+                   masterModel.name)
+                let subTitle = String(
+                    format: NSLocalizedString("notifiTitleMaster", comment: ""))
+                await clientViewModel.send_SheduleForMaster(masterID: masterModel.id, record: sendRecord)
+                try await Client_DataBase.shared.setData_ClientForMaster(masterID: masterModel.id, clientModel: model)
+                NotificationController.sharet.notify(title: titleEnter, subTitle: subTitle, timeInterval: 1)
+                clientViewModel.procedure.removeAll()
+                dismiss()
+            } catch {
+                print("sendRecords User_SheetSheduleMasterHome error:", error.localizedDescription)
+            }
         }
     }
 }

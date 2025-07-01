@@ -10,7 +10,6 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
 
-@MainActor
 final class Auth_Master_ViewModel: ObservableObject {
     
     static var shared = Auth_Master_ViewModel()
@@ -21,7 +20,7 @@ final class Auth_Master_ViewModel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var isShowAlert: Bool = false
     @Published var isShowSheet: Bool = false
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     let auth = Auth.auth()
     
@@ -60,13 +59,14 @@ final class Auth_Master_ViewModel: ObservableObject {
             } else { }
             
             let master = MasterModel(id: uid,
-                                     masterID: uid,
+                                     masterID: uid, roleMaster: "Master",
                                      name: name,
                                      email: email,
                                      phone: phone,
+                                     adress: "",
                                      description: "",
                                      image: dowloadURL?.absoluteString ?? "",
-                                     imagesUrl: [], categories: "",
+                                     imagesUrl: [], categories: "", masterMake: "",
                                      fcnTokenUser: fcnTokenUser,
                                      likes: 0,
                                      procedure: [],
@@ -108,6 +108,7 @@ final class Auth_Master_ViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func saveAccount_Master() async -> Bool {
         do {
             try await createAccount_Master(email: signInViewmodel.email,

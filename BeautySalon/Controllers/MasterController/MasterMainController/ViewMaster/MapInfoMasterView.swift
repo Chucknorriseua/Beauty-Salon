@@ -15,6 +15,8 @@ struct MapInfoMasterView: View {
     @StateObject private var locationManager = LocationManager()
     @ObservedObject private var masterViewModel = MasterViewModel.shared
     @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var banner: InterstitialAdViewModel
+    @EnvironmentObject var storeKitView: StoreViewModel
     
     var body: some View {
         VStack {
@@ -58,6 +60,17 @@ struct MapInfoMasterView: View {
                 }
                 Spacer()
             }
+            .onAppear(perform: {
+                if !storeKitView.checkSubscribe {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        if let rootVC = UIApplication.shared.connectedScenes
+                            .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+                            .first {
+                            banner.showAd(from: rootVC)
+                        }
+                    }
+                }
+            })
             .customAlert(isPresented: $isLocationAlarm, hideCancel: true, message: massage, title: title, onConfirm: {
                 Task { await locationManager.updateLocationMaster(company: masterViewModel.masterModel) }
             }, onCancel: {})

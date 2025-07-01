@@ -64,6 +64,7 @@ struct SettingsTextFieldPhone: View {
             HStack {
                 TextField(text: $text) {
                     Text(LocalizedStringKey(title))
+                        .foregroundStyle(Color(hex: "F3E3CE").opacity(0.4))
 
                 }
                 .keyboardType(.phonePad)

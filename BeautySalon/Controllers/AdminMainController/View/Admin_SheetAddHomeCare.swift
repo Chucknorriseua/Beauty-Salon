@@ -7,12 +7,12 @@
 
 import SwiftUI
 import PhotosUI
-import SDWebImageSwiftUI
+import SDWebImage
 
 struct Admin_SheetAddHomeCare: View {
     
     @ObservedObject var adminVM: AdminViewModel
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     @State private var title: String = ""
     @State private var price: String = ""
@@ -114,6 +114,7 @@ struct Admin_SheetAddHomeCare: View {
             }
             Spacer()
         }
+        .ignoresSafeArea(.keyboard)
         .photosPicker(isPresented: $isAddPhotoCare, selection: $photoPickerItems, matching: .images)
         .onChange(of: photoPickerItems) {
                 Task {

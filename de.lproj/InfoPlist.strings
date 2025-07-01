@@ -5,6 +5,6 @@
   Created by Евгений Полтавец on 17/01/2025.
   
 */
-"NSUserTrackingUsageDescription" = "Der Beauty Salon benötigt Ihren Standort, um die nächstgelegenen Salons und Meister vorzuschlagen.";
+"NSUserTrackingUsageDescription" = "Wir verwenden Firebase Analytics, um Daten zur Verbesserung der App-Leistung, der Benutzererfahrung und für Analysezwecke zu sammeln.";
 "NSLocationWhenInUseUsageDescription" = "Der Beauty Salon benötigt Ihren Standort, um nahegelegene Salons und Meister vorzuschlagen.";
 "NSLocationAlwaysUsageDescription" = "Der Beauty Salon benötigt Ihren Standort für die Hintergrundfunktionalität.";

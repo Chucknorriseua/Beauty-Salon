@@ -21,7 +21,7 @@ final class Master_DataBase {
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     private init() {
         
     }
@@ -39,6 +39,10 @@ final class Master_DataBase {
         return db.collection("BeautySalon")
     }
     
+    private var clientFs: CollectionReference {
+        return db.collection("Client")
+    }
+    
     // MARK:  /\_____________________________SET-DATA-MASTER___________________________________/\
     
     func setData_For_Master_FB(master: MasterModel) async throws {
@@ -50,6 +54,16 @@ final class Master_DataBase {
     func setDataMaster_ForAdminRoom(adminId: String, master: MasterModel) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         try await mainFS.document(adminId).collection("Masters").document(uid).setData(master.master_ModelFB)
+    }
+    
+    func setSheduleInStatic(sheduleID: String, shedule: Shedule) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await masterFs.document(uid).collection("StaticShedule").document(sheduleID).setData(shedule.shedule)
+    }
+    
+    func addFavoritesSalon(salonID: String, salon: Company_Model) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await masterFs.document(uid).collection("FavoritesSalon").document(salonID).setData(salon.admin_Model_FB)
     }
     
     func addProcedure(procedure: Procedure) async throws {
@@ -98,6 +112,35 @@ final class Master_DataBase {
         }
     }
     
+    func saveChangeSendClient(clientID: String, record: Shedule) async throws {
+        let recordID = record.id
+        let clientRef = clientFs.document(clientID)
+        let clientSnapshot = try await clientRef.getDocument()
+
+        if clientSnapshot.exists {
+            let recordRef = clientRef.collection("MyRecords").document(recordID)
+            
+            try await recordRef.updateData(record.shedule)
+            print("✅ Запись успешно обновлена для клиента с ID: \(clientID)")
+        } else {
+            print("❌ Клиент с ID \(clientID) не найден!")
+        }
+    }
+    
+    func fetchSheduleForStatic() async throws -> [Shedule] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        do {
+            let snapShot = try await masterFs.document(uid).collection("StaticShedule").getDocuments()
+            let shedule: [Shedule] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToShedule(document)
+            }
+            return shedule
+        } catch {
+            print("DEBUG: Error fetchAllCompany", error.localizedDescription)
+            throw error
+        }
+    }
+    
     //  MARK: Fetch all comapny with Fire Base BeautySalon/Company.... name admin and company
     func fetchAllCompany() async throws -> [Company_Model] {
         do {
@@ -108,6 +151,21 @@ final class Master_DataBase {
             return companies
         } catch {
             print("DEBUG: Error fetchAllCompany", error.localizedDescription)
+            throw error
+        }
+    }
+    
+    func fetchFavorites_Salon() async throws -> [Company_Model] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
+        do {
+            let snapShot = try await masterFs.document(uid).collection("FavoritesSalon").getDocuments()
+            
+            let salon: [Company_Model] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToCompany(document)
+            }
+            return salon
+        } catch {
+            print("DEBUG: Error fetchFavorites_Salon", error.localizedDescription)
             throw error
         }
     }
@@ -127,28 +185,32 @@ final class Master_DataBase {
         }
     }
     
+    func fetch_CurrentClient_FromMaster() async throws -> [Client] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
+        do {
+            let snapShot = try await masterFs.document(uid).collection("Client").getDocuments()
+       
+            let client: [Client] = try snapShot.documents.compactMap { doc in
+                return try Admin_DataBase.shared.convertDocumentToClient(doc)
+            }
+
+            return client
+        } catch {
+            print("DEBUG: Error fetch_CurrentClient_FromAdmin", error.localizedDescription)
+            throw error
+        }
+    }
+    
     
     // MARK:  /\_____________________________UPDATE-PUT-DATA-DELETE-MASTER___________________________________/\
-    
-//    func updateProfile_Master() async {
-//        guard let uid = auth.currentUser?.uid else { return }
-//        
-//        listener = mainFS.document(uid).addSnapshotListener({ snap, error in
-//            
-//            if let error = error {
-//                print("Error", error.localizedDescription)
-//            }
-//            
-//            guard let document = snap, document.exists else { return }
-//            
-//            if let data = try? document.data(as: MasterModel.self) {
-//                
-//                DispatchQueue.main.async {
-//                    MasterViewModel.shared.masterModel = data
-//                }
-//            }
-//        })
-//    }
+    func changeRecordFromClient(record: Shedule, id: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        var idrec = record
+        idrec.id = id
+        let shedule = masterFs.document(uid).collection("Record").document(record.id)
+        try await shedule.updateData(["creationDate": record.creationDate])
+
+    }
     
     // Put data on Storage
     
@@ -315,6 +377,15 @@ final class Master_DataBase {
         try await store.delete()
     }
     
+    func remove_FavoritesSalon(salonID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = masterFs.document(uid).collection("FavoritesSalon")
+        let snap = try await record.whereField("id", isEqualTo: salonID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
     func removeProcedureFireBase(procedureID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         let record = masterFs.document(uid)
@@ -337,6 +408,29 @@ final class Master_DataBase {
         for doc in snap.documents {
             try await doc.reference.delete()
         }
+    }
+    
+    func deleteMyProfileFromFirebase(profile: MasterModel) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let profileMy = masterFs.whereField("id", isEqualTo: profile.id)
+
+        let snap = try await profileMy.getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+        
+        if let imageUrl = profile.image, !imageUrl.isEmpty {
+            let storageRef = Storage.storage().reference().child("masterImage/\(uid)/")
+            try await storageRef.delete()
+        }
+        let storageRef = Storage.storage().reference().child("imagesUrl/\(uid)/")
+        let listResult = try await storageRef.listAll()
+        
+        for item in listResult.items {
+            try await item.delete()
+        }
+        
+        try await auth.currentUser?.delete()
     }
     
     func deinitListener() {

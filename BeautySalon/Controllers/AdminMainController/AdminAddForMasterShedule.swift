@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdminAddForMasterShedule: View {
     
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     @ObservedObject var adminViewModel: AdminViewModel
     @State var masterModel: MasterModel

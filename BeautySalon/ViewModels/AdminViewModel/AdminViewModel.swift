@@ -86,7 +86,7 @@ final class AdminViewModel: ObservableObject {
     func fetchProfileAdmin() async {
         do {
             let profile = try await Admin_DataBase.shared.fetchAdmiProfile()
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.adminProfile = profile
                 self.procedure = adminProfile.procedure
@@ -95,7 +95,8 @@ final class AdminViewModel: ObservableObject {
             await fethAllData()
             
         } catch {
-            await handleError(error: error, wheare: "fetch my profile")
+            print("Error fetch admin data")
+//            await handleError(error: error, wheare: "fetch my profile")
         }
         
     }
@@ -145,7 +146,7 @@ final class AdminViewModel: ObservableObject {
     func refreshProfileAdmin() async {
         do {
             let profile = try await Admin_DataBase.shared.fetchAdmiProfile()
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.adminProfile = profile
                 self.procedure = adminProfile.procedure
@@ -319,7 +320,7 @@ final class AdminViewModel: ObservableObject {
         }
         do {
             try await Admin_DataBase.shared.removeRecordFireBase(id: record.id)
-            
+            try await Admin_DataBase.shared.remove_RecodsChangeFromClient(shedule: record, clientID: record.masterId)
         } catch {
             await handleError(error: error, wheare: "delete record")
         }
@@ -333,6 +334,7 @@ final class AdminViewModel: ObservableObject {
             }
         }
     }
+    
     
     func deleteCreateProcedure(procedureID: Procedure) async {
         if let index = createProcedure.firstIndex(where: {$0.id == procedureID.id}) {

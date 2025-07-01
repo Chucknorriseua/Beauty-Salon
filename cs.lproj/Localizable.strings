@@ -6,13 +6,13 @@
   
 */
 "Sign In" = "Přihlásit se";
-"Welcom in Beauty Salon" = "Vítejte v Beauty Salonu";
+"Welcome in My Beauty Hub" = "Vítejte v My Beauty Hub";
 "If you don't have an account, create one." = "Pokud nemáte účet, vytvořte si jej.";
 " Register as Admin" = " Registrovat se jako administrátor";
 " Register as Master" = " Registrovat se jako mistr";
 "Register as Client" = "Registrovat se jako klient";
 "Сhoose photo salon" = "Vyberte fotografii salonu";
-"Name Company" = "Název společnosti";
+"Salon name" = "Název salonu";
 "You don't have a subscription, to enter you need to buy a subscription" = "Nemáte předplatné, pro vstup si musíte zakoupit předplatné.";
 "Name Administrator" = "Jméno administrátora";
 "Phone (+000)" = "Telefon (+000)";
@@ -85,7 +85,7 @@
 "Purchase a subscription to create your salon or create a profile as a master." = "Zakupte si předplatné pro vytvoření salonu nebo profilu mistra.";
 "Something went wrong" = "Něco se pokazilo";
 "Not correct password or email, Make sure you are using the correct account. " = "Nesprávné heslo nebo e-mail. Ujistěte se, že používáte správný účet.";
-"Clients for recording" = "Klienti k záznamu";
+"My Сlients" = "Moji Klienti";
 "Are you sure you want to exit?" = "Opravdu chcete odejít?";
 "Log out of the profile" = "Odhlásit se z profilu";
 "Description, limit your input to 160 characters." = "Popis, omezte svůj vstup na 160 znaků.";
@@ -130,7 +130,7 @@
 "You are trying to log in as a master without this subscription, or try renewing your subscription that you previously purchased." = "Pokoušíte se přihlásit jako mistr bez tohoto předplatného, nebo zkuste obnovit předplatné, které jste si již zakoupili.";
 "Restore Purchases" = "Obnovit nákupy";
 "totalcost" = "Celková cena: %@";
-"Nail master not found..." = "Mistr nehtů nebyl nalezen...";
+"Master not found..." = "Mistr nebyl nalezen...";
 "Please try again." = "Zkuste to prosím znovu.";
 "Salon not found..." = "Salon nebyl nalezen...";
 "“Update your geolocation to the address of your salon so that masters and clients can find you.”" = "„Aktualizujte svou polohu na adresu svého salonu, aby vás mistři a klienti mohli najít.“";
@@ -179,3 +179,46 @@
 "The 'Another' category means that you provide additional services such as Thai massage or other health and beauty services." = "Kategorie ‚Jiné‘ znamená, že poskytujete další služby, jako je thajská masáž nebo jiné zdravotní a kosmetické služby.";
 "Home care" = "Domácí péče";
 "Change photo" = "Změnit fotografii";
+"Your profile is registered using Apple authorization. Your data provided by Apple will be used to create your account and can also be changed in the profile settings." = "Váš profil je registrován pomocí autorizace společnosti Apple. Vaše údaje poskytnuté společností Apple budou použity k vytvoření vašeho účtu a lze je také změnit v nastavení profilu.";
+"Phone" = "Telefon";
+"Your profile is registered using Google authorization. Your data provided by Google will be used to create your account and can also be changed in the profile settings." = "Váš profil je registrován pomocí autorizace společnosti Google. Vaše údaje poskytnuté společností Google budou použity k vytvoření vašeho účtu a lze je také změnit v nastavení profilu.";
+"Buy an admin subscription to manage your salon" = "Zakupte si předplatné pro správu vašeho salonu";
+"Buy a master subscription to create your profile" = "Zakupte si hlavní předplatné a vytvořte si profil";
+"You are purchasing an admin subscription to fully manage your salon, masters, and client appointments. This will give you access to features for setting up your salon profile, managing master schedules, and tracking client bookings." = "Kupujete si předplatné pro správce, abyste mohli plně spravovat svůj salon, mistry a schůzky s klienty. Získáte tak přístup k funkcím pro nastavení profilu salonu, správu rozpisů předloh a sledování rezervací klientů.";
+"You are purchasing a master subscription to receive bookings from the admin and clients, manage your schedule, and increase service visibility. Independent masters can work from home or offer mobile services." = "Kupujete si hlavní předplatné, které vám umožní přijímat rezervace od správce a klientů, spravovat váš rozvrh a zvýšit viditelnost služeb. Nezávislí mistři mohou pracovat z domova nebo nabízet mobilní služby.";
+
+"If you delete an entry scheduled for tomorrow or later, you will not receive notifications about it." = "Pokud odstraníte záznam naplánovaný na zítřek nebo později, nebudete o něm dostávat žádná oznámení.";
+"Delete the record?" = "Smazat záznam?";
+"Your administrator profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will complement the salon information you can enter in the profile settings. After registration, your salon will be created where you can enter additional information about your salon and add your masters to your salon." = "Váš profil správce bude zaregistrován pomocí služby Apple Sign-In. Údaje poskytnuté společností Apple budou použity k vytvoření vašeho účtu a doplní informace o salonu, které můžete zadat v nastavení profilu. Po registraci bude vytvořen váš salon, kde můžete zadat další informace o salonu a přidat do něj své mistry.";
+
+"Your master profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will supplement the information about you that you can enter in your profile settings. Once registered, your profile will be created where you can enter additional information about yourself, add your work, and receive notes from administrators and customers." = "Váš hlavní profil bude zaregistrován pomocí služby Apple Sign-In. Údaje poskytnuté společností Apple budou použity k vytvoření vašeho účtu a doplní informace o vás, které můžete zadat v nastavení svého profilu. Po registraci bude vytvořen váš profil, kde můžete zadávat další informace o sobě, přidávat své práce a přijímat poznámky od správců a zákazníků.";
+
+"Your customer profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and supplement the information you can enter in your profile settings. Once registered, your profile will be created and you will be able to add additional information about yourself and update your name or phone number to contact you after sending the appointment to the salon or the master" = "Váš zákaznický profil bude zaregistrován pomocí služby Apple Sign-In. Údaje poskytnuté společností Apple budou použity k vytvoření vašeho účtu a doplní informace, které můžete zadat v nastavení svého profilu. Po registraci bude váš profil vytvořen a budete moci přidat další informace o sobě a aktualizovat své jméno nebo telefonní číslo, aby vás bylo možné kontaktovat po odeslání termínu do salonu nebo mistra";
+"Purchase a subscription to create your salon as an administrator, or purchase a master subscription to work in an existing salon. Please note: the Admin subscription is only available for salon owners and the Master subscription is only available for masters. You can only have one active subscription." = "Zakupte si předplatné, abyste mohli vytvořit svůj salon jako správce, nebo si zakupte hlavní předplatné, abyste mohli pracovat ve stávajícím salonu. Upozornění: předplatné pro správce je k dispozici pouze pro majitele salonu a předplatné pro mistry je k dispozici pouze pro mistry. Můžete mít pouze jedno aktivní předplatné.";
+"My Records" = "Moje záznamy";
+"Working at the Salon" = "Pracuji v salonu";
+"My analytics" = "Moje analýzy";
+"Add an entry to the monthly stats" = "Přidat záznam do měsíční statistiky";
+"Add an entry to monthly statistics to track monthly data." = "Přidat záznam do měsíční statistiky pro sledování měsíčních dat.";  
+"Do you really want to delete your profile?" = "Opravdu chcete smazat svůj profil?";
+"Once your profile has been deleted, it can no longer be restored" = "Jakmile bude váš profil smazán, nelze jej již obnovit.";
+"Delete my Profile" = "Smazat můj profil";
+"Do you want to delete the record?" = "Chcete smazat záznam?";
+"Selected categories" = "Vybrané kategorie";  
+"7-day free trial, then will be Automatically renew unless canceled at least 24 hours before the end of the trial or billing period." = "7denní bezplatná zkušební verze, poté bude automaticky obnovena, pokud nebude zrušena alespoň 24 hodin před koncem zkušebního nebo fakturačního období.";
+"Your profile has been completely deleted" = "Váš profil byl úplně smazán";
+"User not found. Check email or Wrong password Try again." = "Uživatel nebyl nalezen. Zkontrolujte e-mail nebo špatné heslo. Zkuste to znovu.";
+"Are you sure you want to delete your profile from My Beauty Hub? Once deleted, it can't be restored!" = "Jste si jisti, že chcete smazat svůj profil z My Beauty Hub? Jakmile bude smazán, nebude možné ho obnovit!";
+"You must be logged in to your account to delete your profile" = "Chcete-li odstranit svůj profil, musíte být přihlášeni ke svému účtu.";
+"masterMake" = "Jsem mistrem v: %@";
+"" = "";
+"Enter in the field what you do" = "Zadejte do pole, co děláte";
+"Exit my Profile" = "Opustit můj profil";
+"You see ads so we can continue to develop the app. If you want to use without ads - subscribe and enjoy full comfort!" = "Vidíš reklamy, abychom mohli dále vyvíjet aplikaci. Pokud chceš používat bez reklam – předplať si a užívej si plný komfort!";
+"Buy subscription" = "Koupit předplatné";
+"Terms of Use" = "Podmínky použití";
+"About me" = "O mně";
+"" = "";
+"" = "";
+"" = "";
+"" = "";

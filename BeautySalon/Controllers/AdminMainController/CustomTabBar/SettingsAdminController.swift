@@ -16,6 +16,7 @@ struct SettingsAdminController: View {
 
     @State private var isChangeProfilePhoto: Bool = false
     @State private var isShowInfo: Bool = false
+    @State private var isShowSubscription: Bool = false
 
     @State private var select: String? = nil
   
@@ -25,18 +26,21 @@ struct SettingsAdminController: View {
     @EnvironmentObject var coordinator: CoordinatorView
     @EnvironmentObject var google: GoogleSignInViewModel
     
-    @AppStorage ("useRole") private var useRole: String = ""
+    @AppStorage("useRole") private var useRole: String = ""
+    @AppStorage("firstSignIn") var firstSignIn: Bool = false
     
     @State private var isPressAlarm: Bool = false
     @State private var isLocationAlarm: Bool = false
     @State private var isEditor: Bool = false
 
     @State private var isShowTextField: Bool = false
+    @State private var isDeleteMyProfile: Bool = false
     @State private var isShowAnother: Bool = false
     
     @State private var photoPickerItems: PhotosPickerItem? = nil
     @State private var massage: String = ""
     @State private var title: String = ""
+    @State private var textFieldCateg: String = ""
     @State private var description: String = "This category is intended for masters who take clients at home or with a visit to the client."
     @State private var descAnother: String = "The 'Another' category means that you provide additional services such as Thai massage or other health and beauty services."
     
@@ -92,6 +96,11 @@ struct SettingsAdminController: View {
                                     CustomSettingsButton(title: "Change photo") {
                                         isChangeProfilePhoto = true
                                     }
+                                    CustomSettingsButton(title: "Delete my Profile") {
+                                        isDeleteMyProfile = true
+                                        massage = "Once your profile has been deleted, it can no longer be restored"
+                                        title = "Do you really want to delete your profile?"
+                                    }
                                 } else if !isChangeCategories {
                                     CustomSettingsButton(title: "Change profile") {
                                         withAnimation(.linear) {
@@ -118,6 +127,11 @@ struct SettingsAdminController: View {
                                     }
                                     CustomSettingsButton(title: "Change geolocation") {
                                         coordinator.push(page: .Admin_MapInfo)
+                                    }
+                                    CustomSettingsButton(title: "Buy subscription") {
+                                        withAnimation(.easeOut(duration: 1)) {
+                                            isShowSubscription = true
+                                        }
                                     }
                                  
                                     CustomSettingsButton(title: "Sign out") {
@@ -172,19 +186,38 @@ struct SettingsAdminController: View {
             .createBackgrounfFon()
             .ignoresSafeArea(.keyboard)
             .photosPicker(isPresented: $isChangeProfilePhoto, selection: $photoPickerItems, matching: .images)
+            .overlay(alignment: .center, content: {
+                if isShowSubscription {
+                    StoreKitBuyAdvertisement(isXmarkButton: $isShowSubscription)
+                }
+            })
+            
             .customAlert(isPresented: $isPressAlarm, hideCancel: true, message: massage,title: title, onConfirm: {
                 Task {await signOutProfile()}
             }, onCancel: {})
-            .informationView(isShowInfo: $isShowInfo, image: "makeup", text: description) {
+            
+            .customAlert(isPresented: $isDeleteMyProfile, hideCancel: true, message: massage,title: title, onConfirm: {
+                Task {
+                   try await Admin_DataBase.shared.deleteMyProfileFromFirebase(profile: adminViewModel.adminProfile)
+                    coordinator.popToRoot()
+                }
+            }, onCancel: {})
+            
+            .informationView(isShowInfo: $isShowInfo, textField: $textFieldCateg, image: "makeup", text: description, isShowTextField: false, action: {
+                
+            }, dismiss: {
                 withAnimation(.linear) {
                     isShowInfo = false
                 }
-            }
-            .informationView(isShowInfo: $isShowAnother, image: "another", text: descAnother) {
+            })
+            .informationView(isShowInfo: $isShowAnother, textField: $textFieldCateg, image: "another", text: descAnother, isShowTextField: false, action: {
+                
+            }, dismiss: {
                 withAnimation(.linear) {
                     isShowAnother = false
                 }
-            }
+            })
+
         }
         .onChange(of: photoPickerItems) {
                 guard let uid = authViewModel.auth.currentUser?.uid else { return }
@@ -214,6 +247,7 @@ struct SettingsAdminController: View {
     private func signOutProfile() async {
         Task {
             useRole = ""
+            firstSignIn = false
             await authViewModel.signOut()
             try await google.logOut()
             coordinator.popToRoot()

@@ -18,7 +18,7 @@ struct User_FavoritesMasterCell: View {
             VStack {
                 HStack(spacing: 30) {
                     VStack {}
-                        .createImageView(model: master.image ?? "", width: 120, height: 120)
+                        .createImageView(model: master.image ?? "", width: 94, height: 94)
                     VStack(alignment: .leading) {
                         HStack {
                             Text(master.name)
@@ -28,7 +28,7 @@ struct User_FavoritesMasterCell: View {
                                 .multilineTextAlignment(.leading)
                         }
                     }
-                    .frame(maxWidth: 250)
+                    .frame(maxWidth: 200)
                     .offset(x: -12)
                 }
                 .padding(.leading, 8)
@@ -39,8 +39,8 @@ struct User_FavoritesMasterCell: View {
                 .foregroundStyle(Color.white)
             }
         }
-        .frame(width: 340, height: 180)
-        .background(.ultraThinMaterial.opacity(0.6))
+        .frame(width: 300, height: 150)
+        .background(.ultraThinMaterial.opacity(0.4))
         .clipShape(.rect(cornerRadius: 24))
         .overlay(
             RoundedRectangle(cornerRadius: 24)
@@ -66,6 +66,7 @@ struct User_FavoritesMasterCell: View {
             })
             .offset(x: -6, y: 4)
         }
+        .padding(.horizontal, 6)
     }
 }
 

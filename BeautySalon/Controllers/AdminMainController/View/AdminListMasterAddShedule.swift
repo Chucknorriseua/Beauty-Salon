@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminListMasterAddShedule: View {
     
     @ObservedObject var adminViewModel: AdminViewModel
-    @Environment (\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss
     @Binding var selecetedRecord: Shedule?
     
     var body: some View {

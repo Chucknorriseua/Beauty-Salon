@@ -15,12 +15,12 @@ final class Admin_DataBase {
     
 //MARK: Properties
     
-    static var shared = Admin_DataBase()
+    static let shared = Admin_DataBase()
     
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     private init() {}
     
@@ -94,7 +94,7 @@ final class Admin_DataBase {
         if clientSnapshot.exists {
             let recordRef = clientRef.collection("MyRecords").document(recordID)
             
-            try await recordRef.setData(record.shedule, merge: true)
+            try await recordRef.updateData(record.shedule)
             print("✅ Запись успешно обновлена для клиента с ID: \(clientID)")
         } else {
             print("❌ Клиент с ID \(clientID) не найден!")
@@ -343,9 +343,9 @@ final class Admin_DataBase {
         }
     }
     
-    func remove_RecodsChangeFromClient(clientID: String) async throws {
+    func remove_RecodsChangeFromClient(shedule: Shedule, clientID: String) async throws {
         let record = clientFs.document(clientID).collection("MyRecords")
-        let snap = try await record.whereField("id", isEqualTo: clientID).getDocuments()
+        let snap = try await record.whereField("id", isEqualTo: shedule.id).getDocuments()
         for doc in snap.documents {
             try await doc.reference.delete()
         }
@@ -362,7 +362,7 @@ final class Admin_DataBase {
     
     func remove_MasterShedule(shedule: Shedule, clientID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
-        let record =  mainFS.document(uid).collection("Masters").document(clientID).collection("Shedule")
+        let record = mainFS.document(uid).collection("Masters").document(clientID).collection("Shedule")
         let snap = try await record.whereField("id", isEqualTo: shedule.id).getDocuments()
         for doc in snap.documents {
             try await doc.reference.delete()
@@ -379,6 +379,28 @@ final class Admin_DataBase {
         }
     }
     
+    func deleteMyProfileFromFirebase(profile: Company_Model) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let profileMy = mainFS.whereField("id", isEqualTo: profile.id)
+
+        let snap = try await profileMy.getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+        if let imageUrl = profile.image, !imageUrl.isEmpty {
+            let storageRef = Storage.storage().reference().child("image/\(uid)/")
+            try await storageRef.delete()
+        }
+        let storageRef = Storage.storage().reference().child("homeCare/\(uid)/")
+        let listResult = try await storageRef.listAll()
+        
+        for item in listResult.items {
+            try await item.delete()
+        }
+
+        try await auth.currentUser?.delete()
+    }
+    
     func deinitListener() {
         listener?.remove()
         listener = nil
@@ -388,3 +410,4 @@ final class Admin_DataBase {
     }
 
 }
+

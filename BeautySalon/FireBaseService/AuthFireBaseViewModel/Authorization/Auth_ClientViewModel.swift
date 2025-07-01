@@ -18,7 +18,7 @@ final class Auth_ClientViewModel: ObservableObject {
     @Published var locationManager = LocationManager()
     @Published var signInViewmodel = SignInViewModel()
     @Published var currentUser: User? = nil
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
  
     
     let auth = Auth.auth()

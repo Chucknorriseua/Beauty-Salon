@@ -10,7 +10,7 @@ import SwiftUI
 struct PasswordResetView: View {
     
     @StateObject private var adminAuth = Auth_ADMIN_Viewmodel()
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 20) {

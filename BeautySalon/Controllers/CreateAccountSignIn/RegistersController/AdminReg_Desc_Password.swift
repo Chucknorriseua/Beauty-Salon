@@ -57,8 +57,10 @@ struct AdminReg_Desc_Password: View {
                     
                     Task {
                         await adminViewModel.setNew_Admin_Profile()
-                        coordinator.popToRoot()
-                        isLoader = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            isLoader = false
+                            coordinator.push(page: .Admin_main)
+                        }
                     }
                 }
                 

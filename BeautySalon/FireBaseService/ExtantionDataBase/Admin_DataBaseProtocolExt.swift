@@ -55,9 +55,13 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
                   let nameMaster = proce["nameMaster"] as? String,
                   let comment = proce["comment"] as? String,
                   let fcnTokenUser = data?["fcnTokenUser"] as? String,
-                  let creationDate = proce["creationDate"] as? String,
+//                  let creationDate = proce["creationDate"] as? String,
                   let tint = proce["tint"] as? String,
                   let procedure = proce["procedure"] as? [[String: Any]],
+                  let latitude = data?["latitude"] as? Double,
+                  let longitude = data?["longitude"] as? Double,
+                  let nameSalonOrManster = data?["nameSalonOrManster"] as? String,
+                  let phoneSalonOrMaster = data?["phoneSalonOrMaster"] as? String,
                   let timesTamp = proce["timesTamp"] as? Timestamp else {
                 throw NSError(domain: "snapShot error data", code: 0, userInfo: nil)
             }
@@ -73,7 +77,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
                 return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
             }
             return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
-                           nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur)
+                           nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur, latitude: latitude, longitude: longitude, nameSalonOrManster: nameSalonOrManster, phoneSalonOrMaster: phoneSalonOrMaster)
         }
         
         return Client(id: id, clientID: clientID, name: name, email: email, phone: phone,
@@ -85,6 +89,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
         guard let id = data?["id"] as? String,
               let masterID = data?["masterID"] as? String,
               let name = data?["name"] as? String,
+              let roleMaster = data?["roleMaster"] as? String,
               let desc = data?["description"] as? String,
               let email = data?["email"] as? String,
               let phone = data?["phone"] as? String,
@@ -92,7 +97,9 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let likes = data?["likes"] as? Int,
               let fcnTokenUser = data?["fcnTokenUser"] as? String,
               let imageUrl = data?["imagesUrl"] as? [String],
+              let adress = data?["adress"] as? String,
               let categories = data?["categories"] as? String,
+              let masterMake = data?["masterMake"] as? String,
               let procedure = data?["procedure"] as? [[String: Any]],
               let latitude = data?["latitude"] as? Double,
               let longitude = data?["longitude"] as? Double else {
@@ -109,9 +116,9 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
              }
              return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
-        return MasterModel(id: id, masterID: masterID, name: name, email: email,
-                           phone: phone, description: desc, image: image,
-                           imagesUrl: imageUrl, categories: categories, fcnTokenUser: fcnTokenUser, likes: likes, procedure: procedur, latitude: latitude, longitude: longitude)
+         return MasterModel(id: id, masterID: masterID, roleMaster: roleMaster, name: name, email: email,
+                            phone: phone, adress: adress, description: desc, image: image,
+                            imagesUrl: imageUrl, categories: categories, masterMake: masterMake, fcnTokenUser: fcnTokenUser, likes: likes, procedure: procedur, latitude: latitude, longitude: longitude)
     }
     
      func convertDocumentToShedule(_ document: DocumentSnapshot) throws -> Shedule {
@@ -127,6 +134,10 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
               let procedure = data?["procedure"] as? [[String: Any]],
               let comment = data?["comment"] as? String,
               let tint = data?["tint"] as? String,
+              let nameSalonOrManster = data?["nameSalonOrManster"] as? String,
+              let phoneSalonOrMaster = data?["phoneSalonOrMaster"] as? String,
+              let latitude = data?["latitude"] as? Double,
+              let longitude = data?["longitude"] as? Double,
               let timesTamp = data?["timesTamp"] as? Timestamp else { throw NSError(domain: "Not correct create data", code: 0, userInfo: nil) }
         let createTampDate = creationDate.dateValue()
          
@@ -142,7 +153,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
              return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
         return Shedule(id: id, masterId: masterId, nameCurrent: nameCurrent, taskService: taskService, phone: phone,
-                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur)
+                       nameMaster: nameMaster, comment: comment, creationDate: createTampDate, fcnTokenUser: fcnTokenUser, tint: tint, timesTamp: timesTamp, procedure: procedur, latitude: latitude, longitude: longitude, nameSalonOrManster: nameSalonOrManster, phoneSalonOrMaster: phoneSalonOrMaster)
     }
     
      func convertDocumentToCompany(_ document: DocumentSnapshot) throws -> Company_Model {
@@ -150,6 +161,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
         guard let id = data?["id"] as? String,
               let adminID = data?["adminID"] as? String,
               let name = data?["name"] as? String,
+              let roleAdmin = data?["roleAdmin"] as? String,
               let companyName = data?["companyName"] as? String,
               let email = data?["email"] as? String,
               let phone = data?["phone"] as? String,
@@ -175,7 +187,7 @@ extension Admin_DataBase: Admin_DataBaseDocumentConvertProtocol {
              }
              return Procedure(id: id, title: title, price: price, image: image, colorText: colorText, description: description)
          }
-        return Company_Model(id: id, adminID: adminID, name: name,
+         return Company_Model(id: id, adminID: adminID, roleAdmin: roleAdmin, name: name,
                              companyName: companyName,
                              adress: adress, email: email,
                              phone: phone, description: desc,

@@ -14,8 +14,12 @@ final class MasterViewModel: ObservableObject {
     static let shared = MasterViewModel()
     
     @Published private(set) var company: [Company_Model] = []
+    @Published private(set) var salonFavorites: [Company_Model] = []
     @Published var createProcedure: [Procedure] = []
     @Published var sheduleFromClient: [Shedule] = []
+    @Published var sheduleStatic: [Shedule] = []
+    @Published private(set) var client: [Client] = []
+    @Published var totalCost: Double = 0.0
     
     @Published  var isAlert: Bool = false
     @Published  var errorMassage: String = ""
@@ -23,6 +27,7 @@ final class MasterViewModel: ObservableObject {
     @Published var admin: Company_Model
     @Published var masterModel: MasterModel
     @Published var sheduleModel: Shedule
+    @Published var selectedMonth: MonthStatistics = MonthStatistics.currentMonth
     
     var auth = Auth.auth()
     
@@ -34,6 +39,40 @@ final class MasterViewModel: ObservableObject {
             await getCompany()
         }
     }
+    
+    
+    var recordsForSelectedMonth: [Shedule] {
+        filterRecordsByMonth(sheduleStatic, selectedMonth)
+    }
+    
+    
+    var monthlyRecords: Int {
+        AnalyticsCalculator.getMonthlyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var biweeklyRecords: Int {
+        AnalyticsCalculator.getBiweeklyRecords(schedules: recordsForSelectedMonth)
+    }
+    
+    var popularProcedures: [String: Int] {
+        AnalyticsCalculator.getPopularProcedures(schedules: recordsForSelectedMonth)
+    }
+    var uniqueClients: Int {
+        AnalyticsCalculator.getUniqueClients(schedules: client)
+    }
+    
+    var totalCostProcedure: Double {
+        AnalyticsCalculator.getTotalCostProcedure(schedules: recordsForSelectedMonth)
+    }
+    
+    private func filterRecordsByMonth(_ schedules: [Shedule], _ month: MonthStatistics) -> [Shedule] {
+        let calendar = Calendar.current
+        return schedules.filter { schedule in
+            let components = calendar.dateComponents([.month], from: schedule.creationDate)
+            return components.month == month.monthNumber
+        }
+    }
+    
 // MARK: Procedure
     @MainActor
     func addNewProcedureFirebase(addProcedure: Procedure) async {
@@ -80,12 +119,20 @@ final class MasterViewModel: ObservableObject {
         }
     }
     
+    func addSheduleInMyStatic(sheduleID: Shedule) async {
+        do {
+            try await Master_DataBase.shared.setSheduleInStatic(sheduleID: sheduleID.id, shedule: sheduleID)
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
     //  MARK: Get All comapny
-   private func getCompany() async {
+    func getCompany() async {
         do {
             
             let fetchAllCompany = try await Master_DataBase.shared.fetchAllCompany()
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.company = fetchAllCompany
             }
@@ -97,17 +144,84 @@ final class MasterViewModel: ObservableObject {
         }
     }
     
+    func fetchClientFromHomeOrAway() async {
+        do {
+            let client = try await Master_DataBase.shared.fetch_CurrentClient_FromMaster()
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.client = client
+            }
+            await fetchSheduleForStatic()
+        } catch {
+            print("error getCompany", error.localizedDescription)
+//            await handleError(error: error)
+        }
+    }
+    
     func fetchSheduleFromClient() async {
         do {
             let shedule = try await Master_DataBase.shared.fetchSheduleFromClinet()
             let sortedDate = shedule.sorted(by: {$0.creationDate < $1.creationDate})
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.sheduleFromClient = sortedDate
-            
                 print("Shedule:", shedule)
             }
         } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    func fetchSheduleForStatic() async {
+        do {
+            let shedule = try await Master_DataBase.shared.fetchSheduleForStatic()
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.sheduleStatic = shedule
+                print("Shedule:", shedule)
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    @MainActor
+    func addMyFavoritesSalon(salon: Company_Model) async {
+        do {
+            try await Master_DataBase.shared.addFavoritesSalon(salonID: salon.adminID, salon: salon)
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                if !salonFavorites.contains(where: {$0.id == salon.id}) {
+          
+                    self.salonFavorites.append(salon)
+                }
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    @MainActor
+    func removeFavoritesSalon(salon: Company_Model) async {
+        do {
+            if let index = self.salonFavorites.firstIndex(where: { $0.id == salon.id }) {
+                try await Master_DataBase.shared.remove_FavoritesSalon(salonID: salon.id)
+                self.salonFavorites.remove(at: index)
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    func fetchFavoritesSalon() async {
+        do {
+          let salon = try await Master_DataBase.shared.fetchFavorites_Salon()
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.salonFavorites = salon
+            }
+        } catch {
+            print("error fetchFavoritesSalon", error.localizedDescription)
             await handleError(error: error)
         }
     }
@@ -116,14 +230,15 @@ final class MasterViewModel: ObservableObject {
    func fetchProfile_Master() async {
         do {
             let master = try await Master_DataBase.shared.fecth_Data_Master_FB()
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.masterModel = master
                 self.createProcedure = masterModel.procedure
                 print("MASTER:", master)
             }
         } catch {
-            await handleError(error: error)
+//            await handleError(error: error)
+            print("Error fetch master data")
         }
     }
     
@@ -140,6 +255,15 @@ final class MasterViewModel: ObservableObject {
     func save_Profile() async {
         do {
             try await Master_DataBase.shared.setData_For_Master_FB(master: masterModel)
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    func updateRecordsFromClient(record: Shedule, clientID: String) async {
+        do {
+            try await Master_DataBase.shared.changeRecordFromClient(record: record, id: record.id)
+            try await Master_DataBase.shared.saveChangeSendClient(clientID: clientID, record: record)
         } catch {
             await handleError(error: error)
         }

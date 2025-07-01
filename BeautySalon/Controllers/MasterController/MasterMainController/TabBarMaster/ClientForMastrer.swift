@@ -12,6 +12,7 @@ struct ClientForMastrer: View {
     
     @ObservedObject var masterViewModel: MasterViewModel
     @ObservedObject var VmCalendar: MasterCalendarViewModel
+    @EnvironmentObject var storeKitView: StoreViewModel
     
 // MARK: Fetch all User Of Company
     var body: some View {
@@ -37,6 +38,16 @@ struct ClientForMastrer: View {
                                 await VmCalendar.fetchCurrentClient()
                             }
                         }
+                }
+                .overlay(alignment: .bottom) {
+                    if !storeKitView.checkSubscribe {
+                        VStack {
+                            Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                                .frame(maxWidth: .infinity, maxHeight: 80)
+                                .padding(.horizontal, 12)
+                        }
+                        .padding(.bottom, 60)
+                    }
                 }
                 .createBackgrounfFon()
            

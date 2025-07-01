@@ -12,9 +12,15 @@ struct MapViewInfo: View {
     @State private var isLocationAlarm: Bool = false
     @State private var massage: String = ""
     @State private var title: String = ""
+    
+    
+    @EnvironmentObject var storeKitView: StoreViewModel
     @StateObject private var locationManager = LocationManager()
+    @EnvironmentObject var banner: InterstitialAdViewModel
     @ObservedObject private var adminViewModel = AdminViewModel.shared
     @EnvironmentObject var coordinator: CoordinatorView
+    
+    @AppStorage("firstSignIn") var firstSignIn: Bool = false
     
     var body: some View {
         VStack {
@@ -62,10 +68,18 @@ struct MapViewInfo: View {
                 Task { await locationManager.updateLocation(company: adminViewModel.adminProfile) }
             }, onCancel: {})
         }
+        .onAppear {
+                if !storeKitView.checkSubscribe {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        if let rootVC = UIApplication.shared.connectedScenes
+                            .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+                            .first {
+                            banner.showAd(from: rootVC)
+                        }
+                    }
+                }
+            
+        }
         .createBackgrounfFon()
     }
-}
-
-#Preview {
-    MapViewInfo()
 }

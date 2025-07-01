@@ -7,8 +7,10 @@
 
 import SwiftUI
 import UserNotifications
+import AppTrackingTransparency
+import AdSupport
 
-final class NotificationController: NotificationCenter {
+final class NotificationController {
     
     static let sharet = NotificationController()
     
@@ -53,8 +55,29 @@ final class NotificationController: NotificationCenter {
             print("Notifications settings: \(settings)")
             if settings.authorizationStatus == .authorized {
                 print("Notifications are authorized.")
+                self.requestTrackingPermission()
             } else {
                 print("Notifications are not authorized.")
+                self.requestTrackingPermission()
+            }
+        }
+    }
+    
+    func requestTrackingPermission() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    print("Отслеживание разрешено, IDFA: \(ASIdentifierManager.shared().advertisingIdentifier)")
+                case .denied:
+                    print("Отслеживание запрещено")
+                case .notDetermined:
+                    print("Пользователь еще не выбрал")
+                case .restricted:
+                    print("Доступ ограничен (например, родительский контроль)")
+                @unknown default:
+                    break
+                }
             }
         }
     }

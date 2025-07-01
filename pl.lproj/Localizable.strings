@@ -6,13 +6,13 @@
   
 */
 "Sign In" = "Zaloguj się";
-"Welcom in Beauty Salon" = "Witamy w Beauty Salon";
+"Welcome in My Beauty Hub" = "Witamy w My Beauty Hub";
 "If you don't have an account, create one." = "Jeśli nie masz konta, załóż je.";
 " Register as Admin" = "Zarejestruj się jako Administrator";
 " Register as Master" = "Zarejestruj się jako Mistrz";
 "Register as Client" = "Zarejestruj się jako Klient";
-"Сhoose company logo" = "Wybierz logo firmy";
-"Name Company" = "Nazwa firmy";
+"Сhoose photo salon" = "Wybierz zdjęcie salonu";
+"Salon name" = "Nazwa Salonu";
 "Name Administrator" = "Imię Administratora";
 "You don't have a subscription, to enter you need to buy a subscription" = "Nie masz subskrypcji, aby wejść, musisz kupić subskrypcję";
 "Phone (+000)" = "Telefon (+000)";
@@ -85,7 +85,7 @@
 "Purchase a subscription to create your salon or create a profile as a master." = "Wykup subskrypcję, aby stworzyć swój salon lub utwórz profil jako mistrz.";
 "Something went wrong" = "Coś poszło nie tak";
 "Not correct password or email, Make sure you are using the correct account. " = "Nieprawidłowe hasło lub adres e-mail, upewnij się, że używasz prawidłowego konta. ";
-"Clients for recording" = "Klienci do rejestrowania";
+"My Сlients" = "Moi Klienci";
 "Are you sure you want to exit?" = "Czy na pewno chcesz wyjść?";
 "Log out of the profile" = "wylogować się z profilu";
 "Description, limit your input to 160 characters." = "Opis ogranicz do 160 znaków.";
@@ -105,7 +105,7 @@
 "" = "";
 "Another" = "Inny";
 "Email" = "Poczta";
-"Email- @" = "Poczta- @";
+"Email- @gmail" = "Poczta- @gmail";
 "notification" = "Wysyłasz zapis dla %@";
 "notifiTitle" = "Twój rekord został wysłany do administratora, poczekaj aż administrator się z Tobą skontaktuje.";
 "sendRecordFormaster" = "Zapis został wysłany";
@@ -129,9 +129,99 @@
 "You are trying to log in as an administrator without this subscription, or try renewing your subscription that you previously purchased." = "Próbujesz zalogować się jako administrator bez tej subskrypcji, lub spróbować odnowić zakupioną wcześniej subskrypcję.";
 "Restore Purchases" = "Przywrócenie zakupów";
 "totalcost" = "koszt całkowity: %@";
-"Nail master not found..." = "Nail Master nie został znaleziony...";
+"Master not found..." = "Master nie został znaleziony...";
 "Please try again." = "Spróbuj ponownie.";
 "Salon not found..." = "Salonu nie znaleziono...";
+"“Update your geolocation to the address of your salon so that masters and clients can find you.”" = "„Zaktualizuj swoją geolokalizację do adresu swojego salonu, aby mistrzowie i klienci mogli Cię znaleźć”.";
+"Monthly salon statistics" = "Miesięczne statystyki salonu";
+"Monthly statistics" = "Miesięczne statystyki";
+"Change description" = "Zmienić opis";
+"phone: " = "telefon: ";
+"Salon analytics" = "Analityka salonu";
+"In a month" = "Za miesiąc";
+"In 14 days" = "W ciągu 14 dni";
+"Period" = "Okres";
+"Quantity" = "Ilość";
+"Popular procedures" = "Popularne procedury";
+"Popularity" = "Popularność";
+"The most recorded masters" = "Najczęściej nagrywani mistrzowie";
+"Master" = "Mistrz";
+"Records" = "Zapisy";
+"Number of unique customers:" = "Liczba unikalnych klientów:";
+"The total cost of all procedures from clients: " = "całkowity koszt wszystkich procedur od klientów: ";
+"January" = "Styczeń";
+"February" = "Luty";
+"March" = "Marzec";
+"April" = "Kwiecień";
+"May" = "Maj";
+"June" = "Czerwiec";
+"July" = "Lipiec";
+"August" = "Sierpień";
+"September" = "Wrzesień";
+"October" = "Październik";
+"November" = "Listopad";
+"December" = "Grudzień";
+" Create Salon" = "Utwórz Salon";
+"Profile seetings" = "Ustawienia profilu";
+"Salon description" = "Opis salonu";
+"Categories" = "Kategorie";
+"Reset password" = "Reset hasła";
+"Enter your email" = "Wpisz swój adres e-mail";
+"Password reset" = "Resetowanie hasła";
+"Send reset link" = "Wyślij link resetowania";
+"Enter your email" = "Wpisz swój adres e-mail";
+"Incorrect email." = "Nieprawidłowy adres e-mail.";
+"My favorites Master" = "Mój ulubiony Mistrz";
+"My favorites Salon" = "Mój ulubiony Salon";
+"My Favorites" = "Moje Ulubione";
+"This category is intended for masters who take clients at home or with a visit to the client." = "Ta kategoria jest przeznaczona dla mistrzów, którzy przyjmują klientów w domu lub z wizytą u klienta.";
+"The 'Another' category means that you provide additional services such as Thai massage or other health and beauty services." = "Kategoria „Inne” oznacza, że użytkownik świadczy dodatkowe usługi, takie jak masaż tajski lub inne usługi związane ze zdrowiem i urodą.";
+"notifiTitleMaster" = "Twój rekord został wysłany do jednostki nadrzędnej, poczekaj na kontakt ze strony jednostki nadrzędnej.";
+"Home care" = "Opieka domowa";
+"Change photo" = "Zmień zdjęcie";
+"Your profile is registered using Apple authorization. Your data provided by Apple will be used to create your account and can also be changed in the profile settings." = "Twój profil jest rejestrowany przy użyciu autoryzacji Apple. Dane dostarczone przez Apple zostaną wykorzystane do utworzenia konta i można je również zmienić w ustawieniach profilu.";
+"Phone" = "Telefon";
+"Your profile is registered using Google authorization. Your data provided by Google will be used to create your account and can also be changed in the profile settings." = "Twój profil jest rejestrowany przy użyciu autoryzacji Google. Dane dostarczone przez Google zostaną wykorzystane do utworzenia konta i można je również zmienić w ustawieniach profilu.";
+"Buy an admin subscription to manage your salon" = "Kup subskrypcję administratora, aby zarządzać salonem";
+
+"Buy a master subscription to create your profile" = "Kup subskrypcję główną, aby utworzyć swój profil";
+
+"You are purchasing an admin subscription to fully manage your salon, masters, and client appointments. This will give you access to features for setting up your salon profile, managing master schedules, and tracking client bookings." = "Kupujesz subskrypcję administratora, aby w pełni zarządzać salonem, mistrzami i spotkaniami klientów. Dzięki temu uzyskasz dostęp do funkcji konfigurowania profilu salonu, zarządzania harmonogramami mistrzów i śledzenia rezerwacji klientów.";
+
+"You are purchasing a master subscription to receive bookings from the admin and clients, manage your schedule, and increase service visibility. Independent masters can work from home or offer mobile services." = "Kupujesz subskrypcję Master, aby otrzymywać rezerwacje od administratora i klientów, zarządzać swoim harmonogramem i zwiększyć widoczność usług. Niezależni mistrzowie mogą pracować z domu lub oferować usługi mobilne.";
+
+"If you delete an entry scheduled for tomorrow or later, you will not receive notifications about it." = "Jeśli usuniesz wpis zaplanowany na jutro lub później, nie będziesz otrzymywać o nim powiadomień.";
+"Delete the record?" = "Usunąć wpis?";
+
+"Your administrator profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will complement the salon information you can enter in the profile settings. After registration, your salon will be created where you can enter additional information about your salon and add your masters to your salon." = "Profil administratora zostanie zarejestrowany przy użyciu usługi Apple Sign-In. Dane dostarczone przez Apple zostaną wykorzystane do utworzenia konta i uzupełnią informacje o salonie, które można wprowadzić w ustawieniach profilu. Po rejestracji zostanie utworzony salon, w którym można wprowadzić dodatkowe informacje o salonie i dodać mistrzów do salonu.";
+
+"Your master profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will supplement the information about you that you can enter in your profile settings. Once registered, your profile will be created where you can enter additional information about yourself, add your work, and receive notes from administrators and customers." = "Profil główny użytkownika zostanie zarejestrowany przy użyciu usługi Apple Sign-In. Dane dostarczone przez Apple zostaną wykorzystane do utworzenia konta i uzupełnią informacje o użytkowniku, które można wprowadzić w ustawieniach profilu. Po rejestracji zostanie utworzony profil użytkownika, w którym będzie on mógł wprowadzać dodatkowe informacje o sobie, dodawać swoje prace i otrzymywać notatki od administratorów i klientów.";
+
+"Your customer profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and supplement the information you can enter in your profile settings. Once registered, your profile will be created and you will be able to add additional information about yourself and update your name or phone number to contact you after sending the appointment to the salon or the master" = "Profil klienta zostanie zarejestrowany przy użyciu usługi Apple Sign-In. Dane dostarczone przez Apple zostaną wykorzystane do utworzenia konta i uzupełnienia informacji, które można wprowadzić w ustawieniach profilu. Po zarejestrowaniu profil zostanie utworzony, a użytkownik będzie mógł dodać dodatkowe informacje o sobie oraz zaktualizować swoje imię i nazwisko lub numer telefonu w celu skontaktowania się z nim po wysłaniu wizyty do salonu lub mistrza";
+
+"Purchase a subscription to create your salon as an administrator, or purchase a master subscription to work in an existing salon. Please note: the Admin subscription is only available for salon owners and the Master subscription is only available for masters. You can only have one active subscription." = "Kup subskrypcję, aby utworzyć swój salon jako administrator, lub kup subskrypcję Master, aby pracować w istniejącym salonie. Uwaga: subskrypcja Admin jest dostępna tylko dla właścicieli salonów, a subskrypcja Master jest dostępna tylko dla mistrzów. Można mieć tylko jedną aktywną subskrypcję.";
+"My Records" = "Moje zapisy";
+"Working at the Salon" = "Pracuję w Salonie";
+"My analytics" = "Moja analityka";
+"Add an entry to the monthly stats" = "Dodaj wpis do statystyk miesięcznych";
+"Add an entry to monthly statistics to track monthly data." = "Dodaj wpis do statystyk miesięcznych, aby śledzić dane miesięczne.";  
+"Do you really want to delete your profile?" = "Czy na pewno chcesz usunąć swój profil?";
+"Once your profile has been deleted, it can no longer be restored" = "Po usunięciu profilu nie będzie można go przywrócić.";
+"Delete my Profile" = "Usuń mój profil";
+"Do you want to delete the record?" = "Czy chcesz usunąć ten rekord?";
+"Selected categories" = "Wybrane kategorie";  
+"7-day free trial, then will be Automatically renew unless canceled at least 24 hours before the end of the trial or billing period." = "7-dniowy bezpłatny okres próbny, a następnie zostanie automatycznie odnowiony, chyba że zostanie anulowany co najmniej 24 godziny przed końcem okresu próbnego lub rozliczeniowego.";
+"Your profile has been completely deleted" = "Twój profil został całkowicie usunięty";
+"User not found. Check email or Wrong password Try again." = "Użytkownik nie znaleziony. Sprawdź e-mail lub błędne hasło. Spróbuj ponownie.";
+"Are you sure you want to delete your profile from My Beauty Hub? Once deleted, it can't be restored!" = "Czy na pewno chcesz usunąć swój profil z My Beauty Hub? Po usunięciu nie będzie go można przywrócić!";
+"You must be logged in to your account to delete your profile" = "Aby usunąć swój profil, musisz być zalogowany na swoje konto.";
+"Enter in the field what you do" = "Wpisz w polu, czym się zajmujesz";
+"masterMake" = "Jestem mistrzem: %@";
+"Exit my Profile" = "Wyjdź z mojego profilu";
+"You see ads so we can continue to develop the app. If you want to use without ads - subscribe and enjoy full comfort!" = "Widzisz reklamy, abyśmy mogli dalej rozwijać aplikację. Jeśli chcesz korzystać bez reklam – wykup subskrypcję i ciesz się pełnym komfortem!";
+"Buy subscription" = "Kup subskrypcję";
+"Terms of Use" = "Warunki użytkowania";
+"About me" = "O mnie";
 "" = "";
 "" = "";
 "" = "";

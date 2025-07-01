@@ -14,7 +14,6 @@ protocol isFormValid {
     var isFarmValid: Bool { get }
 }
 
-@MainActor
 final class Auth_ADMIN_Viewmodel: ObservableObject {
     
     static var shared = Auth_ADMIN_Viewmodel()
@@ -25,7 +24,7 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var message: String = ""
     @Published var showAlert: Bool = false
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     let auth = Auth.auth()
     
@@ -65,6 +64,7 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
             
             let admin = Company_Model(id: uid,
                                       adminID: uid,
+                                      roleAdmin: "Admin",
                                    name: nameAdmin,
                                    companyName: nameCompany,
                                     adress: "",
@@ -114,7 +114,7 @@ final class Auth_ADMIN_Viewmodel: ObservableObject {
         }
     }
     
-    
+    @MainActor
     func signOut() async {
         
         do {

@@ -11,6 +11,7 @@ struct Company_Model: Identifiable, Codable, Hashable {
     
     let id: String
     var adminID: String
+    var roleAdmin: String
     var name: String
     var companyName: String
     var adress: String
@@ -26,13 +27,14 @@ struct Company_Model: Identifiable, Codable, Hashable {
     var categories: String
     
     static func companyModel() -> Company_Model {
-        return Company_Model(id: "", adminID: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", procedure: [], likes: 0, fcnTokenUser: "", latitude: 0.0, longitude: 0.0, categories: "")
+        return Company_Model(id: "", adminID: "", roleAdmin: "", name: "", companyName: "", adress: "", email: "", phone: "", description: "", image: "", procedure: [], likes: 0, fcnTokenUser: "", latitude: 0.0, longitude: 0.0, categories: "")
     }
     
     var admin_Model_FB: [String: Any] {
         var model = [String: Any]()
         model["id"] = self.id
         model["adminID"] = self.adminID
+        model["roleAdmin"] = self.roleAdmin
         model["name"] = self.name
         model["companyName"] = self.companyName
         model["adress"] = self.adress

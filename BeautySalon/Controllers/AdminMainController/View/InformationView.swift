@@ -10,8 +10,11 @@ import SwiftUI
 struct InformationView: ViewModifier {
     
     @Binding var isShowInfo: Bool
+    @Binding var textField: String
     let image: String
     let text: String
+    @State var isShowTextField: Bool = false
+    let action: () -> ()
     let dismiss: () -> ()
     
     func body(content: Content) -> some View {
@@ -39,10 +42,28 @@ struct InformationView: ViewModifier {
                                 .foregroundStyle(Color.white)
                                 .lineLimit(14)
                                 .multilineTextAlignment(.leading)
+                            
                         }
                         .frame(maxWidth: .infinity, maxHeight: 300)
-        
-                        Spacer()
+                        if isShowTextField {
+                            VStack {
+                                TextField("Enter in the field what you do", text: $textField)
+                                    .font(.system(size: 16, weight: .heavy))
+                                    .foregroundStyle(Color.white)
+                                    .overlay(alignment: .trailing, content: {
+                                        Button {
+                                            action()
+                                        } label: {
+                                            Image(systemName: "plus.circle.fill")
+                                                .font(.system(size: 30, weight: .heavy))
+                                                .foregroundStyle(Color.white)
+                                        }
+                                        
+                                    })
+                                    .padding(.horizontal, 10)
+                            }
+                            .padding(.bottom, 16)
+                        }
                     }
                     .padding(.horizontal, 4)
                     .padding(.top, 8)
@@ -77,11 +98,12 @@ struct InformationView: ViewModifier {
 }
 
 extension View {
-    func informationView(isShowInfo: Binding<Bool>, image: String, text: String, dismiss: @escaping () -> Void) -> some View {
-        self.modifier(InformationView(isShowInfo: isShowInfo, image: image, text: text, dismiss: dismiss))
+    func informationView(isShowInfo: Binding<Bool>, textField: Binding<String>, image: String, text: String, isShowTextField: Bool, action: @escaping () -> Void, dismiss: @escaping () -> Void) -> some View {
+        self.modifier(InformationView(isShowInfo: isShowInfo, textField: textField, image: image, text: text, isShowTextField: isShowTextField, action: action, dismiss: dismiss))
     }
 }
-
-//#Preview {
-//    InformationView()
-//}
+#Preview {
+        Color.black
+            .frame(width: 300, height: 500)
+            .informationView(isShowInfo: .constant(true), textField: .constant(""), image: "makeup", text: "sdfdsfds", isShowTextField: true, action: {}, dismiss: {})
+}

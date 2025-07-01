@@ -12,15 +12,12 @@ struct User_PriceList: View {
     
     @ObservedObject var clientViewModel = ClientViewModel.shared
     @EnvironmentObject var coordinator: CoordinatorView
+    @EnvironmentObject var storeKitView: StoreViewModel
+    @EnvironmentObject var banner: InterstitialAdViewModel
     
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 10) {
-                VStack {
-                    Text("Price list for services")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(Color.yellow)
-                }
                 
                 ScrollView {
                     LazyVStack(spacing: 14) {
@@ -41,14 +38,40 @@ struct User_PriceList: View {
                         }
                     }
                 }
+                .onAppear {
+                    if !storeKitView.checkSubscribe {
+                     
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            if let rootVC = UIApplication.shared.connectedScenes
+                                .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+                                .first {
+                                banner.showAd(from: rootVC)
+                            }
+                        }
+                    }
+                }
             }
             .frame(width: geo.size.width, height: geo.size.height)
             .foregroundStyle(Color.yellow.opacity(0.8))
+            .overlay(alignment: .bottom) {
+                if !storeKitView.checkSubscribe {
+                    Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                        .frame(maxWidth: .infinity, maxHeight: 120)
+                        .padding(.horizontal, 12)
+                }
+            }
             .createBackgrounfFon()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     TabBarButtonBack {
                         coordinator.pop()
+                    }
+                }
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        Text("Price list for services")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(Color.yellow)
                     }
                 }
             }

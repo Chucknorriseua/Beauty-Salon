@@ -18,9 +18,11 @@ final class ClientViewModel: ObservableObject {
     @Published private(set) var mastersInRoom: [MasterModel] = []
     @Published private(set) var homeCall: [MasterModel] = []
     @Published private(set) var homeCareSalon: [Procedure] = []
+    @Published private(set) var myRecords: [Shedule] = []
     @Published var procedure: [Procedure] = []
     
     @Published var isAlert: Bool = false
+    @Published var isDeleteRecords: Bool = false
     @Published var isFetchDataLoader: Bool = false
     @Published var errorMassage: String = ""
     @Published var totalCost: Double = 0.0
@@ -44,6 +46,35 @@ final class ClientViewModel: ObservableObject {
     
     
 // MARK: Favorites
+    
+    @MainActor
+    func fetchMyRecords() async {
+        do {
+          let myRecords = try await Client_DataBase.shared.fetchMyrecordsFromSalonOrMaster()
+          let sortedDate = myRecords.sorted(by: {$0.creationDate < $1.creationDate})
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.myRecords = sortedDate
+            }
+        } catch {
+            print("error fetchMyRecords", error.localizedDescription)
+            await handleError(error: error)
+        }
+    }
+    
+    @MainActor
+    func removeMyrecords(record: Shedule) async {
+        do {
+            if let index = self.myRecords.firstIndex(where: { $0.id == record.id }) {
+                try await Client_DataBase.shared.remove_MyRecords(recordsID: record.id)
+                self.myRecords.remove(at: index)
+            }
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
+    
     @MainActor
     func addMyFavoritesSalon(salon: Company_Model) async {
         do {
@@ -177,7 +208,8 @@ final class ClientViewModel: ObservableObject {
                 self.clientModel = client
             }
         } catch {
-            await handleError(error: error)
+//            await handleError(error: error)
+            print("Error fetch client data")
         }
     }
  
@@ -214,7 +246,7 @@ final class ClientViewModel: ObservableObject {
         let adminId = adminProfile.adminID
         do {
             let masters = try await Client_DataBase.shared.getAllMastersFrom_AdminRoom(adminId: adminId)
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.mastersInRoom = masters
             }
@@ -229,7 +261,7 @@ final class ClientViewModel: ObservableObject {
    private func fetchHomeCallMaster() async {
         do {
             let masters = try await Client_DataBase.shared.fetchHomeCallMasters()
-            DispatchQueue.main.async { [weak self] in
+            await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.homeCall = masters
             }
@@ -264,6 +296,15 @@ final class ClientViewModel: ObservableObject {
             await handleError(error: error)
         }
     }
+    
+    func save_UserProfilesMyFavorites() async {
+        do {
+            try await Client_DataBase.shared.setData_ClientFireBase(clientModel: clientModel)
+        } catch {
+            await handleError(error: error)
+        }
+    }
+    
     @MainActor
     private func handleError(error: Error) async {
         isAlert = true

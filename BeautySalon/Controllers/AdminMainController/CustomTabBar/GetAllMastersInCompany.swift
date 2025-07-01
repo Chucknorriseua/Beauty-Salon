@@ -10,7 +10,7 @@ import SwiftUI
 struct GetAllMastersInCompany: View {
     
     @ObservedObject var adminViewModel: AdminViewModel
-
+    @EnvironmentObject var storeKitView: StoreViewModel
     
     var body: some View {
         NavigationView {
@@ -37,6 +37,13 @@ struct GetAllMastersInCompany: View {
                                 await adminViewModel.get_AllAdded_Masters_InRomm()
                             }
                         }
+                }
+                .overlay(alignment: .bottom) {
+                    if !storeKitView.checkSubscribe {
+                        Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                            .frame(maxWidth: .infinity, maxHeight: 80)
+                            .padding(.horizontal, 12)
+                    }
                 }
                 .createBackgrounfFon()
             

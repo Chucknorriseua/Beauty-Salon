@@ -20,9 +20,15 @@ struct MainButtonSignIn: View {
             }
         }, label: {
             HStack {
-                Image(systemName: image)
-                Text(LocalizedStringKey(title))
-            }   .frame(width: UIScreen.main.bounds.width - 40, height: 30)
+                HStack {
+                    Text(LocalizedStringKey(title))
+                    Spacer()
+                    Image(systemName: image)
+                        .font(.system(size: 24, weight: .bold))
+                }
+                .padding(.horizontal, 10)
+            }
+            .frame(width: UIScreen.main.bounds.width - 40, height: 30)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.white)
                 .padding()
@@ -30,7 +36,7 @@ struct MainButtonSignIn: View {
                 .clipShape(.rect(cornerRadius: 24))
                 .shadow(color: .black.opacity(0.3), radius: 10, x: 5, y: 8)
                 .foregroundStyle(Color.red.opacity(0.8))
-                .font(.system(size: 14, weight: .heavy))
+                .font(.system(size: 18, weight: .heavy))
         })
         .padding()
     }

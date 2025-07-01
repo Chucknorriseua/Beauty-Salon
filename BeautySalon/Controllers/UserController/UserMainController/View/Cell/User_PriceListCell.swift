@@ -14,12 +14,13 @@ struct User_PriceListCell: View {
     var body: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text(procedure.title)
                         .padding(.leading, 14)
                         .font(.system(size: 24, weight: .bold))
                     Text(procedure.description)
-                        .fontWidth(.compressed)
+                        .font(.system(size: 16, weight: .heavy))
+                        .fontWidth(.condensed)
                     HStack(spacing: 2) {
                         Spacer()
                         Text("price: ")

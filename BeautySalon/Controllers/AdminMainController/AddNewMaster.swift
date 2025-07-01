@@ -16,7 +16,7 @@ struct AddNewMaster: View {
 
     @ObservedObject var adminModelView: AdminViewModel
     @StateObject private var locationManager = LocationManager()
-    
+    @EnvironmentObject var storeKitView: StoreViewModel
     @Environment(\.dismiss) private var dismiss
    
     private var searchCompanyNearby: [MasterModel] {
@@ -29,19 +29,30 @@ struct AddNewMaster: View {
     var body: some View {
         NavigationView {
             VStack {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(searchCompanyNearby, id: \.id) { master in
-                            NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, isShowPricelist: false, addMasterInRoom: master, isShowMasterSend: false).navigationBarBackButtonHidden(true)) {
-                                
-                                AddNewMasterCell(addMasterInRoom: master)
+                VStack {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(searchCompanyNearby, id: \.id) { master in
+                                NavigationLink(destination: AddNewMasterView(isShowButtonAdd: true, isShowPricelist: false, addMasterInRoom: master, isShowMasterSend: false).navigationBarBackButtonHidden(true)) {
+                                    
+                                    AddNewMasterCell(addMasterInRoom: master, isShowCategories: false)
+                                }
                             }
                         }
+                        .padding(.top, 10)
                     }
-                    .padding(.top, 10)
+                    .refreshable {
+                        Task { await adminModelView.fetchAllMastersFireBase() }
+                    }
                 }
-                .refreshable {
-                    Task { await adminModelView.fetchAllMastersFireBase() }
+                .overlay(alignment: .bottom) {
+                    if !storeKitView.checkSubscribe {
+                        VStack {
+                            Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                                .frame(maxWidth: .infinity, maxHeight: 80)
+                                .padding(.horizontal, 12)
+                        }
+                    }
                 }
             }
             .createBackgrounfFon()
@@ -49,7 +60,7 @@ struct AddNewMaster: View {
             .animation(.spring(duration: 1), value: searchText)
                 .overlay(content: {
                     if searchCompanyNearby.isEmpty {
-                        ContentUnavailableView("Nail master not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
+                        ContentUnavailableView("Master not found...", systemImage: "person.2.slash.fill", description: Text("Please try again."))
                     }
                 })
             .foregroundStyle(Color.white)

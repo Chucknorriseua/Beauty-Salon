@@ -1,4 +1,14 @@
 {
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
   "identifier" : "A74DD33A",
   "nonRenewingSubscriptions" : [
 
@@ -96,16 +106,49 @@
           },
           "localizations" : [
             {
-              "description" : "7 day free trial",
-              "displayName" : "Yearly",
+              "description" : "Master profile management",
+              "displayName" : "Yearly Subscription Access",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Керування профілем майстра",
+              "displayName" : "Доступ до річної підписки",
+              "locale" : "uk"
+            },
+            {
+              "description" : "Správa hlavního profilu",
+              "displayName" : "Roční předplatné přístupu",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Gestion des profils maîtres",
+              "displayName" : "Abonnement annuel à l'accès",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Zarządzanie profilem głównym",
+              "displayName" : "Roczna subskrypcja dostępu",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Gestión de perfiles maestros",
+              "displayName" : "Abono de acceso anual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Verwaltung von Masterprofilen",
+              "displayName" : "Jährliches Abonnement",
+              "locale" : "de"
             }
           ],
-          "productID" : "master.subscription.yearly",
+          "productID" : "masters.subscription.yearly2999",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Yearly",
+          "referenceName" : "Master - 1 Yearly",
           "subscriptionGroupID" : "604C302D",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -114,7 +157,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "4.99",
+          "displayPrice" : "2.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "7B58822B",
@@ -125,16 +168,49 @@
           },
           "localizations" : [
             {
-              "description" : "7 day free trial",
-              "displayName" : "Monthly",
+              "description" : "Master profile management",
+              "displayName" : "Monthly Subscription Access",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Gestion des profils maîtres",
+              "displayName" : "Abonnement mensuel Accès",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Správa hlavního profilu",
+              "displayName" : "Měsíční předplatné přístupu",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Verwaltung von Masterprofilen",
+              "displayName" : "Monatliches Abonnement",
+              "locale" : "de"
+            },
+            {
+              "description" : "Zarządzanie profilem głównym",
+              "displayName" : "Miesięczna subskrypcja dostępu",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Gestión de perfiles maestros",
+              "displayName" : "Suscripción mensual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Керування профілем майстра",
+              "displayName" : "Доступ до місячної підписки",
+              "locale" : "uk"
             }
           ],
-          "productID" : "master.subscription.monthly",
+          "productID" : "master.subscription.monthly.299",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly",
+          "referenceName" : "Master - 1 Monthly",
           "subscriptionGroupID" : "604C302D",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -143,7 +219,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "79.99",
+          "displayPrice" : "39.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "56260BF1",
@@ -154,16 +230,49 @@
           },
           "localizations" : [
             {
-              "description" : "7 day free trial",
-              "displayName" : "Yearly",
+              "description" : "Manage your salon and masters!",
+              "displayName" : "Buy subscription Yearly - ",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Керуйте своїм салоном і майстрами!",
+              "displayName" : "Купити підписку на рік -\nКупити підписку на рік -\nКупити підписку на рік -\nКупити підписку на рік -\nКупити підписку на рік - \nКупити підписку на рік -\nКупити підписку на рік -\nКупити підписку на рік -",
+              "locale" : "uk"
+            },
+            {
+              "description" : "Gérez votre salon et vos maîtres !",
+              "displayName" : "Acheter un abonnement d'un an -",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Spravujte svůj salon a mistry!",
+              "displayName" : "Koupit předplatné na rok - ",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Zarządzaj salonem i mistrzami!",
+              "displayName" : "Kup subskrypcję na rok -",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Verwalten Sie Ihren Salon und Meister!",
+              "displayName" : "Abonnement für ein Jahr kaufen -",
+              "locale" : "de"
+            },
+            {
+              "description" : "Gestione su salón y sus maestros",
+              "displayName" : "Comprar un abono por un año -",
+              "locale" : "es_ES"
             }
           ],
-          "productID" : "admin.subscription.yearly",
+          "productID" : "admin.subscriptions.yearly3999",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Yearly",
+          "referenceName" : "Admin - 1 Yearly",
           "subscriptionGroupID" : "604C302D",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -172,7 +281,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "9.99",
+          "displayPrice" : "3.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "26AE7DA6",
@@ -183,22 +292,55 @@
           },
           "localizations" : [
             {
-              "description" : "7 day free trial",
-              "displayName" : "Monthly",
+              "description" : "Manage your salon and masters!",
+              "displayName" : "Buy subscription Monthly - ",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Spravujte svůj salon a mistry!",
+              "displayName" : "Koupit předplatné Měsíční -",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Gérez votre salon et vos maîtres !",
+              "displayName" : "Acheter un abonnement Mensuel -",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Verwalten Sie Ihren Salon und Meister!",
+              "displayName" : "Abonnement kaufen Monatlich -",
+              "locale" : "de"
+            },
+            {
+              "description" : "Zarządzaj salonem i mistrzami!",
+              "displayName" : "Kup subskrypcję Miesięcznie -",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Gestione su salón y sus maestros",
+              "displayName" : "Comprar abono Mensual -",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Керуйте своїм салоном і майстрами!",
+              "displayName" : "Купити підписку Місячну -",
+              "locale" : "uk"
             }
           ],
-          "productID" : "admin.subscription.monthly",
+          "productID" : "admin.subscription.monthly399",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly",
+          "referenceName" : "Admin - 1 Monthly",
           "subscriptionGroupID" : "604C302D",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
   ],
   "version" : {
-    "major" : 3,
+    "major" : 4,
     "minor" : 0
   }
 }

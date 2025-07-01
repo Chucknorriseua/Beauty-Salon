@@ -9,11 +9,11 @@ import SwiftUI
 
 enum Categories: String, Identifiable, CaseIterable {
     case nail, massage, barberShop, housecall, another
-
+    
     var id: String {
         self.rawValue
     }
-
+    
     var displayName: String {
         switch self {
         case .nail: return "Nails".localized
@@ -33,36 +33,44 @@ struct UserSelectedCategories: View {
     @State private var isSliderDistance: Bool = false
     @Binding var distanceValue: Double
     let onSelectedCategory: () -> ()
-
+    
     var body: some View {
         VStack(spacing: 0) {
             if isShowCategories {
                 ScrollView {
-                    VStack {
+                    VStack(spacing: 12) {
                         ForEach(Categories.allCases, id: \.id) { category in
                             Button {
                                 selectedCategory = category
                                 onSelectedCategory()
                             } label: {
                                 VStack {
-                                    Text(category.displayName.localized)
-                                }.frame(maxWidth: 220, maxHeight: 44)
+                                    HStack {
+                                        Text(category.displayName.localized)
+                                            .font(.system(size: 20))
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 4)
+                                            .foregroundStyle(Color.white)
+                                            .fontWeight(.bold)
+                                    }
+                                }.frame(maxWidth: .infinity, maxHeight: 50)
                                     .fontWeight(.bold)
                                     .fontDesign(.monospaced)
                                     .foregroundStyle(Color.white)
                                     .padding(.all, 8)
-                                    .background(.ultraThinMaterial.opacity(0.8))
-                                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                                    .padding(.horizontal, 10)
+                                
                             }
                         }
                     }
-                    .padding()
+                    .padding(.top, 60)
                 }.scrollIndicators(.hidden)
             } else {
-                VStack {
+                VStack(spacing: 12) {
                     Text("Settings search")
                         .foregroundStyle(Color.yellow)
-                        .fontWeight(.bold)
+                        .font(.system(size: 20, weight: .bold))
                     Button {
                         withAnimation(.snappy(duration: 0.5)) {
                             isShowCategories.toggle()
@@ -70,16 +78,18 @@ struct UserSelectedCategories: View {
                     } label: {
                         HStack {
                             Text("Select categories")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                .font(.system(size: 20, weight: .heavy))
+                                .foregroundStyle(Color.white)
                                 .padding(.leading, 4)
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .padding(.trailing, 4)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
                             
-                        }.frame(maxWidth: .infinity, maxHeight: 44)
-                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal, 4)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: 60)
+                        .padding(.horizontal, 6)
                     }
                     Button {
                         withAnimation(.snappy(duration: 0.5)) {
@@ -88,16 +98,18 @@ struct UserSelectedCategories: View {
                     } label: {
                         HStack {
                             Text("Radius search")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                .font(.system(size: 20, weight: .heavy))
+                                .foregroundStyle(Color.white)
                                 .padding(.leading, 4)
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .padding(.trailing, 4)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
                             
-                        }.frame(maxWidth: .infinity, maxHeight: 44)
-                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal, 4)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: 60)
+                        .padding(.horizontal, 6)
                     }
                     Button {
                         withAnimation(.snappy(duration: 0.5)) {
@@ -106,24 +118,27 @@ struct UserSelectedCategories: View {
                     } label: {
                         HStack {
                             Text("My Favorites")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                                .font(.system(size: 20, weight: .heavy))
+                                .foregroundStyle(Color.white)
                                 .padding(.leading, 4)
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .padding(.trailing, 4)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
                             
-                        }.frame(maxWidth: .infinity, maxHeight: 44)
-                            .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal, 4)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: 60)
+                        .padding(.horizontal, 6)
                     }
                 }.padding(.top, 10)
                 if isSliderDistance {
                     VStack {
-                     
+                        
                         Text("Radius search")
-                                .foregroundStyle(Color.yellow)
-                               
+                            .foregroundStyle(Color.yellow)
+                            .font(.system(size: 20, weight: .bold))
+                        
                         Slider(value: $distanceValue, in: 500...10000, step: 100) {
                         } minimumValueLabel: {
                             Text("500")
@@ -134,7 +149,7 @@ struct UserSelectedCategories: View {
                         }.onChange(of: distanceValue) { _, newValue in
                             distanceValue = newValue
                         }
-
+                        
                     }.padding(.horizontal, 6)
                         .fontWeight(.bold)
                 } else {
@@ -142,8 +157,8 @@ struct UserSelectedCategories: View {
                 }
             }
             Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 280 : 240)
-            .background(.regularMaterial)
+        }.frame(maxWidth: .infinity, maxHeight: isSliderDistance || isShowCategories ? 340 : 280)
+            .background(Color.init(hex: "#223221c"))
             .overlay(
                 RoundedRectangle(cornerRadius: 24)
                     .stroke(
@@ -156,7 +171,7 @@ struct UserSelectedCategories: View {
                     )
             )
             .clipShape(RoundedRectangle(cornerRadius: 24))
-            .padding(.horizontal)
+            .padding(.horizontal, 8)
             .overlay(alignment: .topLeading) {
                 if isShowCategories {
                     Button {
@@ -164,16 +179,11 @@ struct UserSelectedCategories: View {
                             isShowCategories.toggle()
                         }
                     } label: {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                                .padding(.trailing, 4)
-                                .font(.system(size: 18, weight: .bold))
-                        }.frame(maxWidth: 40, maxHeight: 40)
-                            .background(.ultraThinMaterial.opacity(0.7))
-                            .clipShape(Circle())
-                            .padding(.horizontal, 4)
-                    }.padding(.leading, 18)
-                        .padding(.top, 10)
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.white)
+                            .font(.system(size: 24, weight: .bold))
+                    }
+                    .offset(x: 28, y: 16)
                 }
             }
     }

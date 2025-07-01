@@ -20,32 +20,38 @@ final class SignInViewModel: ObservableObject {
     @Published var isAnimation: Bool = false
     @Published var textEditorDescrt: String = ""
     @Published var rolePersone: String = ""
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @Published var selectCategories: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     
     @MainActor
     func registerProfileWithGoogle(coordinator: CoordinatorView, id: String) async throws {
         switch rolePersone {
         case "Admin":
-            let admin = Company_Model(id: id, adminID: id, name: fullName,
+            let admin = Company_Model(id: id, adminID: id, roleAdmin: "Admin", name: fullName,
                                       companyName: nameCompany, adress: adress,
-                                      email: email, phone: phone, description: textEditorDescrt, image: "", procedure: [], likes: 0, fcnTokenUser: fcnTokenUser, latitude: 0.0, longitude: 0.0, categories: "")
+                                      email: email, phone: phone, description: textEditorDescrt, image: "", procedure: [], likes: 0, fcnTokenUser: fcnTokenUser, latitude: 0.0, longitude: 0.0, categories: selectCategories)
             
             try await Admin_DataBase.shared.setCompanyForAdmin(admin: admin)
-            coordinator.popToRoot()
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                coordinator.push(page: .Admin_main)
+            }
         case "Master":
-            let master = MasterModel(id: id, masterID: id, name: fullName, email:
-                                        email, phone: phone, description: textEditorDescrt, image: "", imagesUrl: [], categories: "", fcnTokenUser: fcnTokenUser, likes: 0, procedure: [], latitude: 0.0, longitude: 0.0)
+            let master = MasterModel(id: id, masterID: id, roleMaster: "Master", name: fullName, email:
+                                        email, phone: phone, adress: "", description: textEditorDescrt, image: "", imagesUrl: [], categories: selectCategories, masterMake: "", fcnTokenUser: fcnTokenUser, likes: 0, procedure: [], latitude: 0.0, longitude: 0.0)
             
             try await Master_DataBase.shared.setData_For_Master_FB(master: master)
-            coordinator.popToRoot()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                coordinator.push(page: .Master_Select_Company)
+            }
             
         case "Client":
             let client = Client(id: id, clientID: id, name: fullName, email: email, phone: phone, date: Date(), fcnTokenUser: fcnTokenUser, latitude: 0.0, longitude: 0.0, shedule: [])
             
             try await Client_DataBase.shared.setData_ClientFireBase(clientModel: client)
-            coordinator.popToRoot()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                coordinator.push(page: .User_Main)
+            }
         default:
             break
         }

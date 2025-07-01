@@ -20,7 +20,7 @@ final class Client_DataBase {
     private(set) weak var listener: ListenerRegistration?
     
     let auth = Auth.auth()
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     private init() {
         
@@ -51,6 +51,11 @@ final class Client_DataBase {
     func setData_ClientForAdmin(adminID: String, clientModel: Client) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         try await mainFS.document(adminID).collection("Client").document(uid).setData(clientModel.clientDic)
+    }
+    
+    func setData_ClientForMaster(masterID: String, clientModel: Client) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        try await master.document(masterID).collection("Client").document(uid).setData(clientModel.clientDic)
     }
     
     func addFavoritesSalon(salonID: String, salon: Company_Model) async throws {
@@ -129,6 +134,20 @@ final class Client_DataBase {
         }
     }
     
+    func fetchMyrecordsFromSalonOrMaster() async throws -> [Shedule] {
+        guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Not found id", code: 0, userInfo: nil) }
+        do {
+            let snapShot = try await clientFs.document(uid).collection("MyRecords").getDocuments()
+            let shedule: [Shedule] = try snapShot.documents.compactMap { document in
+                return try Admin_DataBase.shared.convertDocumentToShedule(document)
+            }
+            return shedule
+        } catch {
+            print("DEBUG: Error fetchAllCompany", error.localizedDescription)
+            throw error
+        }
+    }
+    
     func fetchFavorites_Master() async throws -> [MasterModel] {
         guard let uid = auth.currentUser?.uid else { throw NSError(domain: "Error uid", code: 0) }
         do {
@@ -201,6 +220,15 @@ final class Client_DataBase {
         }
     }
     
+    func remove_MyRecords(recordsID: String) async throws {
+        guard let uid = auth.currentUser?.uid else { return }
+        let record = clientFs.document(uid).collection("MyRecords")
+        let snap = try await record.whereField("id", isEqualTo: recordsID).getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+    }
+    
     func remove_FavoritesMaster(masterID: String) async throws {
         guard let uid = auth.currentUser?.uid else { return }
         let record = clientFs.document(uid).collection("FavoritesMaster")
@@ -210,6 +238,15 @@ final class Client_DataBase {
         }
     }
     
+    func deleteMyProfileFromFirebase(profile: Client) async throws {
+        let profileMy = clientFs.whereField("id", isEqualTo: profile.id)
+
+        let snap = try await profileMy.getDocuments()
+        for doc in snap.documents {
+            try await doc.reference.delete()
+        }
+        try await auth.currentUser?.delete()
+    }
     
     func favoritesLikes(salonID: String, userID: String) async throws {
         let salonRef = mainFS.document(salonID)

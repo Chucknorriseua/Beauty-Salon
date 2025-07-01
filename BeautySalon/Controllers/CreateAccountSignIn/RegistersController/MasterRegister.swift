@@ -28,7 +28,7 @@ struct MasterRegister: View {
                             .resizable()
                             .scaledToFill()
                             .frame(width: 90, height: 90)
-                            .clipShape(.rect(cornerRadius: 16))
+                            .clipShape(Circle())
                     }
                     
                     Text("Сhoose your photo profile")
@@ -59,17 +59,15 @@ struct MasterRegister: View {
                 CustomButton(title: "Create") {
                     Task {
                   _ = await authMaster.saveAccount_Master()
-                        coordinator.popToRoot()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            isLoader = false
+                            coordinator.push(page: .Master_Select_Company)
+                        }
                     }
     
                 }.opacity(isFarmValid ? 1 : 0.5)
                 .disabled(!isFarmValid)
-                
-                    .sheet(isPresented: $authMaster.isShowSheet) {
-                        SheetStoreKitProductSelect(storeKitView: StoreViewModel.shared)
-                        .presentationDetents([.height(320)])
-                }
-                
+
                 VStack {
                     Button(action: {
                         coordinator.pop()
@@ -80,6 +78,7 @@ struct MasterRegister: View {
                     }).foregroundStyle((Color.white))
                       .font(.title2.bold())
                 }
+                .padding(.top, 30)
             }
             .onDisappear(perform: {
                 authMaster.signInViewmodel.password = ""

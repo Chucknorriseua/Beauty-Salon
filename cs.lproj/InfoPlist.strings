@@ -5,6 +5,6 @@
   Created by Евгений Полтавец on 17/01/2025.
   
 */
-"NSUserTrackingUsageDescription" = "Beauty Salon potřebuje vaši polohu, aby navrhl nejbližší salony a mistry.";
+"NSUserTrackingUsageDescription" = "Službu Firebase Analytics používáme ke shromažďování dat za účelem zlepšení výkonu aplikace, uživatelského komfortu a pro analytické účely.";
 "NSLocationWhenInUseUsageDescription" = "Beauty Salon potřebuje vaši polohu, aby navrhl salony a mistry v okolí.";
 "NSLocationAlwaysUsageDescription" = "Beauty Salon potřebuje vaši polohu pro funkčnost na pozadí.";

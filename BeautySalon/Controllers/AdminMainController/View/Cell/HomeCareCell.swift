@@ -17,7 +17,7 @@ struct HomeCareCell: View {
     
     var body: some View {
         Button {
-            withAnimation(.snappy) {
+            withAnimation(.snappy(duration: 1)) {
                 isToggle.toggle()
             }
         } label: {
@@ -137,15 +137,15 @@ struct HomeCareCell: View {
                 }
             }
         }
-        .animation(.snappy, value: isToggle)
         .frame(maxWidth: .infinity, maxHeight: isToggle ? 600 : 160)
         .clipShape(.rect(cornerRadius: 16))
+        .animation(.snappy(duration: 1), value: isToggle)
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.white, lineWidth: 2)
                 .animation(.snappy, value: isToggle)
         )
-        .animation(.linear(duration: 0.6), value: isToggle)
+        .animation(.snappy(duration: 1), value: isToggle)
         .padding(.horizontal, 8)
         .padding(.bottom, 10)
     }

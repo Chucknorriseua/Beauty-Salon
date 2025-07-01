@@ -6,13 +6,13 @@
   
 */
 "Sign In" = "Anmelden";
-"Welcom in Beauty Salon" = "Willkommen im Beauty Salonu";
+"Welcome in My Beauty Hub" = "Willkommen im My Beauty Hub";
 "If you don't have an account, create one." = "Wenn Sie kein Konto haben, erstellen Sie eines.";
 " Register as Admin" = "Als Administrator registrieren";
 " Register as Master" = "Als Meister registrieren";
 "Register as Client" = "Als Kunde registrieren";
 "Сhoose photo salon" = "Wählen Sie ein Foto für den Salon";
-"Name Company" = "Name des Unternehmens";
+"Salon name" = "Name des Salons";
 "You don't have a subscription, to enter you need to buy a subscription" = "Sie haben kein Abonnement. Um einzutreten, müssen Sie ein Abonnement kaufen";
 "Name Administrator" = "Name des Administrators";
 "Phone (+000)" = "Telefon (+000)";
@@ -85,7 +85,7 @@
 "Purchase a subscription to create your salon or create a profile as a master." = "Kaufen Sie ein Abonnement, um Ihren Salon zu erstellen oder ein Profil als Meister zu erstellen.";
 "Something went wrong" = "Etwas ist schief gelaufen";
 "Not correct password or email, Make sure you are using the correct account. " = "Falsches Passwort oder E-Mail, stellen Sie sicher, dass Sie das richtige Konto verwenden.";
-"Clients for recording" = "Kunden für Aufzeichnungen";
+"My Сlients" = "Meine Сlients";
 "Are you sure you want to exit?" = "Sind Sie sicher, dass Sie die Sitzung verlassen möchten?";
 "Log out of the profile" = "Vom Profil abmelden";
 "Description, limit your input to 160 characters." = "Beschreibung, begrenzen Sie Ihre Eingabe auf 160 Zeichen.";
@@ -131,7 +131,7 @@
 "You are trying to log in as an master without this subscription, or try renewing your subscription that you previously purchased." = "Sie versuchen sich als Meister ohne dieses Abonnement anzumelden, oder versuchen Sie, das Abonnement, das Sie zuvor gekauft haben, zu erneuern.";
 "Restore Purchases" = "Käufe wiederherstellen";
 "totalcost" = "Gesamtkosten: %@";
-"Nail master not found..." = "Nagelmeister nicht gefunden...";
+"Master not found..." = "Master nicht gefunden...";
 "Please try again." = "Bitte versuchen Sie es erneut.";
 "Salon not found..." = "Salon nicht gefunden...";
 "“Update your geolocation to the address of your salon so that masters and clients can find you.”" = "„Aktualisieren Sie Ihre Geolokalisierung auf die Adresse Ihres Salons, damit Meister und Kunden Sie finden können.“";
@@ -180,3 +180,45 @@
 "The 'Another' category means that you provide additional services such as Thai massage or other health and beauty services." = "Die Kategorie 'Andere' bedeutet, dass Sie zusätzliche Dienstleistungen wie Thai-Massage oder andere Gesundheits- und Schönheitsdienste anbieten.";
 "Home care" = "Häusliche Pflege";
 "Change photo" = "Foto ändern";
+"Your profile is registered using Apple authorization. Your data provided by Apple will be used to create your account and can also be changed in the profile settings." = "Ihr Profil wird mit der Apple-Autorisierung registriert. Ihre von Apple zur Verfügung gestellten Daten werden zur Erstellung Ihres Kontos verwendet und können auch in den Profileinstellungen geändert werden.";
+"Phone" = "Telefon";
+"Your profile is registered using Google authorization. Your data provided by Google will be used to create your account and can also be changed in the profile settings." = "Ihr Profil wird mit der Google-Autorisierung registriert. Ihre von Google zur Verfügung gestellten Daten werden zur Erstellung Ihres Kontos verwendet und können auch in den Profileinstellungen geändert werden.";
+"Buy an admin subscription to manage your salon" = "Kaufen Sie ein Verwaltungsabonnement zur Verwaltung Ihres Salons";
+"Buy a master subscription to create your profile" = "Kaufen Sie ein Master-Abonnement, um Ihr Profil zu erstellen";
+"You are purchasing an admin subscription to fully manage your salon, masters, and client appointments. This will give you access to features for setting up your salon profile, managing master schedules, and tracking client bookings." = "Sie erwerben ein Admin-Abonnement, um Ihren Salon, Ihre Meister und Kundentermine vollständig zu verwalten. Damit haben Sie Zugriff auf Funktionen zum Einrichten Ihres Salonprofils, zum Verwalten von Masterplänen und zum Verfolgen von Kundenbuchungen.";
+
+"You are purchasing a master subscription to receive bookings from the admin and clients, manage your schedule, and increase service visibility. Independent masters can work from home or offer mobile services." = "Sie erwerben ein Master-Abonnement, um Buchungen von der Verwaltung und von Kunden zu erhalten, Ihren Zeitplan zu verwalten und die Sichtbarkeit Ihrer Dienste zu erhöhen. Unabhängige Master können von zu Hause aus arbeiten oder mobile Dienste anbieten.";
+
+"If you delete an entry scheduled for tomorrow or later, you will not receive notifications about it." = "Wenn Sie einen für morgen oder später geplanten Eintrag löschen, erhalten Sie keine Benachrichtigungen darüber.";
+"Delete the record?" = "Eintrag löschen?";
+
+"Your administrator profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will complement the salon information you can enter in the profile settings. After registration, your salon will be created where you can enter additional information about your salon and add your masters to your salon." = "Ihr Administratorprofil wird mit Apple Sign-In registriert. Die von Apple bereitgestellten Daten werden zur Erstellung Ihres Kontos verwendet und ergänzen die Saloninformationen, die Sie in den Profileinstellungen eingeben können. Nach der Registrierung wird Ihr Salon erstellt, wo Sie zusätzliche Informationen über Ihren Salon eingeben und Ihre Meister zu Ihrem Salon hinzufügen können.";
+
+"Your master profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and will supplement the information about you that you can enter in your profile settings. Once registered, your profile will be created where you can enter additional information about yourself, add your work, and receive notes from administrators and customers." = "Ihr Masterprofil wird mit Apple Sign-In registriert. Die von Apple bereitgestellten Daten werden zur Erstellung Ihres Kontos verwendet und ergänzen die Informationen über Sie, die Sie in Ihren Profileinstellungen eingeben können. Nach der Registrierung wird Ihr Profil erstellt, in dem Sie zusätzliche Informationen über sich selbst eingeben, Ihre Arbeit hinzufügen und Anmerkungen von Administratoren und Kunden erhalten können.";
+
+"Your customer profile will be registered using Apple Sign-In. The data provided by Apple will be used to create your account and supplement the information you can enter in your profile settings. Once registered, your profile will be created and you will be able to add additional information about yourself and update your name or phone number to contact you after sending the appointment to the salon or the master" = "Ihr Kundenprofil wird mit Apple Sign-In registriert. Die von Apple bereitgestellten Daten werden verwendet, um Ihr Konto zu erstellen und die Informationen zu ergänzen, die Sie in Ihren Profileinstellungen eingeben können. Sobald Sie registriert sind, wird Ihr Profil erstellt und Sie können zusätzliche Informationen über sich selbst hinzufügen und Ihren Namen oder Ihre Telefonnummer aktualisieren, um Sie nach dem Senden des Termins an den Salon oder den Meister zu kontaktieren";
+"Purchase a subscription to create your salon as an administrator, or purchase a master subscription to work in an existing salon. Please note: the Admin subscription is only available for salon owners and the Master subscription is only available for masters. You can only have one active subscription." = "Kaufen Sie ein Abonnement, um Ihren Salon als Administrator einzurichten, oder kaufen Sie ein Master-Abonnement, um in einem bestehenden Salon zu arbeiten. Bitte beachten Sie: Das Admin-Abonnement ist nur für Salonbesitzer und das Master-Abonnement ist nur für Meister verfügbar. Sie können nur ein aktives Abonnement haben.";
+"My Records" = "Meine Aufzeichnungen";
+"Working at the Salon" = "Arbeiten im Salon";
+"My analytics" = "Meine Analysen";
+"Add an entry to the monthly stats" = "Einen Eintrag zur monatlichen Statistik hinzufügen";
+"Add an entry to monthly statistics to track monthly data." = "Einen Eintrag zur monatlichen Statistik hinzufügen, um monatliche Daten zu verfolgen.";  
+"Do you really want to delete your profile?" = "Möchten Sie Ihr Profil wirklich löschen?";
+"Once your profile has been deleted, it can no longer be restored" = "Sobald Ihr Profil gelöscht wurde, kann es nicht mehr wiederhergestellt werden.";
+"Delete my Profile" = "Mein Profil löschen";
+"Do you want to delete the record?" = "Möchten Sie den Eintrag löschen?";
+"Selected categories" = "Ausgewählte Kategorien";  
+"7-day free trial, then will be Automatically renew unless canceled at least 24 hours before the end of the trial or billing period." = "7-tägige kostenlose Testphase, danach automatische Verlängerung, wenn nicht mindestens 24 Stunden vor Ablauf der Testphase oder des Abrechnungszeitraums gekündigt wird.";
+"Your profile has been completely deleted" = "Ihr Profil wurde vollständig gelöscht";
+"User not found. Check email or Wrong password Try again." = "Benutzer nicht gefunden. Überprüfen Sie die E-Mail oder falsches Passwort. Versuchen Sie es erneut.";
+"Are you sure you want to delete your profile from My Beauty Hub? Once deleted, it can't be restored!" = "Sind Sie sicher, dass Sie Ihr Profil aus My Beauty Hub löschen möchten? Einmal gelöscht, kann es nicht wiederhergestellt werden!";
+"You must be logged in to your account to delete your profile" = "Sie müssen in Ihrem Konto eingeloggt sein, um Ihr Profil zu löschen";
+"masterMake" = "Ich bin ein Meister der: %@";
+"" = "";
+"Enter in the field what you do" = "Geben Sie in das Feld ein, was Sie tun";
+"Exit my Profile" = "Profil verlassen";
+"You see ads so we can continue to develop the app. If you want to use without ads - subscribe and enjoy full comfort!" = "Du siehst Werbung, damit wir die App weiterentwickeln können. Wenn du sie werbefrei nutzen möchtest – abonniere und genieße vollen Komfort!";
+"Buy subscription" = "Abonnement kaufen";
+"Terms of Use" = "Nutzungsbedingungen";
+"About me" = "Über mich";
+"" = "";

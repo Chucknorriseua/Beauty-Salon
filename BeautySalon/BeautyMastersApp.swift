@@ -13,48 +13,21 @@ import GoogleSignIn
 import FirebaseMessaging
 import FirebaseFirestore
 import FirebaseAuth
+import GoogleMobileAds
 
-@main
-struct BeautyMastersApp: App {
-    
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-    init() {
-    }
-
-    
-    var body: some Scene {
-        WindowGroup {
-            CoordinatorViewModel()
-        }
-    }
-}
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     let notification = NotificationController()
-    @AppStorage ("fcnTokenUser") var fcnTokenUser: String = ""
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("✅ APNs Token получен: \(deviceToken)")
-        Messaging.messaging().apnsToken = deviceToken
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        if let token = fcmToken {
-            print("✅ FCM Token: \(token)")
-            self.fcnTokenUser = token
-        } else {
-            print("❌ Ошибка получения FCM токена")
-        }
-    }
+    @AppStorage("fcnTokenUser") var fcnTokenUser: String = ""
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        UserDefaults.standard.setValue(true, forKey: "FIRDebugEnabled")
         notification.requestNotificationAuthorization()
         notification.notificationCenter.delegate = self
         Messaging.messaging().delegate = self
-        
+        MobileAds.shared.start(completionHandler: nil)
         
         let cache = SDImageCache.shared
         cache.config.maxMemoryCost = 50 * 1024 * 1024 // 50 MB
@@ -68,6 +41,20 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
           SDWebImageManager.defaultImageLoader = SDImageLoadersManager.shared
           cache.clearMemory()
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("✅ APNs Token получен: \(deviceToken)")
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        if let token = fcmToken {
+            print("✅ FCM Token: \(token)")
+            self.fcnTokenUser = token
+        } else {
+            print("❌ Ошибка получения FCM токена")
+        }
     }
     
     @available(iOS 9.0, *)
@@ -103,6 +90,21 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             print("Handling notification with the local identifier")
         }
         completionHandler()
+    }
+}
+
+@main
+struct BeautyMastersApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    init() {
+    }
+ 
+    var body: some Scene {
+        WindowGroup {
+            CoordinatorViewModel()
+        }
     }
 }
 

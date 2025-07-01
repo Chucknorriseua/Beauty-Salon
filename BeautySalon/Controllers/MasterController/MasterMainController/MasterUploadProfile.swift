@@ -23,23 +23,28 @@ struct MasterUploadProfile: View {
     @State private var isPressFullScreen: Bool = false
     @State private var selectedImages: String? = nil
     @State private var select: String? = nil
+    @State private var isShowSubscription: Bool = false
+    
+    @AppStorage("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage("useRole") private var useRole: String = ""
 
-//    @State private var selectedCategory: Categories = .nail
     @State private var isShowInfo: Bool = false
     @State private var isShowInformation: Bool = false
     @State private var isShowAnother: Bool = false
     @State private var isChangeProfilePhoto: Bool = false
     @State private var isChangeArrayPhoto: Bool = false
     @State private var isShowCategories: Bool = false
-    
+    @State private var isDeleteMyProfile: Bool = false
     @State private var massage: String = ""
+    @State private var textFieldCateg: String = ""
     @State private var title: String = ""
+    
     @State private var description: String = "This category is intended for masters who take clients at home or with a visit to the client."
     @State private var descAnother: String = "The 'Another' category means that you provide additional services such as Thai massage or other health and beauty services."
     
     var body: some View {
         GeometryReader(content: { geo in
-            VStack {
+            ScrollView {
                 Group {
                     VStack {}
                         .createImageView(model: masterViewModel.masterModel.image ?? "", width: geo.size.width * 0.6, height: geo.size.height * 0.6 / 2)
@@ -54,8 +59,8 @@ struct MasterUploadProfile: View {
                                                 .resizable()
                                                 .indicator(.activity)
                                                 .aspectRatio(contentMode: .fill)
-                                                .frame(width: geo.size.width * 0.3,
-                                                       height: geo.size.height * 0.2)
+                                                .frame(width: geo.size.width * 0.23,
+                                                       height: geo.size.height * 0.23)
                                                 .clipShape(Circle())
                                                 .overlay(content: {
                                                     Circle()
@@ -71,7 +76,11 @@ struct MasterUploadProfile: View {
                                         }.id(image)
                                     }
                                 }
-                            }.scrollIndicators(.hidden)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: 100)
+                            .padding(.horizontal, 4)
+                            .scrollIndicators(.hidden)
+                            
                             VStack {
                                 CustomSettingsButton(title: "Change profile") {
                                     withAnimation(.snappy(duration: 0.5)) {
@@ -83,6 +92,13 @@ struct MasterUploadProfile: View {
                                         coordinator.push(page: .Master_CreatePriceList)
                                     }
                                 }
+                                CustomSettingsButton(title: "Monthly statistics") {
+                                    coordinator.push(page: .Master_StaticMonthly)
+              
+                                }
+                                CustomSettingsButton(title: "Working at the Salon") {
+                                                                        coordinator.push(page: .Master_MasterWorkInSalon)
+                                }
                                 CustomSettingsButton(title: "Change profile photo") {
                                     withAnimation(.snappy(duration: 0.5)) {
                                         isChangeProfilePhoto.toggle()
@@ -91,11 +107,30 @@ struct MasterUploadProfile: View {
                                 CustomSettingsButton(title: "Upload photos of my work") {
                                     isChangeArrayPhoto.toggle()
                                 }
-                            }.padding(.bottom, 0)
+                                
+                                CustomSettingsButton(title: "Buy subscription") {
+                                    withAnimation(.easeOut(duration: 1)) {
+                                        isShowSubscription = true
+                                    }
+                                }
+                                
+                                CustomSettingsButton(title: "Exit my Profile") {
+                                    withAnimation(.easeOut(duration: 1)) {
+                                        signOut()
+                                    }
+                                }
+                             
+                            }
+                            .padding(.top, 12)
+                            .padding(.bottom, 30)
                         } else {
                             VStack {
                                 if isShowCategories {
-                                    SelectedCategories(selectedCtegory: $select, isShowInformation: $isShowInformation, isShowAnother: $isShowAnother)
+                                    SelectedCategoriesMaster(selectedCtegory: $select,
+                                                       isShowInformation: $isShowInformation,
+                                                       isShowAnother: $isShowAnother,
+                                                       isHideAnother: true)
+                                    
                                         .onChange(of: select ?? "") { _, new in
                                             masterViewModel.masterModel.categories = new
                                         }
@@ -113,9 +148,11 @@ struct MasterUploadProfile: View {
                                         TextEditor(text: $masterViewModel.masterModel.description)
                                             .scrollContentBackground(.hidden)
                                         
-                                    }.frame(height: 120)
-                                        .foregroundStyle(Color.white)
-                                        .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    }
+                                    .frame(height: 130)
+                                    .foregroundStyle(Color.white)
+                                    .background(.ultraThinMaterial.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
+                                    .padding(.horizontal, 4)
                                 }
                                
                                 CustomSettingsButton(title: "Select categories") {
@@ -127,25 +164,47 @@ struct MasterUploadProfile: View {
                                     coordinator.push(page: .Maste_MapInfo)
               
                                 }
+                                CustomSettingsButton(title: "Delete my Profile") {
+                                    isDeleteMyProfile = true
+                                    massage = "Once your profile has been deleted, it can no longer be restored"
+                                    title = "Do you really want to delete your profile?"
+                                }
                                 CustomSettingsButton(title: "Back") {
                                     withAnimation(.snappy(duration: 0.5)) {
                                         isShowInfo.toggle()
+                                        isShowCategories = false
                                     }
                                 }
                             }
                         }
                     }
-                    CustomButton(title: "Update profile") {
-//                        masterViewModel.masterModel.categories = select ?? ""
-                        Task {
-                            await masterViewModel.save_Profile()
-                            NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)
+              
+                }
+                .padding(.bottom, 30)
+                
+            }
+            .createBackgrounfFon()
+            .overlay(alignment: .center, content: {
+                if isShowSubscription {
+                    StoreKitBuyAdvertisement(isXmarkButton: $isShowSubscription)
+                }
+            })
+                .overlay(alignment: .bottom, content: {
+                    if !isShowCategories {
+                        
+                        VStack {
+                            CustomButton(title: "Update profile") {
+                                Task {
+                                    await masterViewModel.save_Profile()
+                                    NotificationController.sharet.notify(title: "Save settings", subTitle: "Your settings have been saved👌", timeInterval: 1)
+                                }
+                            }
                         }
                     }
-                    
-                }.padding(.horizontal, 8)
-            }.createBackgrounfFon()
+                })
+                .ignoresSafeArea(.keyboard)
                 .onAppear {
+                   
                     if let categories = Categories(rawValue: masterViewModel.masterModel.categories) {
                         select = categories.rawValue
                     }
@@ -162,16 +221,33 @@ struct MasterUploadProfile: View {
         .imageViewSelected(isPressFullScreen: $isPressFullScreen, selectedImage: selectedImages ?? "", isShowTrash: true, deleteImage: {
             masterViewModel.deleteImage(image: selectedImages ?? "")
         })
-        .informationView(isShowInfo: $isShowInformation, image: "makeup", text: description) {
+        .customAlert(isPresented: $isDeleteMyProfile, hideCancel: true, message: massage,title: title, onConfirm: {
+            Task {
+                try await Master_DataBase.shared.deleteMyProfileFromFirebase(profile: masterViewModel.masterModel)
+                coordinator.popToRoot()
+            }
+        }, onCancel: {})
+        .informationView(isShowInfo: $isShowInformation, textField: $masterViewModel.masterModel.masterMake, image: "makeup", text: description, isShowTextField: true, action: {
+            Task {
+                await masterViewModel.save_Profile()
+                isShowInformation = false
+            }
+        }, dismiss: {
             withAnimation(.linear) {
                 isShowInformation = false
             }
-        }
-        .informationView(isShowInfo: $isShowAnother, image: "another", text: descAnother) {
+        })
+        .informationView(isShowInfo: $isShowAnother, textField: $masterViewModel.masterModel.masterMake, image: "another", text: descAnother, isShowTextField: true, action: {
+            Task {
+                await masterViewModel.save_Profile()
+                isShowAnother = false
+            }
+        }, dismiss: {
             withAnimation(.linear) {
                 isShowAnother = false
             }
-        }
+        })
+
         .swipeBack(coordinator: coordinator)
         .onTapGesture {
             withAnimation(.snappy) {
@@ -258,4 +334,15 @@ struct MasterUploadProfile: View {
             }
         })
     }
+    private func signOut() {
+            Task {
+                selectedAdminID = nil
+                useRole = ""
+                Auth_Master_ViewModel.shared.signOut()
+                try await GoogleSignInViewModel.shared.logOut()
+                coordinator.popToRoot()
+        }
+    }
 }
+
+ 

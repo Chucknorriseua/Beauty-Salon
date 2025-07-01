@@ -12,8 +12,8 @@ final class SignInValidator: ObservableObject {
     
     static var shared = SignInValidator()
     
-    @AppStorage ("useRole") private var useRole: String = ""
-    @AppStorage ("selectedAdmin") private var selectedAdminID: String?
+    @AppStorage("useRole") var useRole: String = ""
+    @AppStorage("selectedAdmin") private var selectedAdminID: String?
 
     
     @Published var signIn = SignInViewModel()
@@ -27,29 +27,30 @@ final class SignInValidator: ObservableObject {
     @Published var isBuySubscribe: Bool = false
     @Published var isPressAlarm: Bool = false
     @Published var isSubscribe: Bool = false
-    @Published var hasActive: Bool = false
+    @Published var isHasActives: Bool = false
     
     init() {}
     
+    @MainActor
     func checkProfileAndGo(coordinator: CoordinatorView) async {
         do {
             isLoader = true
             defer {  
                 self.isLoader = false
-                hasActive = true
+                isHasActives = true
             }
             let email = signIn.email
             
             if try await Auth_ADMIN_Viewmodel.shared.signIn(email: email, password: signIn.password) {
-                let checkSubscribe = try await checkSubscribeAdminProfile()
-                guard checkSubscribe else {return}
                 useRole = "Admin"
+//                let checkSubscribe = try await checkSubscribeAdminProfile()
+//                guard checkSubscribe else {return}
                 await AdminViewModel.shared.fetchProfileAdmin()
                 coordinator.push(page: .Admin_main)
             } else if try await  Auth_Master_ViewModel.shared.signIn(email: email, password: signIn.password) {
-                let checkSubscribe = try await checkSubscribeMasterProfile()
-                guard checkSubscribe else {return}
                 useRole = "Master"
+//                let checkSubscribe = try await checkSubscribeMasterProfile()
+//                guard checkSubscribe else {return}
                 await MasterViewModel.shared.fetchProfile_Master()
                 coordinator.push(page: .Master_Select_Company)
             } else if try await Auth_ClientViewModel.shared.signIn(email: email, password: signIn.password) {
@@ -67,28 +68,29 @@ final class SignInValidator: ObservableObject {
         
     }
 
-    private func checkSubscribeAdminProfile() async throws -> Bool {
-
-        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.adminProductIds.contains($0.id) }) {
-            return true
-        } else {
-            isLoader = false
-            isBuySubscribe = true
-            return false
-        }
-    }
-
-    private func checkSubscribeMasterProfile() async throws -> Bool {
-
-        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.masterProductIds.contains($0.id) }) {
-            return true
-        } else {
-            isLoader = false
-            isBuySubscribe = true
-            return false
-        }
-    }
+//    private func checkSubscribeAdminProfile() async throws -> Bool {
+//
+//        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.adminProductIds.contains($0.id) }) {
+//            return true
+//        } else {
+//            isLoader = false
+//            isBuySubscribe = true
+//            return false
+//        }
+//    }
+//
+//    private func checkSubscribeMasterProfile() async throws -> Bool {
+//
+//        if StoreViewModel.shared.checkSubscribe && StoreViewModel.shared.purchasedSubscriptions.contains(where: { StoreViewModel.shared.masterProductIds.contains($0.id) }) {
+//            return true
+//        } else {
+//            isLoader = false
+//            isBuySubscribe = true
+//            return false
+//        }
+//    }
     
+    @MainActor
     func loadProfile(coordinator: CoordinatorView) async {
         self.isLoader = true
         defer {  self.isLoader = false }
@@ -96,21 +98,16 @@ final class SignInValidator: ObservableObject {
         if useRole == "Client" {
             _ = await self.checkRoleEntryInRoom(coordinator: coordinator)
         } else {
-            if StoreViewModel.shared.checkSubscribe {
-                _ = await self.checkRoleEntryInRoom(coordinator: coordinator)
-            } else {
-                print("loadProfile")
-//                self.messageSubscribe = "Your subscription has expired. To continue enjoying our services, please renew your subscription."
-//                self.isSubscribe = true
-            }
+            _ = await self.checkRoleEntryInRoom(coordinator: coordinator)
         }
     }
     
+    @MainActor
     private func checkRoleEntryInRoom(coordinator: CoordinatorView) async -> Bool {
+        defer {
+            isHasActives = true
+        }
         if useRole == "Admin" {
-            defer {
-                hasActive = true
-            }
             if  Auth_ADMIN_Viewmodel.shared.auth.currentUser != nil {
                 coordinator.push(page: .Admin_main)
             }

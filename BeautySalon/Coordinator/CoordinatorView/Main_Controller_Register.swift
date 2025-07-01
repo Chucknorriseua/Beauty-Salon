@@ -11,6 +11,8 @@ struct Main_Controller_Register: View {
     
     @EnvironmentObject var coordinator: CoordinatorView
     @State private var isShowReset: Bool = false
+    @State private var isShowPolicy: Bool = false
+   
     
     var body: some View {
         
@@ -19,13 +21,18 @@ struct Main_Controller_Register: View {
                 
                 MainButtonSignIn(image: "person.wave.2.fill", title: " Create Salon") {coordinator.push(page: .Admin_Register)}
                 
-                MainButtonSignIn(image: "rectangle.portrait.and.arrow.right.fill", title: " Register as Master") {coordinator.push(page: .Master_Register)}
+                MainButtonSignIn(image: "person.fill", title: " Register as Master") {coordinator.push(page: .Master_Register)}
                 
                 MainButtonSignIn(image: "person.crop.square.fill", title: "Register as Client") {coordinator.push(page: .User_Register)}
                 
                 MainButtonSignIn(image: "lock.open.rotation", title: "Reset password") {
                     isShowReset = true
                 }
+                
+                MainButtonSignIn(image: "person.crop.circle.fill", title: "Delete my Profile") {
+                    coordinator.push(page: .deleteAccount)
+                }
+   
             }
             .padding()
             
@@ -46,8 +53,30 @@ struct Main_Controller_Register: View {
             }
         }
         .createBackgrounfFon()
+        .overlay(alignment: .bottom, content: {
+            Button {
+                isShowPolicy = true
+            } label: {
+                HStack {
+                    Text("Privacy Policy and Terms of Use")
+                    Image(systemName: "rectangle.filled.and.hand.point.up.left")
+                    
+                }
+                .foregroundStyle(Color.white)
+                .font(.system(size: 22, weight: .bold))
+            }
+        })
         .sheet(isPresented: $isShowReset, content: {
             PasswordResetView()
         })
+        .sheet(isPresented: $isShowPolicy, content: {
+            SheetPrivacyPolicy()
+                .presentationDetents([.height(300)])
+        })
+
     }
 }
+
+#Preview(body: {
+    Main_Controller_Register()
+})

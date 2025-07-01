@@ -25,136 +25,139 @@ struct UserSend_SheduleForAdmin: View {
     @State private var selectedProceduresColor: [Procedure] = []
     
     var body: some View {
-        GeometryReader { geo in
-            
-            VStack(alignment: .center, spacing: 10,  content: {
+        VStack {
+            GeometryReader { geo in
                 
-                VStack(alignment: .leading, spacing: 10) {
-                    SettingsTextField(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
-                        .keyboardType(.numberPad)
-                        .textContentType(.telephoneNumber)
-                        .onChange(of: clientViewModel.clientModel.phone) { _, new in
-                            clientViewModel.clientModel.phone = formatPhoneNumber(new)
-                        }
-                    SettingsTextField(text: $serviceRecord, title: "Procedure make nails", width: geo.size.width * 1)
-                        .overlay(alignment: .trailing) {
-                            if !clientViewModel.adminProfile.procedure.isEmpty {
-                                Button {
-                                    withAnimation(.easeOut(duration: 0.5)) {
-                                        isMenuProcedure.toggle()
-                                    }
-                                } label: {
-                                    Image(systemName: isMenuProcedure ? "minus.circle" : "plus.circle")
-                                        .font(.system(size: 32))
-                                }
-                                .clipped()
-                                .padding(.trailing, 8)
+                VStack(alignment: .center, spacing: 10,  content: {
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        SettingsTextField(text: $clientViewModel.clientModel.phone, title: "Phone +(000)", width: geo.size.width * 1)
+                            .keyboardType(.numberPad)
+                            .textContentType(.telephoneNumber)
+                            .onChange(of: clientViewModel.clientModel.phone) { _, new in
+                                clientViewModel.clientModel.phone = formatPhoneNumber(new)
                             }
-                        }
-                    if !clientViewModel.procedure.isEmpty {
-                        VStack {
-                            withAnimation {
-                                User_SelectProcedureCell(clientViewModel: clientViewModel, selectedProcedures: $selectedProcedures)
-                            }
-                        }.frame(width: geo.size.width * 0.92, height: geo.size.height * 0.3)
-                            .background(.ultraThinMaterial.opacity(0.6))
-                            .clipShape(.rect(cornerRadius: 12))
-                            .overlay(alignment: .bottom) {
-                                if !clientViewModel.procedure.isEmpty {
-                                    HStack(spacing: 34) {
-                                        Button {
-                                            withAnimation(.easeOut(duration: 0.5)) {
-                                                selectedProcedures.removeAll()
-                                            }
-                                        } label: {
-                                            Image(systemName: "xmark.circle")
-                                                .font(.system(size: 28))
-                                                .foregroundStyle(Color.red.opacity(0.7))
+                        SettingsTextField(text: $serviceRecord, title: "Procedure make nails", width: geo.size.width * 1)
+                            .overlay(alignment: .trailing) {
+                                if !clientViewModel.adminProfile.procedure.isEmpty {
+                                    Button {
+                                        withAnimation(.easeOut(duration: 0.5)) {
+                                            isMenuProcedure.toggle()
                                         }
-                                        
-                                        Button {
-                                            withAnimation(.easeOut(duration: 0.5)) {
-                                                let saveSelected = selectedProcedures
-                                                clientViewModel.removeProcedure(selectedProcedure: selectedProcedures)
-                                                selectedProcedures.removeAll()
-                                                DispatchQueue.main.async {
-                                                    selectedProceduresColor.removeAll { proc in
-                                                        saveSelected.contains(where: {$0.id == proc.id})
+                                    } label: {
+                                        Image(systemName: isMenuProcedure ? "minus.circle" : "plus.circle")
+                                            .font(.system(size: 32))
+                                    }
+                                    .clipped()
+                                    .padding(.trailing, 8)
+                                }
+                            }
+                        if !clientViewModel.procedure.isEmpty {
+                            VStack {
+                                withAnimation {
+                                    User_SelectProcedureCell(clientViewModel: clientViewModel, selectedProcedures: $selectedProcedures)
+                                }
+                            }.frame(width: geo.size.width * 0.92, height: geo.size.height * 0.3)
+                                .background(.ultraThinMaterial.opacity(0.6))
+                                .clipShape(.rect(cornerRadius: 12))
+                                .overlay(alignment: .bottom) {
+                                    if !clientViewModel.procedure.isEmpty {
+                                        HStack(spacing: 34) {
+                                            Button {
+                                                withAnimation(.easeOut(duration: 0.5)) {
+                                                    selectedProcedures.removeAll()
+                                                }
+                                            } label: {
+                                                Image(systemName: "xmark.circle")
+                                                    .font(.system(size: 28))
+                                                    .foregroundStyle(Color.red.opacity(0.7))
+                                            }
+                                            
+                                            Button {
+                                                withAnimation(.easeOut(duration: 0.5)) {
+                                                    let saveSelected = selectedProcedures
+                                                    clientViewModel.removeProcedure(selectedProcedure: selectedProcedures)
+                                                    selectedProcedures.removeAll()
+                                                    DispatchQueue.main.async {
+                                                        selectedProceduresColor.removeAll { proc in
+                                                            saveSelected.contains(where: {$0.id == proc.id})
+                                                        }
                                                     }
                                                 }
+                                            } label: {
+                                                Image(systemName: "trash.circle")
+                                                    .font(.system(size: 28))
+                                                    .foregroundStyle(Color.blue.opacity(0.7))
                                             }
-                                        } label: {
-                                            Image(systemName: "trash.circle")
-                                                .font(.system(size: 28))
-                                                .foregroundStyle(Color.blue.opacity(0.7))
+                                            
                                         }
-                                        
                                     }
+                                    
                                 }
-                                
-                            }
-                    }
-                    HStack {
-                        Text("Selected master: ")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                        }
+                        HStack {
+                            Text("Selected master: ")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(Color(hex: "F3E3CE")).opacity(0.7)
+                            
+                            Picker("", selection: $selected) {
+                                Image(systemName: "person.crop.circle.fill").tag("")
+                                ForEach(clientViewModel.mastersInRoom, id: \.self) { master in
+                                    Text(master.name).tag(master.name)
+                                }
+                            }.pickerStyle(.menu)
+                                .tint(Color(hex: "F3E3CE")).opacity(0.7)
+                        }
+                        SettingsTextField(text: $comment, title: "comment: ", width: geo.size.width * 1)
                         
-                        Picker("", selection: $selected) {
-                            Image(systemName: "person.crop.circle.fill").tag("")
-                            ForEach(clientViewModel.mastersInRoom, id: \.self) { master in
-                                Text(master.name).tag(master.name)
-                            }
-                        }.pickerStyle(.menu)
-                            .tint(Color(hex: "F3E3CE")).opacity(0.7)
-                    }
-                    SettingsTextField(text: $comment, title: "comment: ", width: geo.size.width * 1)
+                    }.padding(.leading, 0)
+                        .font(.system(size: 12, weight: .medium))
+                        .tint(Color.white)
+                        .foregroundStyle(Color.white)
                     
-                }.padding(.leading, 0)
-                    .font(.system(size: 12, weight: .medium))
-                    .tint(Color.white)
-                    .foregroundStyle(Color.white)
-                
-                HStack {
-                    DatePicker("", selection: $clientViewModel.currentDate, displayedComponents: [.hourAndMinute, .date])
-                        .datePickerStyle(.compact)
-                       
-                }.padding(.trailing, 100)
-                HStack {
-                    let sendRecordsTotal = String(
-                        format: NSLocalizedString("sendRecords", comment: ""),
-                        clientViewModel.totalCost
-                    )
-                    MainButtonSignIn(image: "pencil.line", title: sendRecordsTotal, action: {
-                        sendRecords()
-                    })
-                }
-                Spacer()
-            }).frame(width: geo.size.width * 1, height: geo.size.height * 1)
-                .padding(.top, 10)
-                .onDisappear {
-                    clientViewModel.totalCost = 0.0
-                    clientViewModel.procedure.removeAll()
-                }
-                .sheetColor()
-                .ignoresSafeArea(.all)
-                .overlay(alignment: .bottom) {
-                    if isMenuProcedure {
-                        VStack {
-                            User_MenuProcedureView(clientViewModel: clientViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProceduresColor) {
-                            }
-                        }.padding(.horizontal, 8)
-                            .padding(.bottom, 20)
+                    HStack {
+                        DatePicker("", selection: $clientViewModel.currentDate, displayedComponents: [.hourAndMinute, .date])
+                            .datePickerStyle(.compact)
+                           
+                    }.padding(.trailing, 100)
+                    HStack {
+                        let sendRecordsTotal = String(
+                            format: NSLocalizedString("sendRecords", comment: ""),
+                            clientViewModel.totalCost
+                        )
+                        MainButtonSignIn(image: "pencil.line", title: sendRecordsTotal, action: {
+                            sendRecords()
+                        })
                     }
-                }
+                    Spacer()
+                }).frame(width: geo.size.width * 1, height: geo.size.height * 1)
+                    .padding(.top, 10)
+                    .onDisappear {
+                        clientViewModel.totalCost = 0.0
+                        clientViewModel.procedure.removeAll()
+                    }
+                    .overlay(alignment: .bottom) {
+                        if isMenuProcedure {
+                            VStack {
+                                User_MenuProcedureView(clientViewModel: clientViewModel, addProcedure: $isAddrocedure, selectedProcedure: $selectedProceduresColor) {
+                                }
+                            }.padding(.horizontal, 8)
+                                .padding(.bottom, 20)
+                        }
+                    }
+            }
         }
+        .sheetColor()
+        .ignoresSafeArea(.keyboard)
     }
     private func sendRecords() {
         let model = clientViewModel.clientModel
+        let admin = clientViewModel.adminProfile
         
         let procedure = clientViewModel.adminProfile.procedure.filter { proc in
             clientViewModel.procedure.contains(where: {$0.id == proc.id})
         }
-        let sendRecord = Shedule(id: UUID().uuidString, masterId: model.id, nameCurrent: model.name, taskService: serviceRecord, phone: model.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, fcnTokenUser: model.fcnTokenUser, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure)
+        let sendRecord = Shedule(id: UUID().uuidString, masterId: model.id, nameCurrent: model.name, taskService: serviceRecord, phone: model.phone, nameMaster: selected, comment: comment, creationDate: clientViewModel.currentDate, fcnTokenUser: model.fcnTokenUser, tint: "Color1", timesTamp: Timestamp(date: Date()), procedure: procedure, latitude: model.latitude, longitude: model.longitude, nameSalonOrManster: admin.companyName, phoneSalonOrMaster: admin.phone)
         
         
         Task {

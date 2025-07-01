@@ -11,7 +11,7 @@ struct MasterSheetAddProcedure: View {
     
     
     @ObservedObject var masterVM: MasterViewModel
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     @State private var title: String = ""
     @State private var price: String = ""
@@ -55,5 +55,6 @@ struct MasterSheetAddProcedure: View {
             Spacer()
         }
         .sheetColor()
+        .ignoresSafeArea(.keyboard)
     }
 }

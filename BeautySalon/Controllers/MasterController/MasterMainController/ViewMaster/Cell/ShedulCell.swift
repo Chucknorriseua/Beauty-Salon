@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
+import SDWebImage
 import FirebaseFirestore
 
 struct ShedulCell: View {

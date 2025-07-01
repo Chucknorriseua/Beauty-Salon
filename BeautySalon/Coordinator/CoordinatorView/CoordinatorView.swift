@@ -14,11 +14,11 @@ enum PageAll: String, Identifiable {
 // MARK: ADMIN VIEW CONTROLLER
     case Admin_Register, Admin_main, Admin_Desc_Pass, Admin_MapInfo, Admin_Charts, Admin_creatPrice, Admin_HomeCare
 // MARK: MASTER VIEW CONTROLLER
-    case Master_Register, Master_Main, Master_Select_Company, Master_upDateProfile, Master_CreatePriceList, Maste_MapInfo, Master_Charts, Master_Shedule
+    case Master_Register, Master_Main, Master_Select_Company, Master_upDateProfile, Master_CreatePriceList, Maste_MapInfo, Master_Charts, Master_Shedule, Master_MasterWorkInSalon, Master_StaticMonthly
 //MARK: USER VIEW CONTROLLER
     case User_Register, User_Main, User_Settings, User_SheduleAdmin, User_Favorites, User_PriceList
     
-    case google, apple
+    case google, apple, deleteAccount
 
     var id: String {
         self.rawValue
@@ -28,7 +28,6 @@ enum PageAll: String, Identifiable {
 final class CoordinatorView: ObservableObject {
     
     @Published var path: NavigationPath = .init()
-    
     
     func push(page: PageAll) {
         path.append(page)
@@ -86,6 +85,10 @@ final class CoordinatorView: ObservableObject {
                     ChartsMonthlyMaster()
                 case .Master_Shedule:
                     MasterClientRecodsController()
+                case .Master_MasterWorkInSalon:
+                    MasterWorkInSalon()
+                case .Master_StaticMonthly:
+                    ChartsMonthlyMasterHomeOrAway()
                     
                     //                MARK: USER CONTROLLER----------------------------------------
                 case .User_Register:
@@ -93,7 +96,7 @@ final class CoordinatorView: ObservableObject {
                 case .User_Main:
                     UserSelectedComapnyController(clientViewModel: ClientViewModel.shared)
                 case .User_Settings:
-                    UserSettings()
+                    UserSettings(isDeleteMyProfile: .constant(false), isShowSubscription: .constant(false))
                 case .User_SheduleAdmin:
                     UserMainForSheduleController(clientViewModel: ClientViewModel.shared)
                 case .User_Favorites:
@@ -105,6 +108,8 @@ final class CoordinatorView: ObservableObject {
            
                 case .apple:
                     AppleRegisterView()
+                case .deleteAccount:
+                    DeleteAccountInFirebase()
                 }
              
             }.navigationBarBackButtonHidden(true)

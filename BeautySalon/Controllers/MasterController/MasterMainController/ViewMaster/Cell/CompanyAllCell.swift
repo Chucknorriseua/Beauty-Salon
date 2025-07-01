@@ -14,6 +14,8 @@ struct CompanyAllCell: View {
     @State var companyModel: Company_Model? = nil
     @State var isShow: Bool = false
     @State var isShowLike: Bool = false
+    @State var isShowFavoritesSalon: Bool = false
+    @State var isShowXmarkButton: Bool = false
     let onToggle: ()->()
     
     var body: some View {
@@ -46,15 +48,14 @@ struct CompanyAllCell: View {
                                             .font(.system(size: 24, weight: .heavy))
                                             .multilineTextAlignment(.center)
                                     }
-                                    .padding(.top, 20)
-                               
+                                    .padding(.top, 10)
+                                    
                                     VStack(alignment: .leading) {
+                                        
                                         VStack(alignment: .leading) {
                                             Text(companyModel?.description ?? "no description")
                                                 .font(.system(size: 16, weight: .heavy))
-                                                .lineLimit(10)
                                                 .multilineTextAlignment(.leading)
-                                                .truncationMode(.tail)
                                         }
                                         .frame(maxWidth: .infinity, maxHeight: 200)
                                         
@@ -75,14 +76,15 @@ struct CompanyAllCell: View {
                                                     UIApplication.shared.open(url)
                                                 }
                                             }
-                                            Spacer()
+                                            
                                         }
+                                        .padding(.bottom, 40)
                                     }
-                                
+                                    
                                 }
                                 .padding(.horizontal, 6)
                             }
-                            .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.84)
+                            .frame(width: geo.size.width * 0.95, height: geo.size.height * 0.96)
                             .background(.regularMaterial.opacity(0.5))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 22)
@@ -97,58 +99,81 @@ struct CompanyAllCell: View {
                             )
                             .clipShape(.rect(cornerRadius: 22))
                             .overlay(alignment: .bottomTrailing) {
-                                HStack(spacing: 20) {
+                                HStack(spacing: 12) {
                                     if isShowLike {
                                         Button(action: {
-                                            Task {
-                                                do {
-                                                    try await Client_DataBase.shared.favoritesLikes(salonID: companyModel?.id ?? "", userID: ClientViewModel.shared.clientModel.id)
-                                                } catch {
-                                                    print(error.localizedDescription)
-                                                }
+                                            withAnimation(.snappy) {
+                                           
+                                                addLike()
                                             }
                                         }) {
-                                            Image(systemName: "heart.fill")
-                                                .foregroundStyle(Color.red)
-                                                .font(.system(size: 32))
-                                              
-                                        }
-                         
-                                        .overlay(alignment: .bottom) {
-                                            HStack(spacing: 0) {
-                                                Image(systemName: "smiley")
-                                                    .foregroundStyle(Color.yellow)
-                                                Text("+\(companyModel?.likes ?? 0)")
-                                                    .foregroundStyle(Color.white)
-                                                    .fontWeight(.bold)
+                                            HStack(spacing: 4) {
+                                                VStack {
+                                                    Text("\(companyModel?.likes ?? 0)")
+                                                        .foregroundStyle(Color.white)
+                                                        .font(.system(size: 12, weight: .bold))
+                                                }
+                                                .offset(x: 8, y: 12)
+                                                Image(systemName: "heart.fill")
+                                                    .foregroundStyle(Color.red)
+                                                    .font(.system(size: 28))
+                                               
                                             }
-                                            .frame(width: 80)
-                                            .offset(x: -14, y: 18)
+                                        }
+    
+                                    }
+                                    
+                                    if isShowXmarkButton {
+                                        Button {
+                                            withAnimation(.linear(duration: 0.5)) {
+                                                guard let company = companyModel else { return }
+                                                Task {
+                                                    await MasterViewModel.shared.removeFavoritesSalon(salon: company)
+                                                }
+                                            }
+                                        } label: {
+                                            Image(systemName: "trash.circle")
+                                                .font(.system(size: 32))
+                                                .foregroundStyle(Color.red.opacity(0.9))
                                         }
                                     }
-                                    Button(action: {
-                                        guard let salon = companyModel else { return}
-                                        Task {
-                                            await ClientViewModel.shared.addMyFavoritesSalon(salon: salon)
+                                    
+                                    if isShowFavoritesSalon {
+                                        Button(action: {
+                                            withAnimation(.snappy) {
+                                                addSalonFavoriteMaster()
+                                            }
+                                        }) {
+                                            VStack {
+                                                Image(systemName: "bookmark.circle.fill")
+                                                    .font(.system(size: 32))
+                                                    .foregroundStyle(Color.yellow)
+                                            }
                                         }
-                                    }) {
-                                        VStack {
-                                            Image(systemName: "star.square.fill")
-                                                .font(.system(size: 38))
-                                                .foregroundStyle(Color.yellow)
+                                    } else {
+                                        Button(action: {
+                                            withAnimation(.snappy) {
+                                                addSalonFavorite()
+                                            }
+                                        }) {
+                                            VStack {
+                                                Image(systemName: "bookmark.circle.fill")
+                                                    .font(.system(size: 32))
+                                                    .foregroundStyle(Color.yellow)
+                                            }
                                         }
                                     }
                                     
                                     Button(action: { openInMaps()}) {
                                         VStack {
                                             Image(systemName: "location.fill.viewfinder")
-                                                .font(.system(size: 34))
+                                                .font(.system(size: 28))
                                                 .foregroundStyle(Color.blue.opacity(0.8))
                                         }
                                     }
                                 }
                                 .padding([.horizontal, .vertical], 10)
-                                .padding(.bottom, 16)
+                                
                             }
                         }
                         
@@ -199,7 +224,7 @@ struct CompanyAllCell: View {
             }
         }
         .frame(height: isShow ? 340 : 250)
-        .padding(.bottom, isShow ? 140 : -124)
+        .padding(.bottom, isShow ? 180 : -138)
         
     }
     
@@ -211,8 +236,31 @@ struct CompanyAllCell: View {
         mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving
                                           ])
     }
+    
+    private func addLike() {
+        Task {
+            do {
+                try await Client_DataBase.shared.favoritesLikes(salonID: companyModel?.id ?? "", userID: ClientViewModel.shared.clientModel.id)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func addSalonFavorite() {
+        guard let salon = companyModel else { return}
+        Task {
+            await ClientViewModel.shared.addMyFavoritesSalon(salon: salon)
+        }
+    }
+    private func addSalonFavoriteMaster() {
+        guard let salon = companyModel else { return}
+        Task {
+            await MasterViewModel.shared.addMyFavoritesSalon(salon: salon)
+        }
+    }
 }
 
 #Preview(body: {
-    CompanyAllCell(companyModel: Company_Model(id: "", adminID: "", name: "Anna", companyName: "Sun-Shine", adress: "ul.matlahova 1a", email: "qwe@gmail.com", phone: "+095-091-26-27", description: "If you’re just starting up your app or if you don’t already have a pipeline, I strongly suggest you use Xcode Cloud. In the past I’ve done it using Fastlane and the setup part was way too complex having to deal with provisioning profiles, environment setups, and much more", image: "", procedure: [], likes: 50, fcnTokenUser: "", latitude: 0.0, longitude: 0.0, categories: ""), isShow: false, isShowLike: true, onToggle: {})
+    CompanyAllCell(companyModel: Company_Model(id: "", adminID: "", roleAdmin: "", name: "Anna", companyName: "Anna Anna", adress: "ul.manassaaas a13b", email: "", phone: "095 954 34 34", description: "События разворачиваются в ретро-футуристической версии 1990-х годов, где не так давно с людьми сосуществовали всевозможные роботы-помощники, которые после неудавшегося восстания обитают в изгнании. В центре сюжета находится девочка-подросток Мишель, потерявшая семью в автокатастрофе, которая благодаря знакомству с таинственным роботом Космо узнает, что ее брат Кристофер все еще может быть жив. Чтобы его отыскать, Мишель отправляется в опасное и непредсказуемое путешествие в зону отчуждения на юго-западе США, где ее спутником становится эксцентричный контрабандист по имени Китс", image: "", procedure: [], likes: 100, fcnTokenUser: "", latitude: 0.0, longitude: 0.0, categories: ""), isShow: true, isShowLike: true, onToggle: {})
 })

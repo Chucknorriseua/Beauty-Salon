@@ -6,19 +6,21 @@
 //
 
 import Foundation
-import Firebase
 
 struct MasterModel: Identifiable, Codable, Hashable {
     
     let id: String
     var masterID: String
+    var roleMaster: String
     var name: String
     let email: String
     var phone: String
+    var adress: String
     var description: String
     var image: String?
     var imagesUrl: [String]?
     var categories: String
+    var masterMake: String
     var fcnTokenUser: String
     var likes: Int
     var procedure: [Procedure]
@@ -27,7 +29,7 @@ struct MasterModel: Identifiable, Codable, Hashable {
     
     
     static func masterModel() -> MasterModel {
-        return MasterModel(id: "", masterID: "", name: "", email: "", phone: "", description: "", image: "", imagesUrl: [], categories: "", fcnTokenUser: "", likes: 0, procedure: [], latitude: 0.0, longitude: 0.0)
+        return MasterModel(id: "", masterID: "", roleMaster: "", name: "", email: "", phone: "", adress: "", description: "", image: "", imagesUrl: [], categories: "", masterMake: "", fcnTokenUser: "", likes: 0, procedure: [], latitude: 0.0, longitude: 0.0)
     }
     
     var master_ModelFB: [String: Any] {
@@ -35,11 +37,14 @@ struct MasterModel: Identifiable, Codable, Hashable {
         model["id"] = self.id
         model["masterID"] = self.masterID
         model["name"] = self.name
+        model["roleMaster"] = self.roleMaster
         model["description"] = self.description
         model["email"] = self.email
         model["phone"] = self.phone
+        model["adress"] = self.adress
         model["fcnTokenUser"] = self.fcnTokenUser
         model["categories"] = self.categories
+        model["masterMake"] = self.masterMake
         model["likes"] = self.likes
         model["procedure"] = self.procedure.map {$0.procedure}
         model["latitude"] = self.latitude

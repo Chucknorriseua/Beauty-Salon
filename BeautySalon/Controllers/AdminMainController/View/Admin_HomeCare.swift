@@ -12,6 +12,7 @@ struct Admin_HomeCare: View {
     
     @EnvironmentObject var coordinator: CoordinatorView
     @ObservedObject private var adminViewModel = AdminViewModel.shared
+    @EnvironmentObject var storeKitView: StoreViewModel
     @State private var isShowSheet: Bool = false
     
     var body: some View {
@@ -24,6 +25,13 @@ struct Admin_HomeCare: View {
                         }
                         .padding(.bottom, 10)
                     }
+                }
+            }
+            .overlay(alignment: .bottom) {
+                if !storeKitView.checkSubscribe {
+                    Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                        .frame(maxWidth: .infinity, maxHeight: 80)
+                        .padding(.horizontal, 12)
                 }
             }
             .onAppear {

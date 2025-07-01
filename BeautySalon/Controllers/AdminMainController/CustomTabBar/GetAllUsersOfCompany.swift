@@ -10,13 +10,14 @@ import SwiftUI
 struct GetAllUsersOfCompany: View {
     
     @ObservedObject var adminViewModel: AdminViewModel
+    @EnvironmentObject var storeKitView: StoreViewModel
     
     // MARK: Fetch all User Of Company
     var body: some View {
         NavigationView {
             
             VStack {
-                Text("Clients for recording")
+                Text("My Сlients")
                     .font(.system(.title, design: .serif, weight: .regular))
                     .foregroundStyle(Color.yellow)
                 
@@ -32,6 +33,13 @@ struct GetAllUsersOfCompany: View {
                     
                 }.scrollIndicators(.hidden)
                 
+            }
+            .overlay(alignment: .bottom) {
+                if !storeKitView.checkSubscribe {
+                    Banner(adUnitID: "ca-app-pub-1923324197362942/6504418305")
+                        .frame(maxWidth: .infinity, maxHeight: 80)
+                        .padding(.horizontal, 12)
+                }
             }
             .createBackgrounfFon()
             .refreshable {

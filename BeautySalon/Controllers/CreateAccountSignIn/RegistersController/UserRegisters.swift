@@ -47,8 +47,10 @@ struct UserRegisters: View {
                     Task {
                         let succec =  await authClientViewModel.saveAccount_Master()
                         if succec {
-                            coordinator.popToRoot()
-                            isLoader = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                isLoader = false
+                                coordinator.push(page: .User_Main)
+                            }
                         } else {
                            isPressAlarm = true
                             messageAdmin = "Not correct password or email "
@@ -70,6 +72,7 @@ struct UserRegisters: View {
                     }).foregroundStyle((Color.white))
                       .font(.title2.bold())
                 }
+                .padding(.top, 30)
             }.onDisappear(perform: {
                 authClientViewModel.signInViewmodel.password = ""
             })

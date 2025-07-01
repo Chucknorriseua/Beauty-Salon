@@ -18,17 +18,19 @@ struct CustomButton: View {
             
         }, label: {
             Text(LocalizedStringKey(title))
-                .frame(maxWidth: .infinity, maxHeight: 32)
-                .font(.system(size: 14, weight: .heavy))
+                .frame(maxWidth: .infinity, maxHeight: 60)
+                .font(.system(size: 16, weight: .heavy))
                 .foregroundStyle(Color.white)
-                .padding()
                 .background(Color(red: 0.11, green: 0.14, blue: 0.12))
-                .clipShape(Capsule())
-                .shadow(color: .black.opacity(0.3), radius: 10, x: 5, y: 8)
+                .clipShape(.rect(cornerRadius: 18, style: .continuous))
         })
-        .padding()
+        .padding(.horizontal, 12)
     }
 }
+
+#Preview(body: {
+    CustomButton(title: "Sign in", action: {})
+})
 
 struct CustomButtonColor: View {
     let bd: String
@@ -71,7 +73,7 @@ struct CustomSettingsButton: View {
                     Spacer()
                     Image(systemName: "chevron.right")
                         .font(.title)
-                        .foregroundStyle(Color.init(hex: "#A8CAEA"))
+                        .foregroundStyle(Color.white)
                 }
                 Divider()
                     .frame(height: 4)
@@ -81,7 +83,3 @@ struct CustomSettingsButton: View {
         })
     }
 }
-
-#Preview(body: {
-    CustomSettingsButton(title: "sfsfsdfsfds", action: {})
-})

@@ -26,11 +26,11 @@ struct AdminRegister: View {
                 HStack {
                     
                     PhotosPicker(selection: $photoPickerItems, matching: .images) {
-                        Image(uiImage: UIImage(data:  authViewModel.selectedImage ?? Data() ) ?? UIImage(resource: .imageProfile))
+                        Image(uiImage: UIImage(data: authViewModel.selectedImage ?? Data() ) ?? UIImage(resource: .imageProfile))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 90, height: 90)
-                            .clipShape(.rect(cornerRadius: 16))
+                            .clipShape(Circle())
                     }
                     
                     Text("Сhoose photo salon")
@@ -40,7 +40,7 @@ struct AdminRegister: View {
                 
                 
                 CustomTextField(text: $authViewModel.signInViewModel.nameCompany,
-                                title: "Name Company", width: UIScreen.main.bounds.width - 20,
+                                title: "Salon name", width: UIScreen.main.bounds.width - 20,
                                 showPassword: $authViewModel.signInViewModel.showPassword)
                 
                 CustomTextField(text: $authViewModel.signInViewModel.fullName,

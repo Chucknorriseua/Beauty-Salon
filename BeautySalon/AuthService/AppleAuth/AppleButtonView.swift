@@ -17,9 +17,10 @@ struct AppleButtonView: UIViewRepresentable {
     typealias UIViewType = ASAuthorizationAppleIDButton
     
     @EnvironmentObject var coordinator: CoordinatorView
+    @State var isNotUseCoordinator: Bool
     
     func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
-        let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
+        let authorizationButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
         authorizationButton.addTarget(context.coordinator, action: #selector(AppleAuthViewModel.handleSignInWithApple), for: .touchUpInside)
         return authorizationButton
     }
@@ -27,7 +28,7 @@ struct AppleButtonView: UIViewRepresentable {
     func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
 
     func makeCoordinator() -> AppleAuthViewModel {
-        return Coordinator(coordinator: coordinator)
+        return Coordinator(coordinator: coordinator, isNotUseCoordinator: isNotUseCoordinator)
     }
 }
 
@@ -36,16 +37,17 @@ class AppleAuthViewModel: NSObject, ObservableObject, ASAuthorizationControllerD
     
     @Published var coordinator: CoordinatorView
     private var currentNonce: String?
-    @AppStorage ("useRole") var useRole: String = ""
-    @AppStorage ("appleEmail") var appleEmail: String = ""
-    @AppStorage ("appleID") var appleID: String = ""
-    @AppStorage ("isSubscribe") var isSubscribe: Bool = false
+    @AppStorage("useRole") var useRole: String = ""
+    @AppStorage("appleEmail") var appleEmail: String = ""
+    @AppStorage("appleID") var appleID: String = ""
+    @AppStorage("isAppleDelete") var isAppleDelete: Bool = false
+    @AppStorage("isSubscribe") var isSubscribe: Bool = false
+    @Published var isNotUseCoordinator: Bool
   
-    
 
-    init(coordinator: CoordinatorView) {
+    init(coordinator: CoordinatorView, isNotUseCoordinator: Bool) {
         self.coordinator = coordinator
- 
+        self.isNotUseCoordinator = isNotUseCoordinator
     }
     
     @objc func handleSignInWithApple() {
@@ -97,13 +99,28 @@ class AppleAuthViewModel: NSObject, ObservableObject, ASAuthorizationControllerD
                 self.appleID = user.uid
             }
             Task {
-               try await self.loadUserProfile(coordinator: self.coordinator)
+                if self.isNotUseCoordinator {
+                    DispatchQueue.main.async {
+                        self.isAppleDelete = true
+                    }
+                    print("isNotUseCoordinator")
+                } else {
+                    try await self.loadUserProfile(coordinator: self.coordinator)
+                }
             }
         }
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("Ошибка входа: \(error.localizedDescription)")
+        let nsError = error as NSError
+        if nsError.code == ASAuthorizationError.canceled.rawValue {
+            print("Пользователь отменил вход через Apple")
+            DispatchQueue.main.async {
+                self.isAppleDelete = false
+            }
+            return
+        }
+        print("Ошибка авторизации через Apple: \(error.localizedDescription)")
     }
 
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
@@ -187,23 +204,27 @@ class AppleAuthViewModel: NSObject, ObservableObject, ASAuthorizationControllerD
     func goConntrollerProfile(coordinator: CoordinatorView) async {
         switch self.useRole {
         case "Admin":
-            if StoreViewModel.shared.checkSubscribe {
-                await AdminViewModel.shared.fetchProfileAdmin()
-                coordinator.push(page: .Admin_main)
-            } else {
-                DispatchQueue.main.async {
-                    self.isSubscribe = true
-                }
-            }
+            await AdminViewModel.shared.fetchProfileAdmin()
+            coordinator.push(page: .Admin_main)
+//            if StoreViewModel.shared.checkSubscribe {
+//                await AdminViewModel.shared.fetchProfileAdmin()
+//                coordinator.push(page: .Admin_main)
+//            } else {
+//                DispatchQueue.main.async {
+//                    self.isSubscribe = true
+//                }
+//            }
         case "Master":
-            if StoreViewModel.shared.checkSubscribe {
-                await MasterViewModel.shared.fetchProfile_Master()
-                coordinator.push(page: .Master_Select_Company)
-            } else {
-                DispatchQueue.main.async {
-                    self.isSubscribe = true
-                }
-            }
+            await MasterViewModel.shared.fetchProfile_Master()
+            coordinator.push(page: .Master_Select_Company)
+//            if StoreViewModel.shared.checkSubscribe {
+//                await MasterViewModel.shared.fetchProfile_Master()
+//                coordinator.push(page: .Master_Select_Company)
+//            } else {
+//                DispatchQueue.main.async {
+//                    self.isSubscribe = true
+//                }
+//            }
         case "Client":
             await ClientViewModel.shared.fetchAll_Comapny()
             coordinator.push(page: .User_Main)

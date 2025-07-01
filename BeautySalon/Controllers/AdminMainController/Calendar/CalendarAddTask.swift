@@ -50,11 +50,11 @@ struct CalendarAddTask: View {
                 
                 VStack(spacing: 16) {
                     HStack() {
-                        
+                        Spacer()
                         DatePicker("", selection: $adminCalendarViewModel.currentDate)
                             .datePickerStyle(.compact)
                         
-                    }.padding(.trailing, 110)
+                    }.padding(.horizontal, 8)
                     HStack {
                         VStack {
                             
@@ -139,7 +139,7 @@ struct CalendarAddTask: View {
                                 adminViewModel.procedure.contains(where: {$0.id == proc.id})
                             }
                           
-                            let shedul = Shedule(id: UUID().uuidString, masterId: masterModel.masterID, nameCurrent: taskTitle, taskService: taskService, phone: "", nameMaster: masterModel.name, comment: "", creationDate: adminCalendarViewModel.currentDate, fcnTokenUser: masterModel.fcnTokenUser, tint: taskColor, timesTamp: Timestamp(date: adminCalendarViewModel.currentDate), procedure: procedure)
+                            let shedul = Shedule(id: UUID().uuidString, masterId: masterModel.masterID, nameCurrent: taskTitle, taskService: taskService, phone: "", nameMaster: masterModel.name, comment: "", creationDate: adminCalendarViewModel.currentDate, fcnTokenUser: masterModel.fcnTokenUser, tint: taskColor, timesTamp: Timestamp(date: adminCalendarViewModel.currentDate), procedure: procedure, latitude: masterModel.latitude, longitude: masterModel.longitude, nameSalonOrManster: "", phoneSalonOrMaster: "")
 
                             await Admin_CalendarViewModel.shared.addTaskShedule(masterID: masterModel.masterID, addTask: shedul)
                             adminViewModel.procedure.removeAll()
@@ -149,6 +149,7 @@ struct CalendarAddTask: View {
                 }
                 Spacer()
             })
+            .ignoresSafeArea(.keyboard)
             .onAppear {
                 adminViewModel.procedure.removeAll()
             }
